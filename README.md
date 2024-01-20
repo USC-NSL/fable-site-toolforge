@@ -4,7 +4,7 @@ You can ignore the starter_files folder. In the ```sql``` folder, you'll find th
 
 As for the actual website logic, all of it lives under the ```fablesite``` directory. Under the ```js``` folder here, you'll find all the React code for the front end for this project. The chain starts from ```index.js``` and goes from there to ```GlobalViewPage.jsx``` and so on in terms of components. We use React Query to handle our API calls and TailWindCSS for the styling. You may find a lot of the files here extrenous and unnecessary, feel free to delete them. A lot of them are hold overs from a different verison of this project, but I still thought were necessary to keep just in case they were needed again. 
 
-In the views and API folder, you'll find the Flask code for this project. I believe it's fairly self-explanatory. We only have one main view (index.py), that uses the API described in voteInfo.py. 
+In the ```views``` and ```API``` folder, you'll find the Flask code for this project. I believe it's fairly self-explanatory. We only have one main view (index.py), that uses the API described in ```voteInfo.py```. 
 
 # Testing
 
