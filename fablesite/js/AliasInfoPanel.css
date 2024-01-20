@@ -1,0 +1,8 @@
+.infoPanel {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+.buttonPanel {
+    margin-top: 1rem;
+}
