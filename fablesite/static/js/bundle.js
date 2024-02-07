@@ -4131,8 +4131,7 @@ function AliasInfoPanel(id) {
         alert(message);
       },
       onError: function onError() {
-        debugger;
-        alert("There was an error uploading your feedback. Alias Info.");
+        alert("There was an error uploading your feedback.");
       }
     }),
     mutate = _useMutation.mutate;
@@ -4624,7 +4623,6 @@ function Wrapper(_ref) {
     }),
     mutate = _useMutation.mutate;
   var onSubmit = function onSubmit() {
-    console.log("REACHED");
     mutate({
       data: state
     });
