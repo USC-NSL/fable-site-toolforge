@@ -45,8 +45,9 @@ function Wrapper({data}) {
         }
      })
 
-    const { register, handleSubmit, formState: { errors } } = useForm()
-    const onSubmit = uploadData => mutate({data: state})
+    const onSubmit = () => {
+        mutate({data: state})
+    }
 
     // Filtering Logic
     const [unsureFilter, setUnsureFilter] = useState(false)
@@ -98,9 +99,7 @@ function Wrapper({data}) {
     )
 
     return (
-        <form
-            onSubmit={handleSubmit(onSubmit)}
-        >
+        <div>
             <h1 className="text-3xl font-bold">
                 Replacement URLs for links marked permanently dead
             </h1>
@@ -121,11 +120,11 @@ function Wrapper({data}) {
             </div>
             <button
                 className="mt-4 bg-green-400 hover:bg-green-600 text-green-100 border py-3 px-6 font-semibold text-md rounded"
-                type="submit"
+                onClick={onSubmit}
             >
                 Submit Feedback
             </button>
-        </form>
+        </div>
     )
 }
 
