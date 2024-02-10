@@ -1,10 +1,10 @@
 import React from "react";
 import {
-    createColumnHelper,
     flexRender,
     getCoreRowModel,
     getPaginationRowModel,
     useReactTable,
+    getSortedRowModel,
 } from '@tanstack/react-table'
 
 export default function GlobalTable({columns, data}) {
@@ -13,6 +13,7 @@ export default function GlobalTable({columns, data}) {
         columns,
         getPaginationRowModel: getPaginationRowModel(),
         getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel(),
     })
 
     if (data === null || data === undefined || data.length === 0) {
@@ -27,8 +28,8 @@ export default function GlobalTable({columns, data}) {
                 <thead className="text-medium dark:bg-slate-100 break-word w-auto">
                     {table.getHeaderGroups().map(headerGroup => (
                     <tr key={headerGroup.id}>
-                        {headerGroup.headers.map(header => (
-                            <th key={header.id} scope="col" className="py-3 px-4 flex-wrap">
+                        {headerGroup.headers.map((header, index) => (
+                            <th key={header.id} onClick={index < 2 ? header.column.getToggleSortingHandler() : undefined} scope="col" className={`py-3 px-4 flex-wrap cursor-pointer ${index < 2 ? '' : 'pointer-events-none'}`}>
                                 {header.isPlaceholder
                                 ? null
                                 : flexRender(
