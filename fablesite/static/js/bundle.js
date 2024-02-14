@@ -4581,7 +4581,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 var filterData = function filterData(data, unsureFilter) {
   if (unsureFilter) {
     return data.filter(function (v) {
@@ -4590,6 +4589,13 @@ var filterData = function filterData(data, unsureFilter) {
   }
   return data;
 };
+function extractArticleTitleFromUrl(article) {
+  var parsed_url = new URL(article); // Create a new URL object
+  var article_title = decodeURIComponent(parsed_url.pathname.split('/').pop()); // Extract the last part of the URL and decode it
+  article_title = article_title.replace(/_/g, ' ');
+  console.log(article_title);
+  return article_title;
+}
 
 // Need for local state mutation
 function Wrapper(_ref) {
@@ -4646,8 +4652,9 @@ function Wrapper(_ref) {
         var getValue = _ref2.getValue;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("a", {
           href: getValue(),
-          className: "break-all"
-        }, getValue());
+          className: "break-all",
+          target: "_blank"
+        }, extractArticleTitleFromUrl(getValue()));
       }
     }, {
       header: "Broken link",
@@ -4656,7 +4663,8 @@ function Wrapper(_ref) {
         var getValue = _ref3.getValue;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("a", {
           href: getValue(),
-          className: "break-all"
+          className: "break-all",
+          target: "_blank"
         }, getValue());
       }
     }, {
@@ -4666,7 +4674,8 @@ function Wrapper(_ref) {
         var getValue = _ref4.getValue;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("a", {
           href: getValue(),
-          className: "break-all"
+          className: "break-all",
+          target: "_blank"
         }, getValue());
       }
     }, {
@@ -43817,19 +43826,19 @@ function _toConsumableArray(arr) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ toPrimitive)
+/* harmony export */   "default": () => (/* binding */ _toPrimitive)
 /* harmony export */ });
 /* harmony import */ var _typeof_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./typeof.js */ "./node_modules/@babel/runtime/helpers/esm/typeof.js");
 
-function toPrimitive(t, r) {
-  if ("object" != (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(t) || !t) return t;
-  var e = t[Symbol.toPrimitive];
-  if (void 0 !== e) {
-    var i = e.call(t, r || "default");
-    if ("object" != (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(i)) return i;
+function _toPrimitive(input, hint) {
+  if ((0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(input) !== "object" || input === null) return input;
+  var prim = input[Symbol.toPrimitive];
+  if (prim !== undefined) {
+    var res = prim.call(input, hint || "default");
+    if ((0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(res) !== "object") return res;
     throw new TypeError("@@toPrimitive must return a primitive value.");
   }
-  return ("string" === r ? String : Number)(t);
+  return (hint === "string" ? String : Number)(input);
 }
 
 /***/ }),
@@ -43843,15 +43852,15 @@ function toPrimitive(t, r) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ toPropertyKey)
+/* harmony export */   "default": () => (/* binding */ _toPropertyKey)
 /* harmony export */ });
 /* harmony import */ var _typeof_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./typeof.js */ "./node_modules/@babel/runtime/helpers/esm/typeof.js");
 /* harmony import */ var _toPrimitive_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./toPrimitive.js */ "./node_modules/@babel/runtime/helpers/esm/toPrimitive.js");
 
 
-function toPropertyKey(t) {
-  var i = (0,_toPrimitive_js__WEBPACK_IMPORTED_MODULE_1__["default"])(t, "string");
-  return "symbol" == (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(i) ? i : String(i);
+function _toPropertyKey(arg) {
+  var key = (0,_toPrimitive_js__WEBPACK_IMPORTED_MODULE_1__["default"])(arg, "string");
+  return (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(key) === "symbol" ? key : String(key);
 }
 
 /***/ }),

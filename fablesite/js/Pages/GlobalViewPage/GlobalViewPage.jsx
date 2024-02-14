@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import './GlobalViewPage.css'; // Import regular stylesheet
 import GlobalTable from '../../Components/GlobalTable/Table';
 import { useQuery } from '@tanstack/react-query';
-import { useForm } from "react-hook-form"
 import { useMutation } from "@tanstack/react-query"
 import { PostAliasInfo } from "./Utils"
 import { GetAllAliases } from './Utils';
@@ -14,6 +13,14 @@ const filterData = (data, unsureFilter) => {
         return data.filter(v => v.feedbackSelection === "Unsure")
     }
     return data
+}
+
+function extractArticleTitleFromUrl(article) {
+    let parsed_url = new URL(article); // Create a new URL object
+    let article_title = decodeURIComponent(parsed_url.pathname.split('/').pop()); // Extract the last part of the URL and decode it
+    article_title = article_title.replace(/_/g, ' ');
+    console.log(article_title)
+    return article_title;
 }
 
 // Need for local state mutation
@@ -62,14 +69,14 @@ function Wrapper({data}) {
                 header: "Article where broken link appears",
                 accessorKey: "article",
                 cell: ({getValue}) => {
-                    return <a href={getValue()} className="break-all">{getValue()}</a>
+                    return <a href={getValue()} className="break-all" target='_blank'>{extractArticleTitleFromUrl(getValue())}</a>
                 }
             },
             {   
                 header: "Broken link",
                 accessorKey: "link",
                 cell: ({getValue}) => {
-                    return <a href={getValue()} className="break-all">{getValue()}</a>
+                    return <a href={getValue()} className="break-all" target='_blank'>{getValue()}</a>
                 }
 
             },
@@ -77,7 +84,7 @@ function Wrapper({data}) {
                 header: "New URL for same page",
                 accessorKey: "alias",
                 cell: ({getValue}) => {
-                    return <a href={getValue()} className="break-all">{getValue()}</a>
+                    return <a href={getValue()} className="break-all" target='_blank'>{getValue()}</a>
                 }
             },
             {   
