@@ -15,7 +15,7 @@ export async function GetAllAliases() {
 
     // Need to add feedback items to objects
     obj = obj.map(v => ({...v, feedbackSelection: "Unsure", feedbackInput: ""}))
-    
+
     return obj
 }
 
@@ -35,5 +35,4 @@ export async function PostAliasInfo({data}) {
     
     const obj = await response.json()
     return obj
-    // return {}
 }
