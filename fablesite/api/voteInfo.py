@@ -1,7 +1,5 @@
-import json
 import flask
 import fablesite
-import urllib.parse
 
 ACCURATE = "Correct"
 CANT_TELL = "Unsure"
@@ -44,7 +42,7 @@ def updateValue(data, voteVal):
 def all_aliases():
     """Display / route."""
     try:
-        #Connect to database
+        # Connect to database
         cur = fablesite.model.get_db()
 
         # Query database
@@ -54,19 +52,21 @@ def all_aliases():
         
         aliasInfo = cur.fetchall()
         
-        # Uncomment this part for local development
-        # Also note to keep data folder inside fablesite folder - which has the data file required. 
-        # json_data_path = "/fable-site-toolforge/fablesite/data/edited_data.json"
-        # try:
-        #     with open(json_data_path, "r") as file:
-        #         aliasInfo = json.load(file)
-        # except FileNotFoundError:
-        #     print('JSON file not found:', json_data_path)
-        #     flask.abort(404)
-        # except Exception as e:
-        #     print('Failed to load JSON data:', str(e))
-        #     flask.abort(500)
-
+        # aliasInfo = [
+        #     {
+        #         "alias": "test1",
+        #         "link": "https://www.google.com",
+        #         "article": "https://www.google.com",
+        #         "id": "1"
+        #     },
+        #                 {
+        #         "alias": "http://en.mercopress.com/2006/09/21/new-york-reacts-calls-chavez-oil-pimp-and-un-cheap-bordello",
+        #         "link": "http://en.mercopress.com/2006/09/21/new-york-reacts-calls-chavez-oil-pimp-and-un-cheap-bordello",
+        #         "article": "http://en.mercopress.com/2006/09/21/new-york-reacts-calls-chavez-oil-pimp-and-un-cheap-bordello",
+        #         "id": "2"
+        #     },
+        # ]
+        
         return flask.jsonify(aliasInfo)
         
     except Exception as e:
