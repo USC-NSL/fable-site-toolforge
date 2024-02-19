@@ -57,9 +57,9 @@ function Wrapper({ data }) {
 
   const onSearch = () => {
     if (searchValue != "") {
-      alert("Search button clicked. The value is " + searchValue + ".");
+      alert("Search button clicked. The value is " + searchValue + ". ");
     } else {
-      alert("Search button clicked.");
+      alert("Search button clicked. ");
     }
   };
 

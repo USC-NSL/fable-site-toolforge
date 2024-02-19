@@ -17,7 +17,7 @@ export default function GlobalTable({ columns, data }) {
   });
 
   if (data === null || data === undefined || data.length === 0) {
-    return <p>No Data</p>;
+    return <p>No Data;</p>;
   }
 
   return (
