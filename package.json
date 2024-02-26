@@ -50,6 +50,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.46.2",
     "react-infinite-scroll-component": ">=6.1.0",
+    "react-query": "^3.39.3",
     "react-router-dom": "^6.16.0",
     "style-loader": "^3.3.3",
     "ts-loader": ">=9.4.2",

@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useMemo } from "react";
 import "./GlobalViewPage.css"; // Import regular stylesheet
 import GlobalTable from "../../Components/GlobalTable/Table";
-import { useQuery } from "@tanstack/react-query";
-import { useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { PostAliasInfo } from "./Utils";
 import { GetAllAliases } from "./Utils";
+import { GetSearchAliases } from "./Utils";
 import FeedbackSelector from "../../Components/GlobalTable/FeedbackSelector";
 import FeedbackInput from "../../Components/GlobalTable/FeedbackInput";
 
@@ -25,6 +25,29 @@ function extractArticleTitleFromUrl(article) {
 // Need for local state mutation
 function Wrapper({ data }) {
   const [state, setState] = useState(data);
+  const queryClient = useQueryClient();
+
+  //Search for specfic aliases
+  const onSearch = () => {
+    if (searchValue !== "") {
+      queryClient
+        .fetchQuery(["searchAliases", searchValue], () =>
+          GetSearchAliases("testSearchValue")
+        )
+        .then((searchData) => {
+          //then() block is for handling what happens after React Query's promise resolves
+          console.log("Direct call data:", searchData);
+          setState(searchData);
+        })
+        .catch((error) => {
+          //catch() block is for handling any errors React Query encounters with the query
+          alert("Search unsuccessful.");
+          console.error("Search alias failed: ", error);
+        });
+    } else {
+      setState(data);
+    }
+  };
 
   // Update feedback selection
   const updateFeedbackSelection = (index, feedbackSelection) => {
@@ -53,14 +76,6 @@ function Wrapper({ data }) {
 
   const onSubmit = () => {
     mutate({ data: state });
-  };
-
-  const onSearch = () => {
-    if (searchValue != "") {
-      alert("Search button clicked. The value is " + searchValue + ". ");
-    } else {
-      alert("Search button clicked. ");
-    }
   };
 
   // Filtering Logic
@@ -108,7 +123,7 @@ function Wrapper({ data }) {
         width: 220,
         cell: ({ getValue }) => {
           return (
-            <a href={getValue()} className="break-all" target="_blank">
+            <a href={getValue()} className="break-word" target="_blank">
               {extractArticleTitleFromUrl(getValue())}
             </a>
           );
@@ -168,7 +183,7 @@ function Wrapper({ data }) {
       },
       {
         header: "Is new URL correct?",
-        width: 150,
+        width: 130,
         accessorKey: "feedbackSelection",
         cell: ({ row }) => {
           return (
