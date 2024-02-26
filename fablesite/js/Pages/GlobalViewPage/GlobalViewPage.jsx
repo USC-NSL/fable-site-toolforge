@@ -32,7 +32,7 @@ function Wrapper({ data }) {
     if (searchValue !== "") {
       queryClient
         .fetchQuery(["searchAliases", searchValue], () =>
-          GetSearchAliases("testSearchValue")
+          GetSearchAliases(searchValue)
         )
         .then((searchData) => {
           //then() block is for handling what happens after React Query's promise resolves

@@ -4877,7 +4877,7 @@ function Wrapper(_ref) {
   var onSearch = function onSearch() {
     if (searchValue !== "") {
       queryClient.fetchQuery(["searchAliases", searchValue], function () {
-        return (0,_Utils__WEBPACK_IMPORTED_MODULE_5__.GetSearchAliases)("testSearchValue");
+        return (0,_Utils__WEBPACK_IMPORTED_MODULE_5__.GetSearchAliases)(searchValue);
       }).then(function (searchData) {
         //then() block is for handling what happens after React Query's promise resolves
         console.log("Direct call data:", searchData);

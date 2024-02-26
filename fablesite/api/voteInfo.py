@@ -50,26 +50,26 @@ def updateValue(data, voteVal):
 def all_aliases():
     """Display / route."""
     try:
-        # Connect to database
-        cur = fablesite.model.get_db()
+        # # Connect to database
+        # cur = fablesite.model.get_db()
 
-        # Query database
-        cur.execute("SELECT * FROM aliases where alias != link")
+        # # Query database
+        # cur.execute("SELECT * FROM aliases where alias != link")
 
-        aliasInfo = cur.fetchall()
+        # aliasInfo = cur.fetchall()
 
         # Uncomment this part for local development
         # Also note to keep data folder inside fablesite folder - which has the data file required.
-        # json_data_path = "fablesite/data/edited_data.json"
-        # try:
-        #     with open(json_data_path, "r") as file:
-        #         aliasInfo = json.load(file)
-        # except FileNotFoundError:
-        #     print("JSON file not found:", json_data_path)
-        #     flask.abort(404)
-        # except Exception as e:
-        #     print("Failed to load JSON data:", str(e))
-        #     flask.abort(500)
+        json_data_path = "fablesite/data/edited_data.json"
+        try:
+            with open(json_data_path, "r") as file:
+                aliasInfo = json.load(file)
+        except FileNotFoundError:
+            print("JSON file not found:", json_data_path)
+            flask.abort(404)
+        except Exception as e:
+            print("Failed to load JSON data:", str(e))
+            flask.abort(500)
 
         return flask.jsonify(aliasInfo)
 
@@ -156,11 +156,12 @@ def get_search_alias():
     try:
 
         searchStr = request.args.get("search", default="", type=str)
+        param = "%" + searchStr + "%"
         # Connect to database
         cur = fablesite.model.get_db()
-        param = f"%{searchStr}%"
         # Query database
-        cur.execute("SELECT * FROM aliases where link like %s", (param,))
+        cur.execute("SELECT * FROM aliases where link like %s", [param])
+
         aliasInfo = cur.fetchall()
         return flask.jsonify(aliasInfo)
 
