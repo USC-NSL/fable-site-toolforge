@@ -34,8 +34,10 @@ export default function GlobalTable({ columns, data }) {
                   key={header.id}
                   style={{ width: header.column.columnDef.width }}
                   onClick={
-                    index < 2
+                    index == 0
                       ? header.column.getToggleSortingHandler()
+                      : index ==1 
+                      ? headerGroup.headers[5].column.getToggleSortingHandler()
                       : undefined
                   }
                   scope="col"

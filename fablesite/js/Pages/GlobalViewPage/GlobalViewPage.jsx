@@ -198,6 +198,27 @@ function Wrapper({ data }) {
           return <FeedbackInput row={row} setState={updateFeedbackInput} />;
         },
       },
+      {
+        header: () => (
+          <div
+            style={{
+              display: "none"
+            }}
+          >
+          </div>
+        ),
+        accessorKey: "newLink",
+        width: 350,
+        cell: ({ getValue }) => {
+          return (
+            <a href={getValue()} style={{
+              display: "none"
+            }} target="_blank">
+              {getValue()}
+            </a>
+          );
+        },
+      },
     ],
     []
   );
@@ -274,5 +295,9 @@ export default function GlobalViewPage() {
     return <p>Error Fetching Data</p>;
   }
 
+  data.forEach(item => {
+    item.newLink = item.link.replace(/^https?:\/\//, '');
+  })
+  console.log('new data : ', data);
   return <Wrapper data={data} />;
 }
