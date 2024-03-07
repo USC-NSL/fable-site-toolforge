@@ -26,6 +26,29 @@ function extractArticleTitleFromUrl(article) {
 function Wrapper({ data }) {
   const [state, setState] = useState(data);
   const queryClient = useQueryClient();
+  const [newData, setData] = useState([]);
+  //Search on Enter key
+  const handleKeyPress = (e) => {
+    if (e.code == 'Enter') {
+      onSearch();
+    }
+  }
+
+  //Flag to display Dropdown options
+  const handleSearchInput = (value) => {
+    if (value == "") {
+      setSearchBoolValue(false);
+    }
+    setSearchValue(value);
+  }
+
+  //Mark response for all Feedback Selection 
+  const markAll = (res) => {
+    state.forEach((item) => {
+      item.FeedbackSelector = res
+      item.FeedbackInput = ""
+    });
+  }
 
   //Search for specfic aliases
   const onSearch = () => {
@@ -38,14 +61,33 @@ function Wrapper({ data }) {
           //then() block is for handling what happens after React Query's promise resolves
           console.log("Direct call data:", searchData);
           setState(searchData);
+          setData(searchData);
+          setSearchBoolValue(true);
         })
         .catch((error) => {
           //catch() block is for handling any errors React Query encounters with the query
+          setSearchBoolValue(false);
           alert("Search unsuccessful.");
           console.error("Search alias failed: ", error);
         });
     } else {
-      setState(data);
+      queryClient
+        .fetchQuery(["aliasInfo"], () =>
+          GetAllAliases()
+        )
+        .then((searchData) => {
+          //then() block is for handling what happens after React Query's promise resolves
+          setState(searchData);
+          setData(searchData);
+          setSearchBoolValue(true);
+        })
+        .catch((error) => {
+          //catch() block is for handling any errors React Query encounters with the query
+          setSearchBoolValue(false);
+          alert("Search unsuccessful.");
+          console.error("Search alias failed: ", error);
+        });
+      setSearchBoolValue(false);
     }
   };
 
@@ -86,6 +128,7 @@ function Wrapper({ data }) {
   );
 
   const [searchValue, setSearchValue] = useState("");
+  const [searchBool, setSearchBoolValue] = useState(false);
 
   const columns = useMemo(
     () => [
@@ -237,7 +280,8 @@ function Wrapper({ data }) {
             className="border-2 border-gray-300"
             style={{ borderRadius: "5px" }}
             value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
+            onChange={(e) => handleSearchInput(e.target.value)}
+            onKeyDownCapture={handleKeyPress}
           />
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -264,6 +308,22 @@ function Wrapper({ data }) {
           Show only links tagged as Unsure
         </label>
       </div>
+      {searchBool && searchValue != "" ? (          
+          <div className="flex items-center gap-2">
+            <label className="text-lg font-bold">
+                Mark response for all search results :  
+              </label>
+              <select
+                  onChange={(e) => {
+                    markAll(e.target.value)
+                  }}
+              >
+                  <option>Correct</option>
+                  <option>Incorrect</option>
+                  <option>Unsure</option>
+              </select>
+          </div>
+          ) : ''}
       <div className="globalViewPage mt-5">
         <GlobalTable columns={columns} data={filteredData} />
       </div>
@@ -298,6 +358,5 @@ export default function GlobalViewPage() {
   data.forEach(item => {
     item.newLink = item.link.replace(/^https?:\/\//, '');
   })
-  console.log('new data : ', data);
   return <Wrapper data={data} />;
 }
