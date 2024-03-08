@@ -26,13 +26,12 @@ function extractArticleTitleFromUrl(article) {
 function Wrapper({ data }) {
   const [state, setState] = useState(data);
   const queryClient = useQueryClient();
-  const [newData, setData] = useState([]);
   //Search on Enter key
   const handleKeyPress = (e) => {
-    if (e.code == 'Enter') {
+    if (e.code == "Enter") {
       onSearch();
     }
-  }
+  };
 
   //Flag to display Dropdown options
   const handleSearchInput = (value) => {
@@ -40,15 +39,15 @@ function Wrapper({ data }) {
       setSearchBoolValue(false);
     }
     setSearchValue(value);
-  }
+  };
 
-  //Mark response for all Feedback Selection 
+  //Mark response for all Feedback Selection
   const markAll = (res) => {
     state.forEach((item) => {
-      item.FeedbackSelector = res
-      item.FeedbackInput = ""
+      item.FeedbackSelector = res;
+      item.FeedbackInput = "";
     });
-  }
+  };
 
   //Search for specfic aliases
   const onSearch = () => {
@@ -58,34 +57,27 @@ function Wrapper({ data }) {
           GetSearchAliases(searchValue)
         )
         .then((searchData) => {
-          //then() block is for handling what happens after React Query's promise resolves
-          console.log("Direct call data:", searchData);
+          console.log("Search results:", searchData);
           setState(searchData);
-          setData(searchData);
           setSearchBoolValue(true);
         })
         .catch((error) => {
-          //catch() block is for handling any errors React Query encounters with the query
-          setSearchBoolValue(false);
           alert("Search unsuccessful.");
           console.error("Search alias failed: ", error);
+          setSearchBoolValue(false);
         });
     } else {
       queryClient
-        .fetchQuery(["aliasInfo"], () =>
-          GetAllAliases()
-        )
+        .fetchQuery(["aliasInfo"], () => GetAllAliases())
         .then((searchData) => {
-          //then() block is for handling what happens after React Query's promise resolves
+          console.log("All data:", searchData);
           setState(searchData);
-          setData(searchData);
           setSearchBoolValue(true);
         })
         .catch((error) => {
-          //catch() block is for handling any errors React Query encounters with the query
+          alert("Failed to fetch data.");
+          console.log("Error fetching the data: ", error);
           setSearchBoolValue(false);
-          alert("Search unsuccessful.");
-          console.error("Search alias failed: ", error);
         });
       setSearchBoolValue(false);
     }
@@ -93,16 +85,20 @@ function Wrapper({ data }) {
 
   // Update feedback selection
   const updateFeedbackSelection = (index, feedbackSelection) => {
-    const newState = [...state];
-    newState[index].feedbackSelection = feedbackSelection;
-    setState(newState);
+    setState((currentState) => {
+      const newState = [...currentState];
+      newState[index].feedbackSelection = feedbackSelection;
+      return newState;
+    });
   };
 
   // Update feedback selection
   const updateFeedbackInput = (index, feedbackInput) => {
-    const newState = [...state];
-    newState[index].feedbackInput = feedbackInput;
-    setState(newState);
+    setState((currentState) => {
+      const newState = [...currentState];
+      newState[index].feedbackInput = feedbackInput;
+      return newState;
+    });
   };
 
   // Form Logic
@@ -245,18 +241,21 @@ function Wrapper({ data }) {
         header: () => (
           <div
             style={{
-              display: "none"
+              display: "none",
             }}
-          >
-          </div>
+          ></div>
         ),
         accessorKey: "newLink",
         width: 350,
         cell: ({ getValue }) => {
           return (
-            <a href={getValue()} style={{
-              display: "none"
-            }} target="_blank">
+            <a
+              href={getValue()}
+              style={{
+                display: "none",
+              }}
+              target="_blank"
+            >
               {getValue()}
             </a>
           );
@@ -308,22 +307,24 @@ function Wrapper({ data }) {
           Show only links tagged as Unsure
         </label>
       </div>
-      {searchBool && searchValue != "" ? (          
-          <div className="flex items-center gap-2">
-            <label className="text-lg font-bold">
-                Mark response for all search results :  
-              </label>
-              <select
-                  onChange={(e) => {
-                    markAll(e.target.value)
-                  }}
-              >
-                  <option>Correct</option>
-                  <option>Incorrect</option>
-                  <option>Unsure</option>
-              </select>
-          </div>
-          ) : ''}
+      {searchBool && searchValue != "" ? (
+        <div className="flex items-center gap-2">
+          <label className="text-lg font-bold">
+            Mark response for all search results :
+          </label>
+          <select
+            onChange={(e) => {
+              markAll(e.target.value);
+            }}
+          >
+            <option>Correct</option>
+            <option>Incorrect</option>
+            <option>Unsure</option>
+          </select>
+        </div>
+      ) : (
+        ""
+      )}
       <div className="globalViewPage mt-5">
         <GlobalTable columns={columns} data={filteredData} />
       </div>
@@ -355,8 +356,8 @@ export default function GlobalViewPage() {
     return <p>Error Fetching Data</p>;
   }
 
-  data.forEach(item => {
-    item.newLink = item.link.replace(/^https?:\/\//, '');
-  })
+  data.forEach((item) => {
+    item.newLink = item.link.replace(/^https?:\/\//, "");
+  });
   return <Wrapper data={data} />;
 }
