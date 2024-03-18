@@ -26,6 +26,7 @@ function extractArticleTitleFromUrl(article) {
 function Wrapper({ data }) {
   const [state, setState] = useState(data);
   const queryClient = useQueryClient();
+  const [submitData, setSubmitData] = useState([]);
   //Search on Enter key
   const handleKeyPress = (e) => {
     if (e.code == "Enter") {
@@ -88,6 +89,16 @@ function Wrapper({ data }) {
     setState((currentState) => {
       const newState = [...currentState];
       newState[index].feedbackSelection = feedbackSelection;
+      
+      //Saving the changed table row to SubmitData
+      const existIndex = submitData.findIndex(data => data.id === newState[index].id);
+      if (existIndex < 0) {
+        submitData.push(newState[index]);
+        setSubmitData(submitData);
+      } else{
+        submitData[existIndex].feedbackSelection = feedbackSelection
+      }
+
       return newState;
     });
   };
@@ -97,6 +108,16 @@ function Wrapper({ data }) {
     setState((currentState) => {
       const newState = [...currentState];
       newState[index].feedbackInput = feedbackInput;
+
+      //Saving the changed table row to SubmitData
+      const existIndex = submitData.findIndex(data => data.id === newState[index].id);
+      if (existIndex < 0) {
+        submitData.push(newState[index]);
+        setSubmitData(submitData);
+      } else{
+        submitData[existIndex].feedbackInput = feedbackInput
+      }
+
       return newState;
     });
   };
@@ -113,7 +134,7 @@ function Wrapper({ data }) {
   });
 
   const onSubmit = () => {
-    mutate({ data: state });
+    mutate({ data: submitData });
   };
 
   // Filtering Logic
@@ -297,16 +318,25 @@ function Wrapper({ data }) {
           <b>here</b>
         </a>
       </h3>
-      <div className="flex items-center gap-2 py-5">
-        <input
-          type="checkbox"
-          checked={unsureFilter}
-          onChange={() => setUnsureFilter(!unsureFilter)}
-        />
-        <label className="text-lg font-bold">
-          Show only links tagged as Unsure
-        </label>
-      </div>
+      <div className="flex items-center justify-between py-5">
+        <div className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={unsureFilter}
+            onChange={() => setUnsureFilter(!unsureFilter)}
+          />
+          <label className="text-lg font-bold">
+            Show only links tagged as Unsure
+          </label>
+        </div>
+
+        <button
+          className="bg-green-400 hover:bg-green-600 text-green-100 border py-3 px-6 font-semibold text-md rounded"
+          onClick={onSubmit}
+        >
+          Submit Feedback
+        </button>
+    </div>
       {searchBool && searchValue != "" ? (
         <div className="flex items-center gap-2">
           <label className="text-lg font-bold">
@@ -328,12 +358,6 @@ function Wrapper({ data }) {
       <div className="globalViewPage mt-5">
         <GlobalTable columns={columns} data={filteredData} />
       </div>
-      <button
-        className="mt-4 bg-green-400 hover:bg-green-600 text-green-100 border py-3 px-6 font-semibold text-md rounded"
-        onClick={onSubmit}
-      >
-        Submit Feedback
-      </button>
     </div>
   );
 }
