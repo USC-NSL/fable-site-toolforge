@@ -48,6 +48,7 @@ function Wrapper({ data }) {
       item.FeedbackSelector = res;
       item.FeedbackInput = "";
     });
+    setSubmitData(state);
   };
 
   //Search for specfic aliases
@@ -331,7 +332,7 @@ function Wrapper({ data }) {
         </div>
 
         <button
-          className="bg-green-400 hover:bg-green-600 text-green-100 border py-3 px-6 font-semibold text-md rounded"
+          className="bg-green-600 text-green-100 border py-3 px-6 font-semibold text-md rounded"
           onClick={onSubmit}
         >
           Submit Feedback
