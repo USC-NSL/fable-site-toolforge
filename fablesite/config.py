@@ -10,12 +10,7 @@ APPLICATION_ROOT = "/"
 FABLE_ROOT = pathlib.Path(__file__).resolve().parent.parent
 DATABASE_FILENAME = FABLE_ROOT / "var" / "fable.sqlite3"
 
-HOST = os.environ.get("FABLE_DB_HOST", "")
-USERNAME = os.environ.get("FABLE_DB_USERNAME", "")
-PASSWORD = os.environ.get("FABLE_DB_PASSWORD", "")
-DB_NAME = os.environ.get("FABLE_DB_NAME", "")
-
-# HOST = "localhost"
-# USERNAME = "root"
-# PASSWORD = ""
-# DB_NAME = "s55570__FABLE"
+HOST = "tools.db.svc.wikimedia.cloud"
+USERNAME = "s55570"
+PASSWORD = ""
+DB_NAME = "s55570__FABLE"

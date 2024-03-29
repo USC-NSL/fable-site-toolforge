@@ -5195,6 +5195,8 @@ function Wrapper(_ref) {
 function GlobalViewPage() {
   var _useQuery = (0,_tanstack_react_query__WEBPACK_IMPORTED_MODULE_10__.useQuery)(["aliasInfo"], function () {
       return (0,_Utils__WEBPACK_IMPORTED_MODULE_5__.GetAllAliases)();
+    }, {
+      refetchOnWindowFocus: false
     }),
     isLoading = _useQuery.isLoading,
     error = _useQuery.error,
