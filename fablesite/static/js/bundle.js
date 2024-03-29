@@ -4624,6 +4624,7 @@ function Wrapper(_ref) {
 
   //Flag to display Dropdown options
   var handleSearchInput = function handleSearchInput(value) {
+    setSubmitData([]);
     if (value == "") {
       setSearchBoolValue(false);
     }
@@ -4713,6 +4714,7 @@ function Wrapper(_ref) {
   var _useMutation = (0,_tanstack_react_query__WEBPACK_IMPORTED_MODULE_9__.useMutation)(_Utils__WEBPACK_IMPORTED_MODULE_5__.PostAliasInfo, {
       onSuccess: function onSuccess() {
         var message = "Feedback Uploaded Successfully!";
+        setSubmitData([]);
         alert(message);
       },
       onError: function onError() {
@@ -4974,9 +4976,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2__);
 
 
-
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+
 function GetAllAliases() {
   return _GetAllAliases.apply(this, arguments);
 }
@@ -5008,149 +5010,8 @@ function _GetAllAliases() {
           return response.json();
         case 6:
           obj = _context.sent;
-          // Need to add feedback items to objects
-          obj = obj.map(function (v) {
-            return _objectSpread(_objectSpread({}, v), {}, {
-              feedbackSelection: "Unsure",
-              feedbackInput: ""
-            });
-          });
-          // let obj = [
-          //   {
-          //     "alias": "http://en.mercopress.com/2006/09/21/new-york-reacts-calls-chavez-oil-pimp-and-un-cheap-bordello",
-          //     "article": "https://en.wikipedia.org/wiki/2006_Ch%C3%A1vez_speech_at_the_United_Nations",
-          //     "id": "00c0a29803c34179b44ed430b8142dc3",
-          //     "link": "http://www.mercopress.com/Detalle.asp?NUM=8804"
-          // },
-          // {
-          //     "alias": "https://pelikulaatbp.blogspot.com/2009/08/1961-famas-awards.html",
-          //     "article": "https://en.wikipedia.org/wiki/1962_FAMAS_Awards",
-          //     "id": "00e19aabf2354f3eb54d8840f72e4168",
-          //     "link": "http://pelikulaatbp.blogspot.com/2009/08/1961-famas-awards.html/"
-          // },
-          // {
-          //     "alias": "https://searchworks.stanford.edu/view/3366827",
-          //     "article": "https://en.wikipedia.org/wiki/Sonia_Alconini",
-          //     "id": "00fcbff4234a42888a983ad12b15bb57",
-          //     "link": "https://catalog.stanford.edu/view/3366827"
-          // },
-          // {
-          //     "alias": "http://www.mfc.co.uk/page/Error/0,,1,00.html?httperrorcode=404&httperrorpath=/articles/20060110/boro-res-4-sunderland-res-1_70638_766537/0,,1,00.html",
-          //     "article": "https://en.wikipedia.org/wiki/Elie_Ikangu",
-          //     "id": "01274cb525c64dedadc9954f30fa9558",
-          //     "link": "http://www.mfc.co.uk/articles/20060110/boro-res-4-sunderland-res-1_70638_766537"
-          // },
-          // {
-          //     "alias": "https://arrs.run/MaraRank/ATM_Mara2001.htm",
-          //     "article": "https://en.wikipedia.org/wiki/2001_in_the_sport_of_athletics",
-          //     "id": "01280415e0604f8e8592f150467927e1",
-          //     "link": "https://www.arrs.run/ATM_Mara2001.htm"
-          // },
-          // {
-          //     "alias": "https://ucjeps.berkeley.edu/eflora/eflora_display.php?tid=42849",
-          //     "article": "https://en.wikipedia.org/wiki/Salix_jepsonii",
-          //     "id": "0167240cc5174545a32470d896fcc413",
-          //     "link": "http://herbaria4.herb.berkeley.edu/eflora_display.php?tid=42849"
-          // },
-          // {
-          //     "alias": "https://ffsagt.gt4series.com/news/230/riviera-motorsport-avec-antoine-leclerc-sur-l-rsquo-audi-r8-lms-gt4",
-          //     "article": "https://en.wikipedia.org/wiki/2018_French_GT4_Cup",
-          //     "id": "017224d7adde4db895f8e0c69ed43476",
-          //     "link": "https://ffsagt.gt4series.com/fr_fr/news/230/riviera-motorsport-avec-antoine-leclerc-sur-l-rsquo-audi-r8-lms-gt4"
-          // },
-          // {
-          //     "alias": "https://www.sbnation.com/a/2016-nfl-draft-grades/minnesota-vikings",
-          //     "article": "https://en.wikipedia.org/wiki/Andrew_Sendejo",
-          //     "id": "01d78595f88847d59316d4da3e01ecc5",
-          //     "link": "https://www.minnesota.sbnation.com/platform//minnesota-vikings/2012/9/5/3295529/vikings-depth-chart-2012-week-1"
-          // },
-          // {
-          //     "alias": "https://www.sports-reference.com/cfb/years/1920-schedule.html",
-          //     "article": "https://en.wikipedia.org/wiki/1920_Army_Cadets_football_team",
-          //     "id": "01ebdee061d849288be7884aa5f81a86",
-          //     "link": "https://www.sports-reference.com/cfb/schools/army/1920-schedule.html"
-          // },
-          // {
-          //     "alias": "https://www.sportingnews.com/au/other-sports/news/roosters-prop-luke-odonnell-announces-nrl-retirement/tfba9t4fnrf1fzjj3f82xzlv",
-          //     "article": "https://en.wikipedia.org/wiki/2014_Sydney_Roosters_season",
-          //     "id": "020aa06e1dc04bbfb149d8487d8eaaca",
-          //     "link": "http://www.sportal.com.au/league/nrl-premiership/roosters-prop-luke-odonnell-announces-nrl-retirement/tfba9t4fnrf1fzjj3f82xzlv"
-          // },
-          // {
-          //     "alias": "https://tvtonight.com.au/2007/09/airdate-are-you-smarter-than-a-5th-grader.html",
-          //     "article": "https://en.wikipedia.org/wiki/2007_in_Australian_television",
-          //     "id": "0229903eb7cc465bbb72f8212ee10cde",
-          //     "link": "http://www.tvtonight.com.au/2007/09/airdate-are-you-smarter-than-5th-grader.html"
-          // },
-          // {
-          //     "alias": "https://dan.com/buy-domain/deadly.pro?redirected=true",
-          //     "article": "https://en.wikipedia.org/wiki/Alkaline_Trio_discography",
-          //     "id": "0242b9e0f9b9410ebd93662177832bcc",
-          //     "link": "http://heartandskull.com/deadly/index.html"
-          // },
-          // {
-          //     "alias": "http://www.rte.ie/sport/soccer/2007/0612/218910-cork/",
-          //     "article": "https://en.wikipedia.org/wiki/2007_League_of_Ireland_Premier_Division",
-          //     "id": "0258d46c97a540b682c27d8e0ff19582",
-          //     "link": "https://www.rte.ie/sport/2007/0612/cork.html"
-          // },
-          // {
-          //     "alias": "https://www.ideals.illinois.edu:443/items/73043",
-          //     "article": "https://en.wikipedia.org/wiki/2007%E2%80%9308_Australian_region_cyclone_season",
-          //     "id": "03045b11af6c458fbe109e4cccde51f7",
-          //     "link": "http://listserv.uiuc.edu/wa.cgi?A2=ind0803d&L=wx-tropl&T=0&P=73043"
-          // },
-          // {
-          //     "alias": "https://www.ideals.illinois.edu:443/items/43240",
-          //     "article": "https://en.wikipedia.org/wiki/Cyclone_Ivan",
-          //     "id": "0365ad4a9b21469c8191ad8660c76bf1",
-          //     "link": "http://listserv.uiuc.edu/wa.cgi?A2=ind0802b&L=wx-tropl&T=0&P=43240"
-          // },
-          // {
-          //     "alias": "https://economynext.com/polls-2020-sjb-biggest-spender-slpp-has-most-election-law-violations-cmev-72389/",
-          //     "article": "https://en.wikipedia.org/wiki/2020_Sri_Lankan_parliamentary_election",
-          //     "id": "0386fa2dbf1b4c2190ea59c13019174d",
-          //     "link": "https://economynext.com/polls-2020-sjb-biggest-spender-slpp-has-most-election-law-violations-cmev-72389,%20https://economynext.com/polls-2020-sjb-biggest-spender-slpp-has-most-election-law-violations-cmev-72389/"
-          // },
-          // {
-          //     "alias": "https://cricketarchive.com/Archive/Players/27/27848/27848.html",
-          //     "article": "https://en.wikipedia.org/wiki/Henry_Bentley_(cricketer)",
-          //     "id": "03bd89c2277f4ce5aa57b54dd8d09cb1",
-          //     "link": "https://cricketarchive.com/Archive/Players/27/27848/Other_matches.html"
-          // },
-          // {
-          //     "alias": "https://economynext.com/opinion-sri-lanka-ruling-party-is-ahead-with-12-days-to-go-for-parliamentary-polls-72348/",
-          //     "article": "https://en.wikipedia.org/wiki/2020_Sri_Lankan_parliamentary_election",
-          //     "id": "03d79a67ab2f438593e7c15c40398bea",
-          //     "link": "https://economynext.com/opinion-sri-lanka-ruling-party-is-ahead-with-12-days-to-go-for-parliamentary-polls-72348,%20https://economynext.com/opinion-sri-lanka-ruling-party-is-ahead-with-12-days-to-go-for-parliamentary-polls-72348/"
-          // },
-          // {
-          //     "alias": "https://www.lancashiretelegraph.co.uk/archive/2003/5/2/553761.html/",
-          //     "article": "https://en.wikipedia.org/wiki/2003_Rossendale_Borough_Council_election",
-          //     "id": "043642ac35824ff4ba489f1954090633",
-          //     "link": "http://archive.thisislancashire.co.uk/2003/5/2/553761.html"
-          // },
-          // {
-          //     "alias": "http://southphillyreview.com/2017/08/23/soul-hosting-arenabowl-xxx-on-saturday/",
-          //     "article": "https://en.wikipedia.org/wiki/2018_Arena_Football_League_season",
-          //     "id": "05847f30d35b4f78956f916ce5fec726",
-          //     "link": "https://southphillyreview.com/soul-hosting-arenabowl-xxx-on-saturday-d91b89601ebe"
-          // },
-          // {
-          //     "alias": "http://www.city-data.com/township/Smyrna-Pope-AR.html",
-          //     "article": "https://en.wikipedia.org/wiki/Smyrna_Township,_Pope_County,_Arkansas",
-          //     "id": "058e86ef7fd14001b73f8f3334661c34",
-          //     "link": "http://www.city-data.com/township/Smyrna_Pope_AR.html"
-          // },
-          // {
-          //   "alias": "https://bbc.co.uk/archive/2003/5/2/553761.html/",
-          //   "article": "https://en.wikipedia.org/wiki/2003_Rossendale_Borough_Council_election",
-          //   "id": "043642ac35824ff4ba489f1954090633",
-          //   "link": "http://bbc.co.uk/2003/5/2/553761.html"
-          // },
-          // ]
           return _context.abrupt("return", obj);
-        case 9:
+        case 8:
         case "end":
           return _context.stop();
       }
@@ -5205,48 +5066,43 @@ function GetSearchAliases(_x2) {
 }
 function _GetSearchAliases() {
   _GetSearchAliases = (0,_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().mark(function _callee3(searchStr) {
-    var obj;
+    var encodedSearchStr, url, response, obj;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
           // Encode the searchStr to ensure it's safe to include in a URL
-          // const encodedSearchStr = encodeURIComponent(searchStr);
-          // const url = `/api/get_search_alias?search=${encodedSearchStr}`;
-          // const response = await fetch(url, {
-          //   method: "GET", // *GET, POST, PUT, DELETE, etc.
-          //   mode: "cors", // no-cors, *cors, same-origin
-          //   cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          //   credentials: "same-origin", // include, *same-origin, omit
-          //   headers: {
-          //     Accept: "application/json",
-          //     "Content-Type": "application/json",
-          //   },
-          // });
-          // let obj = await response.json();
-          // // Need to add feedback items to objects
-          // obj = obj.map((v) => ({
-          //   ...v,
-          //   feedbackSelection: "Unsure",
-          //   feedbackInput: "",
-          // }));
-          obj = [{
-            "alias": "http://en.mercopress.com/2006/09/21/new-york-reacts-calls-chavez-oil-pimp-and-un-cheap-bordello",
-            "article": "https://en.wikipedia.org/wiki/2006_Ch%C3%A1vez_speech_at_the_United_Nations",
-            "id": "00c0a29803c34179b44ed430b8142dc3",
-            "link": "http://www.mercopress.com/Detalle.asp?NUM=8804"
-          }, {
-            "alias": "https://pelikulaatbp.blogspot.com/2009/08/1961-famas-awards.html",
-            "article": "https://en.wikipedia.org/wiki/1962_FAMAS_Awards",
-            "id": "00e19aabf2354f3eb54d8840f72e4168",
-            "link": "http://pelikulaatbp.blogspot.com/2009/08/1961-famas-awards.html/"
-          }, {
-            "alias": "https://searchworks.stanford.edu/view/3366827",
-            "article": "https://en.wikipedia.org/wiki/Sonia_Alconini",
-            "id": "00fcbff4234a42888a983ad12b15bb57",
-            "link": "https://catalog.stanford.edu/view/3366827"
-          }];
+          encodedSearchStr = encodeURIComponent(searchStr);
+          url = "/api/get_search_alias?search=".concat(encodedSearchStr);
+          _context3.next = 4;
+          return fetch(url, {
+            method: "GET",
+            // *GET, POST, PUT, DELETE, etc.
+            mode: "cors",
+            // no-cors, *cors, same-origin
+            cache: "no-cache",
+            // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: "same-origin",
+            // include, *same-origin, omit
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json"
+            }
+          });
+        case 4:
+          response = _context3.sent;
+          _context3.next = 7;
+          return response.json();
+        case 7:
+          obj = _context3.sent;
+          // Need to add feedback items to objects
+          obj = obj.map(function (v) {
+            return _objectSpread(_objectSpread({}, v), {}, {
+              feedbackSelection: "Unsure",
+              feedbackInput: ""
+            });
+          });
           return _context3.abrupt("return", obj);
-        case 2:
+        case 10:
         case "end":
           return _context3.stop();
       }

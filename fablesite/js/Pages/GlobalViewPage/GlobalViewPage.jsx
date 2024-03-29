@@ -36,6 +36,7 @@ function Wrapper({ data }) {
 
   //Flag to display Dropdown options
   const handleSearchInput = (value) => {
+    setSubmitData([]);
     if (value == "") {
       setSearchBoolValue(false);
     }
@@ -127,6 +128,7 @@ function Wrapper({ data }) {
   const { mutate } = useMutation(PostAliasInfo, {
     onSuccess: () => {
       const message = "Feedback Uploaded Successfully!";
+      setSubmitData([]);
       alert(message);
     },
     onError: () => {

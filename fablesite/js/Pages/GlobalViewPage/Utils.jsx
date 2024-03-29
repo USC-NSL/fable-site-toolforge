@@ -13,12 +13,12 @@ export async function GetAllAliases() {
 
   let obj = await response.json();
 
-  // Need to add feedback items to objects
-  obj = obj.map((v) => ({
-    ...v,
-    feedbackSelection: "Unsure",
-    feedbackInput: "",
-  }));
+  // // Need to add feedback items to objects
+  // obj = obj.map((v) => ({
+  //   ...v,
+  //   feedbackSelection: "Unsure",
+  //   feedbackInput: "",
+  // }));
   return obj;
 }
 
