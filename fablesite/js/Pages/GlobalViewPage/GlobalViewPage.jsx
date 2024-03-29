@@ -46,8 +46,8 @@ function Wrapper({ data }) {
   //Mark response for all Feedback Selection
   const markAll = (res) => {
     state.forEach((item) => {
-      item.FeedbackSelector = res;
-      item.FeedbackInput = "";
+      item.feedbackSelector = res;
+      item.feedbackInput = "";
     });
     setSubmitData(state);
   };
@@ -91,14 +91,16 @@ function Wrapper({ data }) {
     setState((currentState) => {
       const newState = [...currentState];
       newState[index].feedbackSelection = feedbackSelection;
-      
+
       //Saving the changed table row to SubmitData
-      const existIndex = submitData.findIndex(data => data.id === newState[index].id);
+      const existIndex = submitData.findIndex(
+        (data) => data.id === newState[index].id
+      );
       if (existIndex < 0) {
         submitData.push(newState[index]);
         setSubmitData(submitData);
-      } else{
-        submitData[existIndex].feedbackSelection = feedbackSelection
+      } else {
+        submitData[existIndex].feedbackSelection = feedbackSelection;
       }
 
       return newState;
@@ -112,12 +114,14 @@ function Wrapper({ data }) {
       newState[index].feedbackInput = feedbackInput;
 
       //Saving the changed table row to SubmitData
-      const existIndex = submitData.findIndex(data => data.id === newState[index].id);
+      const existIndex = submitData.findIndex(
+        (data) => data.id === newState[index].id
+      );
       if (existIndex < 0) {
         submitData.push(newState[index]);
         setSubmitData(submitData);
-      } else{
-        submitData[existIndex].feedbackInput = feedbackInput
+      } else {
+        submitData[existIndex].feedbackInput = feedbackInput;
       }
 
       return newState;
@@ -339,7 +343,7 @@ function Wrapper({ data }) {
         >
           Submit Feedback
         </button>
-    </div>
+      </div>
       {searchBool && searchValue != "" ? (
         <div className="flex items-center gap-2">
           <label className="text-lg font-bold">
@@ -384,6 +388,12 @@ export default function GlobalViewPage() {
   }
 
   data.forEach((item) => {
+    if (item.feedbackSelection == null) {
+      item.feedbackSelection = "Unsure";
+    }
+    if (item.feedbackInput == null) {
+      item.feedbackInput = "";
+    }
     item.newLink = item.link.replace(/^https?:\/\//, "");
   });
   return <Wrapper data={data} />;

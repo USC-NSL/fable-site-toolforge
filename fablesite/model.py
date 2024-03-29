@@ -1,5 +1,3 @@
-"""Insta485 model (database) API."""
-
 import pymysql
 import flask
 import fablesite
@@ -21,19 +19,18 @@ def get_db():
     https://flask.palletsprojects.com/en/1.0.x/appcontext/#storing-data
     """
     if "db" not in flask.g:
-        # host = fablesite.app.config['HOST']
-        # username = fablesite.app.config['username']
-        # password = fablesite.app.config['password']
-        # db_name = fablesite.app.config['db_name']
+        host = fablesite.app.config["HOST"]
+        username = fablesite.app.config["USERNAME"]
+        password = fablesite.app.config["PASSWORD"]
+        db = fablesite.app.config["DB_NAME"]
 
         flask.g.db = pymysql.connect(
-            host="",
-            user="",
-            password="",
-            db="",
+            host=host,
+            user=username,
+            password=password,
+            db=db,
         )
 
-    print(flask.g.db.cursor(pymysql.cursors.DictCursor))
     return flask.g.db.cursor(pymysql.cursors.DictCursor)
 
 
