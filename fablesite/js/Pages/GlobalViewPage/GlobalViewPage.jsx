@@ -8,6 +8,13 @@ import { GetSearchAliases } from "./Utils";
 import FeedbackSelector from "../../Components/GlobalTable/FeedbackSelector";
 import FeedbackInput from "../../Components/GlobalTable/FeedbackInput";
 
+const filterData = (data, unsureFilter) => {
+  if (unsureFilter) {
+    return data.filter((v) => v.feedbackSelection === "Unsure");
+  }
+  return data;
+};
+
 function extractArticleTitleFromUrl(article) {
   let parsed_url = new URL(article); // Create a new URL object
   let article_title = decodeURIComponent(parsed_url.pathname.split("/").pop()); // Extract the last part of the URL and decode it
@@ -18,54 +25,13 @@ function extractArticleTitleFromUrl(article) {
 // Need for local state mutation
 function Wrapper({ data }) {
   const [state, setState] = useState(data);
-  const stateRef = useRef(state);
-  useEffect(() => {
-    stateRef.current = state;
-  }, [state]);
   const queryClient = useQueryClient();
   const [submitData, setSubmitData] = useState([]);
-  const [searchResultData, setSearchResultData] = useState([]);
   const submitDataRef = useRef(submitData);
   useEffect(() => {
     submitDataRef.current = submitData;
     console.log('Submit ref ', submitDataRef.current);
   }, [submitData]);
-  // Filtering Logic
-  const [unsureFilter, setUnsureFilter] = useState(false);
-  const unsureFilterRef = useRef(unsureFilter);
-  
-  const [searchValue, setSearchValue] = useState("");
-  const [searchBool, setSearchBoolValue] = useState(false);
-  const searchBoolRef = useRef(searchBool);
-  useEffect(() => {
-    searchBoolRef.current = searchBool;
-  }, [searchBool]);
-
-  const filterData = (unfilteredData, unsureFilter) => {
-    let originalData = data;
-    if (searchBoolRef && searchBoolRef.current){
-      originalData = searchResultData; 
-    }
-    if (unsureFilter) {
-      originalData = originalData.filter((v) => v.feedbackSelection === "Unsure");
-      if (!searchBoolRef.current && data.length != stateRef.current.length){
-        originalData = stateRef.current;
-      }
-    }
-    if (searchBoolRef && searchBoolRef.current){
-      setSubmitData(originalData);
-    }
-    return originalData;
-  };
-
-  const filteredData = useMemo(
-    () => filterData(state, unsureFilter),
-    [state, unsureFilter]
-  );
-  useEffect(() => {
-    unsureFilterRef.current = unsureFilter;
-    setState(filteredData);
-  }, [unsureFilter]);
 
   //Search on Enter key
   const handleKeyPress = (e) => {
@@ -86,7 +52,6 @@ function Wrapper({ data }) {
       newState.forEach((item) => {
         item.feedbackSelection = res;
       });
-      setState(newState);
       return newState;
     });
   };
@@ -111,7 +76,6 @@ function Wrapper({ data }) {
           });
           console.log("Search results:", searchData);
           setState(searchData);
-          setSearchResultData(searchData);
           setSubmitData(searchData);
           setSearchBoolValue(true);
         })
@@ -135,8 +99,7 @@ function Wrapper({ data }) {
             item.newLink = item.link.replace(/^https?:\/\//, "");
           });
           setState(searchData);
-          setSubmitData([]);
-          setSearchResultData([]);
+          setSubmitData(searchData);
           setSearchBoolValue(false);
         })
         .catch((error) => {
@@ -246,7 +209,6 @@ function Wrapper({ data }) {
             item.newLink = item.link.replace(/^https?:\/\//, "");
           });
           setState(searchData);
-          setSearchResultData([]);
           setSearchValue("");
           setSearchBoolValue(false);
         })
@@ -265,6 +227,20 @@ function Wrapper({ data }) {
   const onSubmit = () => {
     mutate({ data: submitDataRef.current });
   };
+
+  // Filtering Logic
+  const [unsureFilter, setUnsureFilter] = useState(false);
+  const filteredData = useMemo(
+    () => filterData(state, unsureFilter),
+    [state, unsureFilter]
+  );
+
+  const [searchValue, setSearchValue] = useState("");
+  const [searchBool, setSearchBoolValue] = useState(false);
+  const searchBoolRef = useRef(searchBool);
+  useEffect(() => {
+    searchBoolRef.current = searchBool;
+  }, [searchBool]);
 
   const columns = useMemo(
     () => [
