@@ -4587,14 +4587,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var filterData = function filterData(data, unsureFilter) {
-  if (unsureFilter) {
-    return data.filter(function (v) {
-      return v.feedbackSelection === "Unsure";
-    });
-  }
-  return data;
-};
 function extractArticleTitleFromUrl(article) {
   var parsed_url = new URL(article); // Create a new URL object
   var article_title = decodeURIComponent(parsed_url.pathname.split("/").pop()); // Extract the last part of the URL and decode it
@@ -4609,16 +4601,67 @@ function Wrapper(_ref) {
     _useState2 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState, 2),
     state = _useState2[0],
     setState = _useState2[1];
+  var stateRef = (0,react__WEBPACK_IMPORTED_MODULE_2__.useRef)(state);
+  (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
+    stateRef.current = state;
+  }, [state]);
   var queryClient = (0,_tanstack_react_query__WEBPACK_IMPORTED_MODULE_8__.useQueryClient)();
   var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)([]),
     _useState4 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState3, 2),
     submitData = _useState4[0],
     setSubmitData = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)([]),
+    _useState6 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState5, 2),
+    searchResultData = _useState6[0],
+    setSearchResultData = _useState6[1];
   var submitDataRef = (0,react__WEBPACK_IMPORTED_MODULE_2__.useRef)(submitData);
   (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
     submitDataRef.current = submitData;
     console.log('Submit ref ', submitDataRef.current);
   }, [submitData]);
+  // Filtering Logic
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
+    _useState8 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState7, 2),
+    unsureFilter = _useState8[0],
+    setUnsureFilter = _useState8[1];
+  var unsureFilterRef = (0,react__WEBPACK_IMPORTED_MODULE_2__.useRef)(unsureFilter);
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(""),
+    _useState10 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState9, 2),
+    searchValue = _useState10[0],
+    setSearchValue = _useState10[1];
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
+    _useState12 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState11, 2),
+    searchBool = _useState12[0],
+    setSearchBoolValue = _useState12[1];
+  var searchBoolRef = (0,react__WEBPACK_IMPORTED_MODULE_2__.useRef)(searchBool);
+  (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
+    searchBoolRef.current = searchBool;
+  }, [searchBool]);
+  var filterData = function filterData(unfilteredData, unsureFilter) {
+    var originalData = data;
+    if (searchBoolRef && searchBoolRef.current) {
+      originalData = searchResultData;
+    }
+    if (unsureFilter) {
+      originalData = originalData.filter(function (v) {
+        return v.feedbackSelection === "Unsure";
+      });
+      if (!searchBoolRef.current && data.length != stateRef.current.length) {
+        originalData = stateRef.current;
+      }
+    }
+    if (searchBoolRef && searchBoolRef.current) {
+      setSubmitData(originalData);
+    }
+    return originalData;
+  };
+  var filteredData = (0,react__WEBPACK_IMPORTED_MODULE_2__.useMemo)(function () {
+    return filterData(state, unsureFilter);
+  }, [state, unsureFilter]);
+  (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
+    unsureFilterRef.current = unsureFilter;
+    setState(filteredData);
+  }, [unsureFilter]);
 
   //Search on Enter key
   var handleKeyPress = function handleKeyPress(e) {
@@ -4639,6 +4682,7 @@ function Wrapper(_ref) {
       newState.forEach(function (item) {
         item.feedbackSelection = res;
       });
+      setState(newState);
       return newState;
     });
   };
@@ -4661,6 +4705,7 @@ function Wrapper(_ref) {
         });
         console.log("Search results:", searchData);
         setState(searchData);
+        setSearchResultData(searchData);
         setSubmitData(searchData);
         setSearchBoolValue(true);
       })["catch"](function (error) {
@@ -4683,7 +4728,8 @@ function Wrapper(_ref) {
           item.newLink = item.link.replace(/^https?:\/\//, "");
         });
         setState(searchData);
-        setSubmitData(searchData);
+        setSubmitData([]);
+        setSearchResultData([]);
         setSearchBoolValue(false);
       })["catch"](function (error) {
         alert("Failed to fetch data.");
@@ -4792,6 +4838,7 @@ function Wrapper(_ref) {
             item.newLink = item.link.replace(/^https?:\/\//, "");
           });
           setState(searchData);
+          setSearchResultData([]);
           setSearchValue("");
           setSearchBoolValue(false);
         })["catch"](function (error) {
@@ -4811,27 +4858,6 @@ function Wrapper(_ref) {
       data: submitDataRef.current
     });
   };
-
-  // Filtering Logic
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
-    _useState6 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState5, 2),
-    unsureFilter = _useState6[0],
-    setUnsureFilter = _useState6[1];
-  var filteredData = (0,react__WEBPACK_IMPORTED_MODULE_2__.useMemo)(function () {
-    return filterData(state, unsureFilter);
-  }, [state, unsureFilter]);
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(""),
-    _useState8 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState7, 2),
-    searchValue = _useState8[0],
-    setSearchValue = _useState8[1];
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
-    _useState10 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState9, 2),
-    searchBool = _useState10[0],
-    setSearchBoolValue = _useState10[1];
-  var searchBoolRef = (0,react__WEBPACK_IMPORTED_MODULE_2__.useRef)(searchBool);
-  (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
-    searchBoolRef.current = searchBool;
-  }, [searchBool]);
   var columns = (0,react__WEBPACK_IMPORTED_MODULE_2__.useMemo)(function () {
     return [{
       header: function header() {
@@ -5024,18 +5050,18 @@ function GlobalViewPage() {
   // const { isLoading, error, data } = useQuery(["aliasInfo"], () =>
   //   GetAllAliases()
   // );
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)([]),
-    _useState12 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState11, 2),
-    data = _useState12[0],
-    setData = _useState12[1];
-  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(true),
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)([]),
     _useState14 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState13, 2),
-    isLoading = _useState14[0],
-    setIsLoading = _useState14[1];
-  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
+    data = _useState14[0],
+    setData = _useState14[1];
+  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(true),
     _useState16 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState15, 2),
-    error = _useState16[0],
-    setError = _useState16[1];
+    isLoading = _useState16[0],
+    setIsLoading = _useState16[1];
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
+    _useState18 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState17, 2),
+    error = _useState18[0],
+    setError = _useState18[1];
   (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
     (0,_Utils__WEBPACK_IMPORTED_MODULE_5__.GetAllAliases)().then(function (fetchedData) {
       fetchedData.forEach(function (item) {
