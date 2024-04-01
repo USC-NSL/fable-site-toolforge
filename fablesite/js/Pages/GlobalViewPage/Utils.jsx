@@ -60,10 +60,10 @@ export async function GetSearchAliases(searchStr) {
   let obj = await response.json();
 
   // Need to add feedback items to objects
-  obj = obj.map((v) => ({
-    ...v,
-    feedbackSelection: "Unsure",
-    feedbackInput: "",
-  }));
+  // obj = obj.map((v) => ({
+  //   ...v,
+  //   feedbackSelection: "Unsure",
+  //   feedbackInput: "",
+  // }));
   return obj;
 }

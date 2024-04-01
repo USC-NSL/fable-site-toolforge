@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import "./GlobalViewPage.css"; // Import regular stylesheet
 import GlobalTable from "../../Components/GlobalTable/Table";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -27,6 +27,12 @@ function Wrapper({ data }) {
   const [state, setState] = useState(data);
   const queryClient = useQueryClient();
   const [submitData, setSubmitData] = useState([]);
+  const submitDataRef = useRef(submitData);
+  useEffect(() => {
+    submitDataRef.current = submitData;
+    console.log('Submit ref ', submitDataRef.current);
+  }, [submitData]);
+
   //Search on Enter key
   const handleKeyPress = (e) => {
     if (e.code == "Enter") {
@@ -36,32 +42,41 @@ function Wrapper({ data }) {
 
   //Flag to display Dropdown options
   const handleSearchInput = (value) => {
-    setSubmitData([]);
-    if (value == "") {
-      setSearchBoolValue(false);
-    }
     setSearchValue(value);
   };
 
   //Mark response for all Feedback Selection
   const markAll = (res) => {
-    state.forEach((item) => {
-      item.feedbackSelector = res;
-      item.feedbackInput = "";
+    setSubmitData((currentState) => {
+      const newState = [...currentState];
+      newState.forEach((item) => {
+        item.feedbackSelection = res;
+      });
+      return newState;
     });
-    setSubmitData(state);
   };
 
   //Search for specfic aliases
   const onSearch = () => {
+    setSubmitData([]);
     if (searchValue !== "") {
       queryClient
         .fetchQuery(["searchAliases", searchValue], () =>
           GetSearchAliases(searchValue)
         )
         .then((searchData) => {
+          searchData.forEach((item) => {
+            if (item.feedbackSelection == null) {
+              item.feedbackSelection = "Unsure";
+            }
+            if (item.feedbackInput == null) {
+              item.feedbackInput = "";
+            }
+            item.newLink = item.link.replace(/^https?:\/\//, "");
+          });
           console.log("Search results:", searchData);
           setState(searchData);
+          setSubmitData(searchData);
           setSearchBoolValue(true);
         })
         .catch((error) => {
@@ -74,8 +89,18 @@ function Wrapper({ data }) {
         .fetchQuery(["aliasInfo"], () => GetAllAliases())
         .then((searchData) => {
           console.log("All data:", searchData);
+          searchData.forEach((item) => {
+            if (item.feedbackSelection == null) {
+              item.feedbackSelection = "Unsure";
+            }
+            if (item.feedbackInput == null) {
+              item.feedbackInput = "";
+            }
+            item.newLink = item.link.replace(/^https?:\/\//, "");
+          });
           setState(searchData);
-          setSearchBoolValue(true);
+          setSubmitData(searchData);
+          setSearchBoolValue(false);
         })
         .catch((error) => {
           alert("Failed to fetch data.");
@@ -88,44 +113,81 @@ function Wrapper({ data }) {
 
   // Update feedback selection
   const updateFeedbackSelection = (index, feedbackSelection) => {
-    setState((currentState) => {
-      const newState = [...currentState];
-      newState[index].feedbackSelection = feedbackSelection;
-
-      //Saving the changed table row to SubmitData
-      const existIndex = submitData.findIndex(
-        (data) => data.id === newState[index].id
-      );
-      if (existIndex < 0) {
-        submitData.push(newState[index]);
-        setSubmitData(submitData);
-      } else {
-        submitData[existIndex].feedbackSelection = feedbackSelection;
-      }
-
-      return newState;
-    });
+    if (searchBoolRef.current) {
+      setSubmitData((currentState) => {
+        const newState = [...currentState];
+        newState[index].feedbackSelection = feedbackSelection;
+        return newState;
+      });
+    } else {
+      setState((currentState) => {
+        const newState = [...currentState];
+        newState[index].feedbackSelection = feedbackSelection;
+        //Saving the changed table row to SubmitData
+        if (submitData != submitDataRef.current) {
+          const existIndex = submitDataRef.current.findIndex(
+            (data) => data.id === newState[index].id
+          );
+          if (existIndex < 0) {
+            submitDataRef.current.push(newState[index]);
+            setSubmitData(submitDataRef.current);
+          } else {
+            submitDataRef.current[existIndex].feedbackSelection = feedbackSelection;
+          }
+        } else {
+          const existIndex = submitData.findIndex(
+            (data) => data.id === newState[index].id
+          );
+          if (existIndex < 0) {
+            submitData.push(newState[index]);
+            setSubmitData(submitData);
+          } else {
+            submitData[existIndex].feedbackSelection = feedbackSelection;
+          }
+        }
+        return newState;
+      });
+    }
   };
 
   // Update feedback selection
   const updateFeedbackInput = (index, feedbackInput) => {
-    setState((currentState) => {
-      const newState = [...currentState];
-      newState[index].feedbackInput = feedbackInput;
+    if (searchBoolRef.current) {
+      setSubmitData((currentState) => {
+        const newState = [...currentState];
+        newState[index].feedbackInput = feedbackInput;
+        return newState;
+      });
+    } else {
+      setState((currentState) => {
+        const newState = [...currentState];
+        newState[index].feedbackInput = feedbackInput;
 
-      //Saving the changed table row to SubmitData
-      const existIndex = submitData.findIndex(
-        (data) => data.id === newState[index].id
-      );
-      if (existIndex < 0) {
-        submitData.push(newState[index]);
-        setSubmitData(submitData);
-      } else {
-        submitData[existIndex].feedbackInput = feedbackInput;
-      }
-
-      return newState;
-    });
+        //Saving the changed table row to SubmitData
+        if (submitData != submitDataRef.current) {
+          const existIndex = submitDataRef.current.findIndex(
+            (data) => data.id === newState[index].id
+          );
+          if (existIndex < 0) {
+            submitDataRef.current.push(newState[index]);
+            setSubmitData(submitDataRef.current);
+          } else {
+            submitDataRef.current[existIndex].feedbackInput = feedbackInput;
+          }
+        } else {
+          const existIndex = submitData.findIndex(
+            (data) => data.id === newState[index].id
+          );
+          if (existIndex < 0) {
+            submitData.push(newState[index]);
+            setSubmitData(submitData);
+          } else {
+            submitData[existIndex].feedbackInput = feedbackInput;
+          }
+        }
+        return newState;
+      });
+    }
   };
 
   // Form Logic
@@ -133,6 +195,28 @@ function Wrapper({ data }) {
     onSuccess: () => {
       const message = "Feedback Uploaded Successfully!";
       setSubmitData([]);
+      queryClient
+        .fetchQuery(["aliasInfo"], () => GetAllAliases())
+        .then((searchData) => {
+          console.log("All data:", searchData);
+          searchData.forEach((item) => {
+            if (item.feedbackSelection == null) {
+              item.feedbackSelection = "Unsure";
+            }
+            if (item.feedbackInput == null) {
+              item.feedbackInput = "";
+            }
+            item.newLink = item.link.replace(/^https?:\/\//, "");
+          });
+          setState(searchData);
+          setSearchValue("");
+          setSearchBoolValue(false);
+        })
+        .catch((error) => {
+          alert("Failed to fetch data.");
+          console.log("Error fetching the data: ", error);
+          setSearchBoolValue(false);
+        });
       alert(message);
     },
     onError: () => {
@@ -141,7 +225,7 @@ function Wrapper({ data }) {
   });
 
   const onSubmit = () => {
-    mutate({ data: submitData });
+    mutate({ data: submitDataRef.current });
   };
 
   // Filtering Logic
@@ -153,6 +237,10 @@ function Wrapper({ data }) {
 
   const [searchValue, setSearchValue] = useState("");
   const [searchBool, setSearchBoolValue] = useState(false);
+  const searchBoolRef = useRef(searchBool);
+  useEffect(() => {
+    searchBoolRef.current = searchBool;
+  }, [searchBool]);
 
   const columns = useMemo(
     () => [
@@ -344,19 +432,20 @@ function Wrapper({ data }) {
           Submit Feedback
         </button>
       </div>
-      {searchBool && searchValue != "" ? (
+      {searchBool ? (
         <div className="flex items-center gap-2">
           <label className="text-lg font-bold">
             Mark response for all search results :
           </label>
           <select
             onChange={(e) => {
+              e.preventDefault();
               markAll(e.target.value);
             }}
           >
+            <option>Unsure</option>
             <option>Correct</option>
             <option>Incorrect</option>
-            <option>Unsure</option>
           </select>
         </div>
       ) : (
@@ -370,9 +459,33 @@ function Wrapper({ data }) {
 }
 
 export default function GlobalViewPage() {
-  const { isLoading, error, data } = useQuery(["aliasInfo"], () =>
-    GetAllAliases()
-  );
+  // const { isLoading, error, data } = useQuery(["aliasInfo"], () =>
+  //   GetAllAliases()
+  // );
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    GetAllAliases().then((fetchedData) => {
+      fetchedData.forEach((item) => {
+        if (item.feedbackSelection == null) {
+          item.feedbackSelection = "Unsure";
+        }
+        if (item.feedbackInput == null) {
+          item.feedbackInput = "";
+        }
+        item.newLink = item.link.replace(/^https?:\/\//, "");
+      });
+      setData(fetchedData);
+      setIsLoading(false);
+      setError(false);
+      return <Wrapper data={fetchedData} />;
+    }).catch((err) => {
+      console.error("Fetching aliases error:", err);
+      setError(err);
+      setIsLoading(false);
+    });
+  }, []);
 
   useEffect(() => {
     document.title =
@@ -387,14 +500,5 @@ export default function GlobalViewPage() {
     return <p>Error Fetching Data</p>;
   }
 
-  data.forEach((item) => {
-    if (item.feedbackSelection == null) {
-      item.feedbackSelection = "Unsure";
-    }
-    if (item.feedbackInput == null) {
-      item.feedbackInput = "";
-    }
-    item.newLink = item.link.replace(/^https?:\/\//, "");
-  });
   return <Wrapper data={data} />;
 }
