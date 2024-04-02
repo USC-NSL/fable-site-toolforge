@@ -7,14 +7,18 @@ import {
   getSortedRowModel,
 } from "@tanstack/react-table";
 
-export default function GlobalTable({ columns, data }) {
+export default function GlobalTable({
+  columns,
+  data,
+  autoResetPageIndex = false,
+}) {
   const table = useReactTable({
     data,
     columns,
     getPaginationRowModel: getPaginationRowModel(),
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    autoResetPageIndex: false,
+    autoResetPageIndex: autoResetPageIndex,
   });
 
   if (data === null || data === undefined || data.length === 0) {
@@ -37,7 +41,7 @@ export default function GlobalTable({ columns, data }) {
                   onClick={
                     index == 0
                       ? header.column.getToggleSortingHandler()
-                      : index ==1 
+                      : index == 1
                       ? headerGroup.headers[5].column.getToggleSortingHandler()
                       : undefined
                   }

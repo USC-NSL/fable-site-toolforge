@@ -5,8 +5,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { PostAliasInfo } from "./Utils";
 import { GetAllAliases } from "./Utils";
 import { GetSearchAliases } from "./Utils";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import FeedbackSelector from "../../Components/GlobalTable/FeedbackSelector";
 import FeedbackInput from "../../Components/GlobalTable/FeedbackInput";
 
@@ -19,13 +19,13 @@ function extractArticleTitleFromUrl(article) {
 
 // Need for local state mutation
 function Wrapper({ data }) {
-
   const [formData, setFormData] = useState(data);
   const [searchResult, setSearchResult] = useState([]);
   const [unsureFilter, setUnsureFilter] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [searchBool, setSearchBoolValue] = useState(false);
   const [markAllValue, setMarkAllValue] = useState("Unsure");
+  const [autoResetPageIndex, setAutoResetPageIndex] = useState(true);
   const queryClient = useQueryClient();
 
   const formDataLatest = useRef(formData);
@@ -33,7 +33,6 @@ function Wrapper({ data }) {
 
   useEffect(() => {
     formDataLatest.current = formData;
-    console.log('formdata latest ', formDataLatest.current);
   }, [formData]);
 
   useEffect(() => {
@@ -49,10 +48,12 @@ function Wrapper({ data }) {
 
   //Data Filter
   const unsureFilterFunc = (unsureFilterValue) => {
-    console.log('unsurefilterfunc ', unsureFilterValue, formDataLatest.current.length);
+    setAutoResetPageIndex(true);
     setUnsureFilter(!unsureFilterValue);
     if (!unsureFilterValue) {
-      formDataLatest.current = formDataLatest.current.filter((v) => v.feedbackSelection === "Unsure");
+      formDataLatest.current = formDataLatest.current.filter(
+        (v) => v.feedbackSelection === "Unsure"
+      );
     } else {
       if (searchBoolRef.current) {
         formDataLatest.current = searchResult;
@@ -60,12 +61,11 @@ function Wrapper({ data }) {
         formDataLatest.current = data;
       }
     }
-    console.log(formDataLatest.current.length);
     setFormData(formDataLatest.current);
     if (searchBoolRef.current) {
       setMarkAllValue("Unsure");
     }
-  }
+  };
 
   //Flag to display Dropdown options
   const handleSearchInput = (value) => {
@@ -78,12 +78,13 @@ function Wrapper({ data }) {
     formDataLatest.current.forEach((item) => {
       item.feedbackSelection = res;
       subData.push(item);
-    })
+    });
     onSubmit(subData);
   };
 
   //Search for specfic aliases
   const onSearch = () => {
+    setAutoResetPageIndex(true);
     if (searchValue !== "") {
       queryClient
         .fetchQuery(["searchAliases", searchValue], () =>
@@ -99,27 +100,23 @@ function Wrapper({ data }) {
             }
             item.newLink = item.link.replace(/^https?:\/\//, "");
           });
-          console.log("Search results:", searchData);
           formDataLatest.current = searchData;
           setSearchResult(formDataLatest.current);
           setFormData(formDataLatest.current);
           setUnsureFilter(false);
-          console.log('search result last : ', formDataLatest.current);
           setSearchBoolValue(true);
           setMarkAllValue("Unsure");
         })
         .catch((error) => {
           toast.error("Search unsuccessful", {
-            autoClose: 2000
+            autoClose: 2000,
           });
-          console.error("Search alias failed: ", error);
           setSearchBoolValue(false);
         });
     } else {
       queryClient
         .fetchQuery(["aliasInfo"], () => GetAllAliases())
         .then((searchData) => {
-          console.log("All data:", searchData);
           searchData.forEach((item) => {
             if (item.feedbackSelection == null) {
               item.feedbackSelection = "Unsure";
@@ -133,14 +130,12 @@ function Wrapper({ data }) {
           setFormData(formDataLatest.current);
           setSearchResult([]);
           setUnsureFilter(false);
-          console.log('search result last : ', formDataLatest.current);
           setSearchBoolValue(false);
         })
         .catch((error) => {
           toast.error("Failed to fetch data", {
-            autoClose: 2000
+            autoClose: 2000,
           });
-          console.log("Error fetching the data: ", error);
           setSearchBoolValue(false);
         });
       setSearchBoolValue(false);
@@ -150,7 +145,7 @@ function Wrapper({ data }) {
   // Update feedback selection
   const updateFeedbackSelection = (index, feedbackSelection) => {
     formDataLatest.current[index].feedbackSelection = feedbackSelection;
-    setFormData(formDataLatest.current)
+    setFormData(formDataLatest.current);
     const subData = [formDataLatest.current[index]];
     onSubmit(subData);
   };
@@ -158,10 +153,10 @@ function Wrapper({ data }) {
   //SubmitFeedbackInput
   const submitFeedbackInput = (index, feedbackInput) => {
     formDataLatest.current[index].feedbackInput = feedbackInput;
-    setFormData(formDataLatest.current)
+    setFormData(formDataLatest.current);
     const subData = [formDataLatest.current[index]];
     onSubmit(subData);
-  }
+  };
 
   // Update feedback Input
   const updateFeedbackInput = (index, feedbackInput) => {
@@ -169,7 +164,7 @@ function Wrapper({ data }) {
       const newState = [...currentState];
       newState[index].feedbackInput = feedbackInput;
       return newState;
-    })
+    });
   };
 
   // Form Submit Logic
@@ -177,12 +172,12 @@ function Wrapper({ data }) {
     onSuccess: () => {
       const message = "Feedback Uploaded Successfully!";
       toast.success(message, {
-        autoClose: 2000
+        autoClose: 2000,
       });
     },
     onError: () => {
       toast.error("There was an error uploading your feedback", {
-        autoClose: 2000
+        autoClose: 2000,
       });
     },
   });
@@ -297,7 +292,7 @@ function Wrapper({ data }) {
               value={row.original.feedbackSelection}
               onChange={(e) => {
                 e.preventDefault();
-                updateFeedbackSelection(row.index, e.target.value)
+                updateFeedbackSelection(row.index, e.target.value);
               }}
             >
               <option>Correct</option>
@@ -319,6 +314,7 @@ function Wrapper({ data }) {
               className="py-3 mt-5 mb-5 px-3 border"
               value={row.original.feedbackInput}
               onChange={(e) => {
+                setAutoResetPageIndex(false);
                 e.preventDefault();
                 updateFeedbackInput(row.index, e.target.value);
               }}
@@ -327,7 +323,7 @@ function Wrapper({ data }) {
                 submitFeedbackInput(row.index, e.target.value);
               }}
             />
-          )
+          );
         },
       },
       {
@@ -427,7 +423,11 @@ function Wrapper({ data }) {
         ""
       )}
       <div className="globalViewPage mt-5">
-        <GlobalTable columns={columns} data={formDataLatest.current} />
+        <GlobalTable
+          columns={columns}
+          data={formDataLatest.current}
+          autoResetPageIndex={autoResetPageIndex}
+        />
       </div>
     </div>
   );
@@ -438,25 +438,26 @@ export default function GlobalViewPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   useEffect(() => {
-    GetAllAliases().then((fetchedData) => {
-      fetchedData.forEach((item) => {
-        if (item.feedbackSelection == null) {
-          item.feedbackSelection = "Unsure";
-        }
-        if (item.feedbackInput == null) {
-          item.feedbackInput = "";
-        }
-        item.newLink = item.link.replace(/^https?:\/\//, "");
+    GetAllAliases()
+      .then((fetchedData) => {
+        fetchedData.forEach((item) => {
+          if (item.feedbackSelection == null) {
+            item.feedbackSelection = "Unsure";
+          }
+          if (item.feedbackInput == null) {
+            item.feedbackInput = "";
+          }
+          item.newLink = item.link.replace(/^https?:\/\//, "");
+        });
+        setData(fetchedData);
+        setIsLoading(false);
+        setError(false);
+        return <Wrapper data={fetchedData} />;
+      })
+      .catch((err) => {
+        setError(err);
+        setIsLoading(false);
       });
-      setData(fetchedData);
-      setIsLoading(false);
-      setError(false);
-      return <Wrapper data={fetchedData} />;
-    }).catch((err) => {
-      console.error("Fetching aliases error:", err);
-      setError(err);
-      setIsLoading(false);
-    });
   }, []);
 
   useEffect(() => {
