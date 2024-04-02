@@ -5,15 +5,10 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { PostAliasInfo } from "./Utils";
 import { GetAllAliases } from "./Utils";
 import { GetSearchAliases } from "./Utils";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import FeedbackSelector from "../../Components/GlobalTable/FeedbackSelector";
 import FeedbackInput from "../../Components/GlobalTable/FeedbackInput";
-
-const filterData = (data, unsureFilter) => {
-  if (unsureFilter) {
-    return data.filter((v) => v.feedbackSelection === "Unsure");
-  }
-  return data;
-};
 
 function extractArticleTitleFromUrl(article) {
   let parsed_url = new URL(article); // Create a new URL object
@@ -24,14 +19,26 @@ function extractArticleTitleFromUrl(article) {
 
 // Need for local state mutation
 function Wrapper({ data }) {
-  const [state, setState] = useState(data);
+
+  const [formData, setFormData] = useState(data);
+  const [searchResult, setSearchResult] = useState([]);
+  const [unsureFilter, setUnsureFilter] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [searchBool, setSearchBoolValue] = useState(false);
+  const [markAllValue, setMarkAllValue] = useState("Unsure");
   const queryClient = useQueryClient();
-  const [submitData, setSubmitData] = useState([]);
-  const submitDataRef = useRef(submitData);
+
+  const formDataLatest = useRef(formData);
+  const searchBoolRef = useRef(searchBool);
+
   useEffect(() => {
-    submitDataRef.current = submitData;
-    console.log('Submit ref ', submitDataRef.current);
-  }, [submitData]);
+    formDataLatest.current = formData;
+    console.log('formdata latest ', formDataLatest.current);
+  }, [formData]);
+
+  useEffect(() => {
+    searchBoolRef.current = searchBool;
+  }, [searchBool]);
 
   //Search on Enter key
   const handleKeyPress = (e) => {
@@ -40,25 +47,43 @@ function Wrapper({ data }) {
     }
   };
 
+  //Data Filter
+  const unsureFilterFunc = (unsureFilterValue) => {
+    console.log('unsurefilterfunc ', unsureFilterValue, formDataLatest.current.length);
+    setUnsureFilter(!unsureFilterValue);
+    if (!unsureFilterValue) {
+      formDataLatest.current = formDataLatest.current.filter((v) => v.feedbackSelection === "Unsure");
+    } else {
+      if (searchBoolRef.current) {
+        formDataLatest.current = searchResult;
+      } else {
+        formDataLatest.current = data;
+      }
+    }
+    console.log(formDataLatest.current.length);
+    setFormData(formDataLatest.current);
+    if (searchBoolRef.current) {
+      setMarkAllValue("Unsure");
+    }
+  }
+
   //Flag to display Dropdown options
   const handleSearchInput = (value) => {
     setSearchValue(value);
   };
 
-  //Mark response for all Feedback Selection
+  //Submit Response for all Feedback Selection
   const markAll = (res) => {
-    setSubmitData((currentState) => {
-      const newState = [...currentState];
-      newState.forEach((item) => {
-        item.feedbackSelection = res;
-      });
-      return newState;
-    });
+    let subData = [];
+    formDataLatest.current.forEach((item) => {
+      item.feedbackSelection = res;
+      subData.push(item);
+    })
+    onSubmit(subData);
   };
 
   //Search for specfic aliases
   const onSearch = () => {
-    setSubmitData([]);
     if (searchValue !== "") {
       queryClient
         .fetchQuery(["searchAliases", searchValue], () =>
@@ -75,12 +100,18 @@ function Wrapper({ data }) {
             item.newLink = item.link.replace(/^https?:\/\//, "");
           });
           console.log("Search results:", searchData);
-          setState(searchData);
-          setSubmitData(searchData);
+          formDataLatest.current = searchData;
+          setSearchResult(formDataLatest.current);
+          setFormData(formDataLatest.current);
+          setUnsureFilter(false);
+          console.log('search result last : ', formDataLatest.current);
           setSearchBoolValue(true);
+          setMarkAllValue("Unsure");
         })
         .catch((error) => {
-          alert("Search unsuccessful.");
+          toast.error("Search unsuccessful", {
+            autoClose: 2000
+          });
           console.error("Search alias failed: ", error);
           setSearchBoolValue(false);
         });
@@ -98,12 +129,17 @@ function Wrapper({ data }) {
             }
             item.newLink = item.link.replace(/^https?:\/\//, "");
           });
-          setState(searchData);
-          setSubmitData(searchData);
+          formDataLatest.current = searchData;
+          setFormData(formDataLatest.current);
+          setSearchResult([]);
+          setUnsureFilter(false);
+          console.log('search result last : ', formDataLatest.current);
           setSearchBoolValue(false);
         })
         .catch((error) => {
-          alert("Failed to fetch data.");
+          toast.error("Failed to fetch data", {
+            autoClose: 2000
+          });
           console.log("Error fetching the data: ", error);
           setSearchBoolValue(false);
         });
@@ -113,135 +149,49 @@ function Wrapper({ data }) {
 
   // Update feedback selection
   const updateFeedbackSelection = (index, feedbackSelection) => {
-    if (searchBoolRef.current) {
-      setSubmitData((currentState) => {
-        const newState = [...currentState];
-        newState[index].feedbackSelection = feedbackSelection;
-        return newState;
-      });
-    } else {
-      setState((currentState) => {
-        const newState = [...currentState];
-        newState[index].feedbackSelection = feedbackSelection;
-        //Saving the changed table row to SubmitData
-        if (submitData != submitDataRef.current) {
-          const existIndex = submitDataRef.current.findIndex(
-            (data) => data.id === newState[index].id
-          );
-          if (existIndex < 0) {
-            submitDataRef.current.push(newState[index]);
-            setSubmitData(submitDataRef.current);
-          } else {
-            submitDataRef.current[existIndex].feedbackSelection = feedbackSelection;
-          }
-        } else {
-          const existIndex = submitData.findIndex(
-            (data) => data.id === newState[index].id
-          );
-          if (existIndex < 0) {
-            submitData.push(newState[index]);
-            setSubmitData(submitData);
-          } else {
-            submitData[existIndex].feedbackSelection = feedbackSelection;
-          }
-        }
-        return newState;
-      });
-    }
+    formDataLatest.current[index].feedbackSelection = feedbackSelection;
+    setFormData(formDataLatest.current)
+    const subData = [formDataLatest.current[index]];
+    onSubmit(subData);
   };
 
-  // Update feedback selection
+  //SubmitFeedbackInput
+  const submitFeedbackInput = (index, feedbackInput) => {
+    formDataLatest.current[index].feedbackInput = feedbackInput;
+    setFormData(formDataLatest.current)
+    const subData = [formDataLatest.current[index]];
+    onSubmit(subData);
+  }
+
+  // Update feedback Input
   const updateFeedbackInput = (index, feedbackInput) => {
-    if (searchBoolRef.current) {
-      setSubmitData((currentState) => {
-        const newState = [...currentState];
-        newState[index].feedbackInput = feedbackInput;
-        return newState;
-      });
-    } else {
-      setState((currentState) => {
-        const newState = [...currentState];
-        newState[index].feedbackInput = feedbackInput;
-
-        //Saving the changed table row to SubmitData
-        if (submitData != submitDataRef.current) {
-          const existIndex = submitDataRef.current.findIndex(
-            (data) => data.id === newState[index].id
-          );
-          if (existIndex < 0) {
-            submitDataRef.current.push(newState[index]);
-            setSubmitData(submitDataRef.current);
-          } else {
-            submitDataRef.current[existIndex].feedbackInput = feedbackInput;
-          }
-        } else {
-          const existIndex = submitData.findIndex(
-            (data) => data.id === newState[index].id
-          );
-          if (existIndex < 0) {
-            submitData.push(newState[index]);
-            setSubmitData(submitData);
-          } else {
-            submitData[existIndex].feedbackInput = feedbackInput;
-          }
-        }
-        return newState;
-      });
-    }
+    setFormData((currentState) => {
+      const newState = [...currentState];
+      newState[index].feedbackInput = feedbackInput;
+      return newState;
+    })
   };
 
-  // Form Logic
+  // Form Submit Logic
   const { mutate } = useMutation(PostAliasInfo, {
     onSuccess: () => {
       const message = "Feedback Uploaded Successfully!";
-      setSubmitData([]);
-      queryClient
-        .fetchQuery(["aliasInfo"], () => GetAllAliases())
-        .then((searchData) => {
-          console.log("All data:", searchData);
-          searchData.forEach((item) => {
-            if (item.feedbackSelection == null) {
-              item.feedbackSelection = "Unsure";
-            }
-            if (item.feedbackInput == null) {
-              item.feedbackInput = "";
-            }
-            item.newLink = item.link.replace(/^https?:\/\//, "");
-          });
-          setState(searchData);
-          setSearchValue("");
-          setSearchBoolValue(false);
-        })
-        .catch((error) => {
-          alert("Failed to fetch data.");
-          console.log("Error fetching the data: ", error);
-          setSearchBoolValue(false);
-        });
-      alert(message);
+      toast.success(message, {
+        autoClose: 2000
+      });
     },
     onError: () => {
-      alert("There was an error uploading your feedback.");
+      toast.error("There was an error uploading your feedback", {
+        autoClose: 2000
+      });
     },
   });
 
-  const onSubmit = () => {
-    mutate({ data: submitDataRef.current });
+  const onSubmit = (submitData) => {
+    mutate({ data: submitData });
   };
 
-  // Filtering Logic
-  const [unsureFilter, setUnsureFilter] = useState(false);
-  const filteredData = useMemo(
-    () => filterData(state, unsureFilter),
-    [state, unsureFilter]
-  );
-
-  const [searchValue, setSearchValue] = useState("");
-  const [searchBool, setSearchBoolValue] = useState(false);
-  const searchBoolRef = useRef(searchBool);
-  useEffect(() => {
-    searchBoolRef.current = searchBool;
-  }, [searchBool]);
-
+  //Main HTML Page
   const columns = useMemo(
     () => [
       {
@@ -342,7 +292,19 @@ function Wrapper({ data }) {
         accessorKey: "feedbackSelection",
         cell: ({ row }) => {
           return (
-            <FeedbackSelector row={row} setState={updateFeedbackSelection} />
+            <select
+              className="form-select block pl-3 pr-3 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+              value={row.original.feedbackSelection}
+              onChange={(e) => {
+                e.preventDefault();
+                updateFeedbackSelection(row.index, e.target.value)
+              }}
+            >
+              <option>Correct</option>
+              <option>Incorrect</option>
+              <option>Unsure</option>
+            </select>
+            //<FeedbackSelector row={row} setState={updateFeedbackSelection} />
           );
         },
       },
@@ -350,7 +312,22 @@ function Wrapper({ data }) {
         header: "Additional feedback",
         accessorKey: "feedbackInput",
         cell: ({ row }) => {
-          return <FeedbackInput row={row} setState={updateFeedbackInput} />;
+          return (
+            //<FeedbackInput row={row} setFormData={updateFeedbackInput} />
+            <textarea
+              rows="3"
+              className="py-3 mt-5 mb-5 px-3 border"
+              value={row.original.feedbackInput}
+              onChange={(e) => {
+                e.preventDefault();
+                updateFeedbackInput(row.index, e.target.value);
+              }}
+              onBlur={(e) => {
+                e.preventDefault();
+                submitFeedbackInput(row.index, e.target.value);
+              }}
+            />
+          )
         },
       },
       {
@@ -418,19 +395,15 @@ function Wrapper({ data }) {
           <input
             type="checkbox"
             checked={unsureFilter}
-            onChange={() => setUnsureFilter(!unsureFilter)}
+            onChange={() => {
+              unsureFilterFunc(unsureFilter);
+            }}
           />
           <label className="text-lg font-bold">
             Show only links tagged as Unsure
           </label>
         </div>
-
-        <button
-          className="bg-green-600 text-green-100 border py-3 px-6 font-semibold text-md rounded"
-          onClick={onSubmit}
-        >
-          Submit Feedback
-        </button>
+        <ToastContainer />
       </div>
       {searchBool ? (
         <div className="flex items-center gap-2">
@@ -438,8 +411,10 @@ function Wrapper({ data }) {
             Mark response for all search results :
           </label>
           <select
+            value={markAllValue}
             onChange={(e) => {
               e.preventDefault();
+              setMarkAllValue(e.target.value);
               markAll(e.target.value);
             }}
           >
@@ -452,16 +427,13 @@ function Wrapper({ data }) {
         ""
       )}
       <div className="globalViewPage mt-5">
-        <GlobalTable columns={columns} data={filteredData} />
+        <GlobalTable columns={columns} data={formDataLatest.current} />
       </div>
     </div>
   );
 }
 
 export default function GlobalViewPage() {
-  // const { isLoading, error, data } = useQuery(["aliasInfo"], () =>
-  //   GetAllAliases()
-  // );
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);

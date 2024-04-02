@@ -14,6 +14,7 @@ export default function GlobalTable({ columns, data }) {
     getPaginationRowModel: getPaginationRowModel(),
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    autoResetPageIndex: false,
   });
 
   if (data === null || data === undefined || data.length === 0) {
