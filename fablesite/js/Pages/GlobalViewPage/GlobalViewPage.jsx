@@ -26,6 +26,10 @@ function Wrapper({ data }) {
   const [searchBool, setSearchBoolValue] = useState(false);
   const [markAllValue, setMarkAllValue] = useState("Unsure");
   const [autoResetPageIndex, setAutoResetPageIndex] = useState(true);
+  const [oldFeedbackValue, setoldFeedbackValue] = useState({
+    oldIndex: -1,
+    value: "",
+  });
   const queryClient = useQueryClient();
 
   const formDataLatest = useRef(formData);
@@ -152,16 +156,32 @@ function Wrapper({ data }) {
 
   //SubmitFeedbackInput
   const submitFeedbackInput = (index, feedbackInput) => {
-    formDataLatest.current[index].feedbackInput = feedbackInput;
-    setFormData(formDataLatest.current);
-    const subData = [formDataLatest.current[index]];
-    onSubmit(subData);
+    if (
+      oldFeedbackValue.oldIndex == index &&
+      oldFeedbackValue.value != feedbackInput
+    ) {
+      formDataLatest.current[index].feedbackInput = feedbackInput;
+      setFormData(formDataLatest.current);
+      const subData = [formDataLatest.current[index]];
+      oldFeedbackValue.oldIndex = -1;
+      oldFeedbackValue.value = "";
+      setoldFeedbackValue({ oldIndex: -1, value: "" });
+      onSubmit(subData);
+    }
   };
 
   // Update feedback Input
   const updateFeedbackInput = (index, feedbackInput) => {
     setFormData((currentState) => {
       const newState = [...currentState];
+      if (oldFeedbackValue.oldIndex == -1) {
+        oldFeedbackValue.oldIndex = index;
+        oldFeedbackValue.value = newState[index].feedbackInput;
+        setoldFeedbackValue({
+          oldIndex: index,
+          value: newState[index].feedbackInput,
+        });
+      }
       newState[index].feedbackInput = feedbackInput;
       return newState;
     });

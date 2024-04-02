@@ -4893,6 +4893,13 @@ function Wrapper(_ref) {
     _useState14 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState13, 2),
     autoResetPageIndex = _useState14[0],
     setAutoResetPageIndex = _useState14[1];
+  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)({
+      oldIndex: -1,
+      value: ""
+    }),
+    _useState16 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState15, 2),
+    oldFeedbackValue = _useState16[0],
+    setoldFeedbackValue = _useState16[1];
   var queryClient = (0,_tanstack_react_query__WEBPACK_IMPORTED_MODULE_10__.useQueryClient)();
   var formDataLatest = (0,react__WEBPACK_IMPORTED_MODULE_2__.useRef)(formData);
   var searchBoolRef = (0,react__WEBPACK_IMPORTED_MODULE_2__.useRef)(searchBool);
@@ -5012,16 +5019,32 @@ function Wrapper(_ref) {
 
   //SubmitFeedbackInput
   var submitFeedbackInput = function submitFeedbackInput(index, feedbackInput) {
-    formDataLatest.current[index].feedbackInput = feedbackInput;
-    setFormData(formDataLatest.current);
-    var subData = [formDataLatest.current[index]];
-    onSubmit(subData);
+    if (oldFeedbackValue.oldIndex == index && oldFeedbackValue.value != feedbackInput) {
+      formDataLatest.current[index].feedbackInput = feedbackInput;
+      setFormData(formDataLatest.current);
+      var subData = [formDataLatest.current[index]];
+      oldFeedbackValue.oldIndex = -1;
+      oldFeedbackValue.value = "";
+      setoldFeedbackValue({
+        oldIndex: -1,
+        value: ""
+      });
+      onSubmit(subData);
+    }
   };
 
   // Update feedback Input
   var updateFeedbackInput = function updateFeedbackInput(index, feedbackInput) {
     setFormData(function (currentState) {
       var newState = (0,_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__["default"])(currentState);
+      if (oldFeedbackValue.oldIndex == -1) {
+        oldFeedbackValue.oldIndex = index;
+        oldFeedbackValue.value = newState[index].feedbackInput;
+        setoldFeedbackValue({
+          oldIndex: index,
+          value: newState[index].feedbackInput
+        });
+      }
       newState[index].feedbackInput = feedbackInput;
       return newState;
     });
@@ -5258,18 +5281,18 @@ function Wrapper(_ref) {
   })));
 }
 function GlobalViewPage() {
-  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)([]),
-    _useState16 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState15, 2),
-    data = _useState16[0],
-    setData = _useState16[1];
-  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(true),
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)([]),
     _useState18 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState17, 2),
-    isLoading = _useState18[0],
-    setIsLoading = _useState18[1];
-  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
+    data = _useState18[0],
+    setData = _useState18[1];
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(true),
     _useState20 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState19, 2),
-    error = _useState20[0],
-    setError = _useState20[1];
+    isLoading = _useState20[0],
+    setIsLoading = _useState20[1];
+  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
+    _useState22 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState21, 2),
+    error = _useState22[0],
+    setError = _useState22[1];
   (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
     (0,_Utils__WEBPACK_IMPORTED_MODULE_5__.GetAllAliases)().then(function (fetchedData) {
       fetchedData.forEach(function (item) {
