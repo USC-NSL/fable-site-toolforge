@@ -7,10 +7,10 @@ with open("data_aliases.json", "r") as file:
 
 # Database connection parameters
 connection_params = {
-    "host": "",
-    "user": "",
+    "host": "tools.db.svc.wikimedia.cloud",
+    "user": "s55570",
     "password": "",
-    "db": "",
+    "db": "s55570__FABLE",
     "cursorclass": pymysql.cursors.DictCursor,
 }
 

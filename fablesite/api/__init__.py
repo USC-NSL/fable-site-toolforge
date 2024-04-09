@@ -1,1 +1,1 @@
-from fablesite.api.voteInfo import all_aliases, get_alias, post_alias, post_aliases
+from fablesite.api.voteInfo import all_aliases, post_aliases, get_search_alias
