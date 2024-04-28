@@ -1,6 +1,60 @@
 import flask
 import fablesite
+import mwoauth
 from flask import request
+
+
+@fablesite.app.route("/api/login", methods=["GET"])
+def login():
+    """Display / route."""
+    try:
+        consumer_token = mwoauth.ConsumerToken(
+            "",
+            "",
+        )
+        redirect, request_token = mwoauth.initiate(
+            "https://meta.wikimedia.org/w/index.php", consumer_token
+        )
+    except Exception:
+        return flask.redirect(flask.url_for("show_index"))
+    else:
+        flask.session["request_token"] = dict(zip(request_token._fields, request_token))
+        return flask.redirect(redirect)
+
+
+@fablesite.app.route("/api/oauth-callback")
+def oauth_callback():
+    """OAuth handshake callback."""
+    if "request_token" not in flask.session:
+        flask.flash("OAuth callback failed. Are cookies disabled?")
+        return flask.redirect(flask.url_for("show_index"))
+
+    consumer_token = mwoauth.ConsumerToken(
+        "",
+        "",
+    )
+
+    try:
+        access_token = mwoauth.complete(
+            "https://meta.wikimedia.org/w/index.php",
+            consumer_token,
+            mwoauth.RequestToken(**flask.session.pop("request_token")),
+            flask.request.query_string,
+        )
+
+        identity = mwoauth.identify(
+            "https://meta.wikimedia.org/w/index.php", consumer_token, access_token
+        )
+    except Exception:
+        fablesite.app.logger.exception("OAuth authentication failed")
+        return flask.redirect(
+            flask.url_for("show_index")
+        )  # Redirect to index with an error message
+    else:
+        flask.session["access_token"] = dict(zip(access_token._fields, access_token))
+        flask.session["username"] = identity["username"]
+
+    return flask.redirect(flask.url_for("show_index"))
 
 
 @fablesite.app.route("/api/v1/get_all_aliases", methods=["GET"])
