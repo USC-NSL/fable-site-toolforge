@@ -1,14 +1,18 @@
 <body>
   <!-- Plain old HTML and jinja2 nav bar goes here -->
+  <nav>
+    {% if username %}
+      <p>Welcome, {{ username }}!</p>
+    {% else %}
+    <p>Welcome, Guest!</p>
+    {% endif %}
+  </nav>
+
+
   <div id="reactEntry">
     Loading ...
   </div>
-  <script type="text/javascript">
-    // Initialize a global variable with the username from the server
-    window.initialData = {
-            username: "{{ session.get('username', 'Guest') | tojson | safe }}"
-        };
-  </script>
+
   <!-- Load JavaScript -->
   <script type="text/javascript" src="{{ url_for('static', filename='js/bundle.js') }}"></script>
 </body>

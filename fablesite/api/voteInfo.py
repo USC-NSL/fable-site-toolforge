@@ -9,8 +9,8 @@ def login():
     """Display / route."""
     try:
         consumer_token = mwoauth.ConsumerToken(
-            "",
-            "",
+            fablesite.app.config["CONSUMER_TOKEN"],
+            fablesite.app.config["SECRET_TOKEN"],
         )
         redirect, request_token = mwoauth.initiate(
             "https://meta.wikimedia.org/w/index.php", consumer_token
@@ -30,8 +30,8 @@ def oauth_callback():
         return flask.redirect(flask.url_for("show_index"))
 
     consumer_token = mwoauth.ConsumerToken(
-        "",
-        "",
+        fablesite.app.config["CONSUMER_TOKEN"],
+        fablesite.app.config["SECRET_TOKEN"],
     )
 
     try:

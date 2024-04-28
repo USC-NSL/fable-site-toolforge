@@ -457,7 +457,6 @@ export default function GlobalViewPage() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [username, setUsername] = useState(window.initialData?.username); // Retrieve username from global variable
   useEffect(() => {
     GetAllAliases()
       .then((fetchedData) => {
@@ -494,13 +493,5 @@ export default function GlobalViewPage() {
     return <p>Error Fetching Data</p>;
   }
 
-  return (
-    <div>
-      <header>
-        {/* Display the username if available */}
-        {username ? <h2>Welcome, {username}!</h2> : <h2>Welcome, Guest!</h2>}
-      </header>
-      <Wrapper data={data} />
-    </div>
-  );
+  return <Wrapper data={data} />;
 }

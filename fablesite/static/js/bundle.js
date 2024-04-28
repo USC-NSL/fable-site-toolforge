@@ -5454,7 +5454,6 @@ function Wrapper(_ref) {
   })));
 }
 function GlobalViewPage() {
-  var _window$initialData;
   var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)([]),
     _useState18 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState17, 2),
     data = _useState18[0],
@@ -5467,10 +5466,6 @@ function GlobalViewPage() {
     _useState22 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState21, 2),
     error = _useState22[0],
     setError = _useState22[1];
-  var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)((_window$initialData = window.initialData) === null || _window$initialData === void 0 ? void 0 : _window$initialData.username),
-    _useState24 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState23, 2),
-    username = _useState24[0],
-    setUsername = _useState24[1]; // Retrieve username from global variable
   (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
     (0,_Utils__WEBPACK_IMPORTED_MODULE_5__.GetAllAliases)().then(function (fetchedData) {
       fetchedData.forEach(function (item) {
@@ -5502,9 +5497,9 @@ function GlobalViewPage() {
   if (error) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("p", null, "Error Fetching Data");
   }
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("header", null, username ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("h2", null, "Welcome, ", username, "!") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("h2", null, "Welcome, Guest!")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(Wrapper, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(Wrapper, {
     data: data
-  }));
+  });
 }
 
 /***/ }),
