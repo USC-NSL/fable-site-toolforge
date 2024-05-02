@@ -4,7 +4,7 @@ import mwoauth
 from flask import request
 
 
-@fablesite.app.route("/api/logout")
+@fablesite.app.route("/api/logout", methods=["GET"])
 def logout():
     flask.session.clear()
     return flask.redirect(flask.url_for("show_index"))
