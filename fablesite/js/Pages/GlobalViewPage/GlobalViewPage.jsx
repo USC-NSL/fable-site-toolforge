@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useRef } from "react";
 import "./GlobalViewPage.css"; // Import regular stylesheet
 import GlobalTable from "../../Components/GlobalTable/Table";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { PostAliasInfo } from "./Utils";
+import { GetLogin, GetLogout, PostAliasInfo } from "./Utils";
 import { GetAllAliases } from "./Utils";
 import { GetSearchAliases } from "./Utils";
 import { ToastContainer, toast } from "react-toastify";
@@ -34,6 +34,7 @@ function Wrapper({ data }) {
 
   const formDataLatest = useRef(formData);
   const searchBoolRef = useRef(searchBool);
+  const username = window.APP_DATA.username != "None" ? window.APP_DATA.username : "Darpan";
 
   useEffect(() => {
     formDataLatest.current = formData;
@@ -52,12 +53,15 @@ function Wrapper({ data }) {
 
   //Data Filter
   const unsureFilterFunc = (unsureFilterValue) => {
-    setAutoResetPageIndex(true);
-    setUnsureFilter(!unsureFilterValue);
-    if (!unsureFilterValue) {
-      formDataLatest.current = formDataLatest.current.filter(
-        (v) => v.feedbackSelection === "Unsure"
-      );
+    console.log('unsurefilterfunc ', unsureFilterValue, formDataLatest.current.length);
+    setUnsureFilter(unsureFilterValue);
+    if (unsureFilterValue != 'All') {
+      if (searchBoolRef.current) {
+        formDataLatest.current = searchResult;
+      } else {
+        formDataLatest.current = data;
+      }
+      formDataLatest.current = formDataLatest.current.filter((v) => v.feedbackSelection == unsureFilterValue);
     } else {
       if (searchBoolRef.current) {
         formDataLatest.current = searchResult;
@@ -65,11 +69,12 @@ function Wrapper({ data }) {
         formDataLatest.current = data;
       }
     }
+    console.log(formDataLatest.current.length);
     setFormData(formDataLatest.current);
     if (searchBoolRef.current) {
       setMarkAllValue("Unsure");
     }
-  };
+  }
 
   //Flag to display Dropdown options
   const handleSearchInput = (value) => {
@@ -85,6 +90,28 @@ function Wrapper({ data }) {
     });
     onSubmit(subData);
   };
+
+  //Login API Call
+  const onLogin = () => {
+    queryClient
+      .fetchQuery(["login"], () => GetLogin())
+      .then()
+      .catch()
+
+  }
+
+  //Logout API Call
+  const onLogout = () => {
+    queryClient.fetchQuery(["logout"], GetLogout)
+      .then(response => {
+        console.log('Logout successful:', response);
+      })
+      .catch(error => {
+        toast.error("Failed to Logout", {
+          autoClose: 2000,
+        });
+      });
+  }
 
   //Search for specfic aliases
   const onSearch = () => {
@@ -203,7 +230,15 @@ function Wrapper({ data }) {
   });
 
   const onSubmit = (submitData) => {
-    mutate({ data: submitData });
+    if (username) {
+      let newSubmitData = submitData.map(item => ({
+        ...item,
+        username: username
+      }));
+      mutate({ data: newSubmitData });
+    } else {
+      onLogin();
+    }
   };
 
   //Main HTML Page
@@ -380,7 +415,61 @@ function Wrapper({ data }) {
         <h1 className="text-3xl font-bold">
           Replacement URLs for links marked permanently dead
         </h1>
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
+          {username ? <p>Welcome, {username}!</p> : <p>Welcome, Guest!</p>}
+          {username ? (
+            <button
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+              type="button"
+              onClick={onLogout}
+            >
+              Logout
+            </button>
+          ) : (
+            <button
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              type="button"
+              onClick={onLogin}
+            >
+              Login
+            </button>
+          )}
+
+        </div>
+      </div>
+      <h3>
+        For more information about FABLE, click{" "}
+        <a href="https://webresearch.eecs.umich.edu/fable/">
+          <b>here</b>
+        </a>
+      </h3>
+      <div className="flex items-center justify-between py-5">
+        <div className="flex items-center gap-2">
+          {/* <input
+            type="checkbox"
+            checked={unsureFilter}
+            onChange={() => {
+              unsureFilterFunc(unsureFilter);
+            }}
+          /> */}
+          <label className="text-lg font-bold">
+            Show only links tagged as Unsure
+          </label>
+          <select
+            className="form-select block pl-3 pr-3 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+            value={unsureFilter}
+            onChange={(e) => {
+              e.preventDefault();
+              unsureFilterFunc(e.target.value);
+            }}
+          >
+            <option>All</option>
+            <option>Correct</option>
+            <option>Incorrect</option>
+            <option>Unsure</option>
+          </select>
+        </div>
+        <div className="flex gap-2 ml-auto">
           <input
             type="text"
             id="Search"
@@ -398,26 +487,6 @@ function Wrapper({ data }) {
           >
             Search
           </button>
-        </div>
-      </div>
-      <h3>
-        For more information about FABLE, click{" "}
-        <a href="https://webresearch.eecs.umich.edu/fable/">
-          <b>here</b>
-        </a>
-      </h3>
-      <div className="flex items-center justify-between py-5">
-        <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={unsureFilter}
-            onChange={() => {
-              unsureFilterFunc(unsureFilter);
-            }}
-          />
-          <label className="text-lg font-bold">
-            Show only links tagged as Unsure
-          </label>
         </div>
         <ToastContainer />
       </div>

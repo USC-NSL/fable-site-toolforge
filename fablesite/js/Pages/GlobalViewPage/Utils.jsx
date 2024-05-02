@@ -67,3 +67,38 @@ export async function GetSearchAliases(searchStr) {
   // }));
   return obj;
 }
+
+export async function GetLogin() {
+  const url = "/api/login";
+  const response = await fetch(url, {
+    method: "GET", // *GET, POST, PUT, DELETE, etc.
+    mode: "cors", // no-cors, *cors, same-origin
+    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: "same-origin", // include, *same-origin, omit
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+  let obj = await response.json();
+  return obj;
+}
+
+export async function GetLogout() {
+  const url = "/api/logout";
+  const response = await fetch(url, {
+    method: "GET", // *GET, POST, PUT, DELETE, etc.
+    mode: "cors", // no-cors, *cors, same-origin
+    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: "same-origin", // include, *same-origin, omit
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+  if (response.ok) {
+    return { success: true, status: response.status };
+  } else {
+    return { success: false, status: response.status };
+  }
+}

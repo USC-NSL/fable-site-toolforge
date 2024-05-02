@@ -5002,21 +5002,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ GlobalViewPage)
 /* harmony export */ });
-/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "./node_modules/@babel/runtime/helpers/esm/toConsumableArray.js");
-/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "./node_modules/@babel/runtime/helpers/esm/slicedToArray.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _GlobalViewPage_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./GlobalViewPage.css */ "./fablesite/js/Pages/GlobalViewPage/GlobalViewPage.css");
-/* harmony import */ var _Components_GlobalTable_Table__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../Components/GlobalTable/Table */ "./fablesite/js/Components/GlobalTable/Table.jsx");
-/* harmony import */ var _tanstack_react_query__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @tanstack/react-query */ "./node_modules/@tanstack/react-query/build/lib/QueryClientProvider.mjs");
-/* harmony import */ var _tanstack_react_query__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @tanstack/react-query */ "./node_modules/@tanstack/react-query/build/lib/useMutation.mjs");
-/* harmony import */ var _Utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Utils */ "./fablesite/js/Pages/GlobalViewPage/Utils.jsx");
-/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/dist/react-toastify.esm.mjs");
-/* harmony import */ var react_toastify_dist_ReactToastify_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-toastify/dist/ReactToastify.css */ "./node_modules/react-toastify/dist/ReactToastify.css");
-/* harmony import */ var _Components_GlobalTable_FeedbackSelector__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../Components/GlobalTable/FeedbackSelector */ "./fablesite/js/Components/GlobalTable/FeedbackSelector.jsx");
-/* harmony import */ var _Components_GlobalTable_FeedbackInput__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Components/GlobalTable/FeedbackInput */ "./fablesite/js/Components/GlobalTable/FeedbackInput.jsx");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "./node_modules/@babel/runtime/helpers/esm/toConsumableArray.js");
+/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "./node_modules/@babel/runtime/helpers/esm/slicedToArray.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _GlobalViewPage_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./GlobalViewPage.css */ "./fablesite/js/Pages/GlobalViewPage/GlobalViewPage.css");
+/* harmony import */ var _Components_GlobalTable_Table__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../Components/GlobalTable/Table */ "./fablesite/js/Components/GlobalTable/Table.jsx");
+/* harmony import */ var _tanstack_react_query__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @tanstack/react-query */ "./node_modules/@tanstack/react-query/build/lib/QueryClientProvider.mjs");
+/* harmony import */ var _tanstack_react_query__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @tanstack/react-query */ "./node_modules/@tanstack/react-query/build/lib/useMutation.mjs");
+/* harmony import */ var _Utils__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Utils */ "./fablesite/js/Pages/GlobalViewPage/Utils.jsx");
+/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/dist/react-toastify.esm.mjs");
+/* harmony import */ var react_toastify_dist_ReactToastify_css__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-toastify/dist/ReactToastify.css */ "./node_modules/react-toastify/dist/ReactToastify.css");
+/* harmony import */ var _Components_GlobalTable_FeedbackSelector__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Components/GlobalTable/FeedbackSelector */ "./fablesite/js/Components/GlobalTable/FeedbackSelector.jsx");
+/* harmony import */ var _Components_GlobalTable_FeedbackInput__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../Components/GlobalTable/FeedbackInput */ "./fablesite/js/Components/GlobalTable/FeedbackInput.jsx");
 
 
+
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 
  // Import regular stylesheet
 
@@ -5038,48 +5042,49 @@ function extractArticleTitleFromUrl(article) {
 // Need for local state mutation
 function Wrapper(_ref) {
   var data = _ref.data;
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(data),
-    _useState2 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState, 2),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(data),
+    _useState2 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__["default"])(_useState, 2),
     formData = _useState2[0],
     setFormData = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)([]),
-    _useState4 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState3, 2),
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)([]),
+    _useState4 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__["default"])(_useState3, 2),
     searchResult = _useState4[0],
     setSearchResult = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
-    _useState6 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState5, 2),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(false),
+    _useState6 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__["default"])(_useState5, 2),
     unsureFilter = _useState6[0],
     setUnsureFilter = _useState6[1];
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(""),
-    _useState8 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState7, 2),
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(""),
+    _useState8 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__["default"])(_useState7, 2),
     searchValue = _useState8[0],
     setSearchValue = _useState8[1];
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
-    _useState10 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState9, 2),
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(false),
+    _useState10 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__["default"])(_useState9, 2),
     searchBool = _useState10[0],
     setSearchBoolValue = _useState10[1];
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)("Unsure"),
-    _useState12 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState11, 2),
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)("Unsure"),
+    _useState12 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__["default"])(_useState11, 2),
     markAllValue = _useState12[0],
     setMarkAllValue = _useState12[1];
-  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(true),
-    _useState14 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState13, 2),
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(true),
+    _useState14 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__["default"])(_useState13, 2),
     autoResetPageIndex = _useState14[0],
     setAutoResetPageIndex = _useState14[1];
-  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)({
+  var _useState15 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)({
       oldIndex: -1,
       value: ""
     }),
-    _useState16 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState15, 2),
+    _useState16 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__["default"])(_useState15, 2),
     oldFeedbackValue = _useState16[0],
     setoldFeedbackValue = _useState16[1];
-  var queryClient = (0,_tanstack_react_query__WEBPACK_IMPORTED_MODULE_10__.useQueryClient)();
-  var formDataLatest = (0,react__WEBPACK_IMPORTED_MODULE_2__.useRef)(formData);
-  var searchBoolRef = (0,react__WEBPACK_IMPORTED_MODULE_2__.useRef)(searchBool);
-  (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
+  var queryClient = (0,_tanstack_react_query__WEBPACK_IMPORTED_MODULE_11__.useQueryClient)();
+  var formDataLatest = (0,react__WEBPACK_IMPORTED_MODULE_3__.useRef)(formData);
+  var searchBoolRef = (0,react__WEBPACK_IMPORTED_MODULE_3__.useRef)(searchBool);
+  var username = window.APP_DATA.username != "None" ? window.APP_DATA.username : "Darpan";
+  (0,react__WEBPACK_IMPORTED_MODULE_3__.useEffect)(function () {
     formDataLatest.current = formData;
   }, [formData]);
-  (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
+  (0,react__WEBPACK_IMPORTED_MODULE_3__.useEffect)(function () {
     searchBoolRef.current = searchBool;
   }, [searchBool]);
 
@@ -5092,11 +5097,16 @@ function Wrapper(_ref) {
 
   //Data Filter
   var unsureFilterFunc = function unsureFilterFunc(unsureFilterValue) {
-    setAutoResetPageIndex(true);
-    setUnsureFilter(!unsureFilterValue);
-    if (!unsureFilterValue) {
+    console.log('unsurefilterfunc ', unsureFilterValue, formDataLatest.current.length);
+    setUnsureFilter(unsureFilterValue);
+    if (unsureFilterValue != 'All') {
+      if (searchBoolRef.current) {
+        formDataLatest.current = searchResult;
+      } else {
+        formDataLatest.current = data;
+      }
       formDataLatest.current = formDataLatest.current.filter(function (v) {
-        return v.feedbackSelection === "Unsure";
+        return v.feedbackSelection == unsureFilterValue;
       });
     } else {
       if (searchBoolRef.current) {
@@ -5105,6 +5115,7 @@ function Wrapper(_ref) {
         formDataLatest.current = data;
       }
     }
+    console.log(formDataLatest.current.length);
     setFormData(formDataLatest.current);
     if (searchBoolRef.current) {
       setMarkAllValue("Unsure");
@@ -5126,12 +5137,30 @@ function Wrapper(_ref) {
     onSubmit(subData);
   };
 
+  //Login API Call
+  var onLogin = function onLogin() {
+    queryClient.fetchQuery(["login"], function () {
+      return (0,_Utils__WEBPACK_IMPORTED_MODULE_6__.GetLogin)();
+    }).then()["catch"]();
+  };
+
+  //Logout API Call
+  var onLogout = function onLogout() {
+    queryClient.fetchQuery(["logout"], _Utils__WEBPACK_IMPORTED_MODULE_6__.GetLogout).then(function (response) {
+      console.log('Logout successful:', response);
+    })["catch"](function (error) {
+      react_toastify__WEBPACK_IMPORTED_MODULE_7__.toast.error("Failed to Logout", {
+        autoClose: 2000
+      });
+    });
+  };
+
   //Search for specfic aliases
   var onSearch = function onSearch() {
     setAutoResetPageIndex(true);
     if (searchValue !== "") {
       queryClient.fetchQuery(["searchAliases", searchValue], function () {
-        return (0,_Utils__WEBPACK_IMPORTED_MODULE_5__.GetSearchAliases)(searchValue);
+        return (0,_Utils__WEBPACK_IMPORTED_MODULE_6__.GetSearchAliases)(searchValue);
       }).then(function (searchData) {
         searchData.forEach(function (item) {
           if (item.feedbackSelection == null) {
@@ -5149,14 +5178,14 @@ function Wrapper(_ref) {
         setSearchBoolValue(true);
         setMarkAllValue("Unsure");
       })["catch"](function (error) {
-        react_toastify__WEBPACK_IMPORTED_MODULE_6__.toast.error("Search unsuccessful", {
+        react_toastify__WEBPACK_IMPORTED_MODULE_7__.toast.error("Search unsuccessful", {
           autoClose: 2000
         });
         setSearchBoolValue(false);
       });
     } else {
       queryClient.fetchQuery(["aliasInfo"], function () {
-        return (0,_Utils__WEBPACK_IMPORTED_MODULE_5__.GetAllAliases)();
+        return (0,_Utils__WEBPACK_IMPORTED_MODULE_6__.GetAllAliases)();
       }).then(function (searchData) {
         searchData.forEach(function (item) {
           if (item.feedbackSelection == null) {
@@ -5173,7 +5202,7 @@ function Wrapper(_ref) {
         setUnsureFilter(false);
         setSearchBoolValue(false);
       })["catch"](function (error) {
-        react_toastify__WEBPACK_IMPORTED_MODULE_6__.toast.error("Failed to fetch data", {
+        react_toastify__WEBPACK_IMPORTED_MODULE_7__.toast.error("Failed to fetch data", {
           autoClose: 2000
         });
         setSearchBoolValue(false);
@@ -5209,7 +5238,7 @@ function Wrapper(_ref) {
   // Update feedback Input
   var updateFeedbackInput = function updateFeedbackInput(index, feedbackInput) {
     setFormData(function (currentState) {
-      var newState = (0,_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__["default"])(currentState);
+      var newState = (0,_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1__["default"])(currentState);
       if (oldFeedbackValue.oldIndex == -1) {
         oldFeedbackValue.oldIndex = index;
         oldFeedbackValue.value = newState[index].feedbackInput;
@@ -5224,37 +5253,49 @@ function Wrapper(_ref) {
   };
 
   // Form Submit Logic
-  var _useMutation = (0,_tanstack_react_query__WEBPACK_IMPORTED_MODULE_11__.useMutation)(_Utils__WEBPACK_IMPORTED_MODULE_5__.PostAliasInfo, {
+  var _useMutation = (0,_tanstack_react_query__WEBPACK_IMPORTED_MODULE_12__.useMutation)(_Utils__WEBPACK_IMPORTED_MODULE_6__.PostAliasInfo, {
       onSuccess: function onSuccess() {
         var message = "Feedback Uploaded Successfully!";
-        react_toastify__WEBPACK_IMPORTED_MODULE_6__.toast.success(message, {
+        react_toastify__WEBPACK_IMPORTED_MODULE_7__.toast.success(message, {
           autoClose: 2000
         });
       },
       onError: function onError() {
-        react_toastify__WEBPACK_IMPORTED_MODULE_6__.toast.error("There was an error uploading your feedback", {
+        react_toastify__WEBPACK_IMPORTED_MODULE_7__.toast.error("There was an error uploading your feedback", {
           autoClose: 2000
         });
       }
     }),
     mutate = _useMutation.mutate;
   var onSubmit = function onSubmit(submitData) {
-    mutate({
-      data: submitData
-    });
+    console.log(submitData);
+    if (username) {
+      submitData[0].username = username;
+      var newSubmitData = submitData.map(function (item) {
+        return _objectSpread(_objectSpread({}, item), {}, {
+          username: username
+        });
+      });
+      console.log(newSubmitData);
+      mutate({
+        data: newSubmitData
+      });
+    } else {
+      onLogin();
+    }
   };
 
   //Main HTML Page
-  var columns = (0,react__WEBPACK_IMPORTED_MODULE_2__.useMemo)(function () {
+  var columns = (0,react__WEBPACK_IMPORTED_MODULE_3__.useMemo)(function () {
     return [{
       header: function header() {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("div", {
           style: {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between"
           }
-        }, "Article where broken link appears", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("span", {
+        }, "Article where broken link appears", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("span", {
           style: {
             display: "flex",
             flexDirection: "column",
@@ -5262,12 +5303,12 @@ function Wrapper(_ref) {
             marginLeft: "4px",
             color: "#696969"
           }
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("span", {
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("span", {
           style: {
             lineHeight: "0.8",
             fontSize: "0.8em"
           }
-        }, "\u25B2"), " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("span", {
+        }, "\u25B2"), " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("span", {
           style: {
             lineHeight: "0.8",
             fontSize: "0.8em"
@@ -5278,7 +5319,7 @@ function Wrapper(_ref) {
       width: 220,
       cell: function cell(_ref2) {
         var getValue = _ref2.getValue;
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("a", {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("a", {
           href: getValue(),
           className: "break-word",
           target: "_blank"
@@ -5286,13 +5327,13 @@ function Wrapper(_ref) {
       }
     }, {
       header: function header() {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("div", {
           style: {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between"
           }
-        }, "Broken link", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("span", {
+        }, "Broken link", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("span", {
           style: {
             display: "flex",
             flexDirection: "column",
@@ -5300,12 +5341,12 @@ function Wrapper(_ref) {
             marginLeft: "4px",
             color: "#696969"
           }
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("span", {
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("span", {
           style: {
             lineHeight: "0.8",
             fontSize: "0.8em"
           }
-        }, "\u25B2"), " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("span", {
+        }, "\u25B2"), " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("span", {
           style: {
             lineHeight: "0.8",
             fontSize: "0.8em"
@@ -5316,7 +5357,7 @@ function Wrapper(_ref) {
       width: 350,
       cell: function cell(_ref3) {
         var getValue = _ref3.getValue;
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("a", {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("a", {
           href: getValue(),
           className: "break-all",
           target: "_blank"
@@ -5328,7 +5369,7 @@ function Wrapper(_ref) {
       width: 350,
       cell: function cell(_ref4) {
         var getValue = _ref4.getValue;
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("a", {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("a", {
           href: getValue(),
           className: "break-all",
           target: "_blank"
@@ -5340,14 +5381,14 @@ function Wrapper(_ref) {
       accessorKey: "feedbackSelection",
       cell: function cell(_ref5) {
         var row = _ref5.row;
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("select", {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("select", {
           className: "form-select block pl-3 pr-3 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5",
           value: row.original.feedbackSelection,
           onChange: function onChange(e) {
             e.preventDefault();
             updateFeedbackSelection(row.index, e.target.value);
           }
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("option", null, "Correct"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("option", null, "Incorrect"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("option", null, "Unsure"))
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("option", null, "Correct"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("option", null, "Incorrect"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("option", null, "Unsure"))
         //<FeedbackSelector row={row} setState={updateFeedbackSelection} />
         ;
       }
@@ -5359,7 +5400,7 @@ function Wrapper(_ref) {
         return (
           /*#__PURE__*/
           //<FeedbackInput row={row} setFormData={updateFeedbackInput} />
-          react__WEBPACK_IMPORTED_MODULE_2___default().createElement("textarea", {
+          react__WEBPACK_IMPORTED_MODULE_3___default().createElement("textarea", {
             rows: "3",
             className: "py-3 mt-5 mb-5 px-3 border",
             value: row.original.feedbackInput,
@@ -5377,7 +5418,7 @@ function Wrapper(_ref) {
       }
     }, {
       header: function header() {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("div", {
           style: {
             display: "none"
           }
@@ -5387,7 +5428,7 @@ function Wrapper(_ref) {
       width: 350,
       cell: function cell(_ref7) {
         var getValue = _ref7.getValue;
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("a", {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("a", {
           href: getValue(),
           style: {
             display: "none"
@@ -5397,13 +5438,38 @@ function Wrapper(_ref) {
       }
     }];
   }, []);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("div", {
     className: "flex justify-between"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("h1", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("h1", {
     className: "text-3xl font-bold"
-  }, "Replacement URLs for links marked permanently dead"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", {
-    className: "flex gap-2"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("input", {
+  }, "Replacement URLs for links marked permanently dead"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("div", {
+    className: "flex items-center gap-2"
+  }, username ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("p", null, "Welcome, ", username, "!") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("p", null, "Welcome, Guest!"), username ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("button", {
+    className: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded",
+    type: "button",
+    onClick: onLogout
+  }, "Logout") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("button", {
+    className: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded",
+    type: "button",
+    onClick: onLogin
+  }, "Login"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("h3", null, "For more information about FABLE, click", " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("a", {
+    href: "https://webresearch.eecs.umich.edu/fable/"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("b", null, "here"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("div", {
+    className: "flex items-center justify-between py-5"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("div", {
+    className: "flex items-center gap-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("label", {
+    className: "text-lg font-bold"
+  }, "Show only links tagged as Unsure"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("select", {
+    className: "form-select block pl-3 pr-3 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5",
+    value: unsureFilter,
+    onChange: function onChange(e) {
+      e.preventDefault();
+      unsureFilterFunc(e.target.value);
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("option", null, "All"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("option", null, "Correct"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("option", null, "Incorrect"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("option", null, "Unsure"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("div", {
+    className: "flex gap-2 ml-auto"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("input", {
     type: "text",
     id: "Search",
     name: "Search",
@@ -5416,58 +5482,44 @@ function Wrapper(_ref) {
       return handleSearchInput(e.target.value);
     },
     onKeyDownCapture: handleKeyPress
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("button", {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("button", {
     className: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded",
     type: "button",
     onClick: onSearch
-  }, "Search"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("h3", null, "For more information about FABLE, click", " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("a", {
-    href: "https://webresearch.eecs.umich.edu/fable/"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("b", null, "here"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", {
-    className: "flex items-center justify-between py-5"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", {
+  }, "Search")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement(react_toastify__WEBPACK_IMPORTED_MODULE_7__.ToastContainer, null)), searchBool ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("div", {
     className: "flex items-center gap-2"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("input", {
-    type: "checkbox",
-    checked: unsureFilter,
-    onChange: function onChange() {
-      unsureFilterFunc(unsureFilter);
-    }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("label", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("label", {
     className: "text-lg font-bold"
-  }, "Show only links tagged as Unsure")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(react_toastify__WEBPACK_IMPORTED_MODULE_6__.ToastContainer, null)), searchBool ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", {
-    className: "flex items-center gap-2"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("label", {
-    className: "text-lg font-bold"
-  }, "Mark response for all search results :"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("select", {
+  }, "Mark response for all search results :"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("select", {
     value: markAllValue,
     onChange: function onChange(e) {
       e.preventDefault();
       setMarkAllValue(e.target.value);
       markAll(e.target.value);
     }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("option", null, "Unsure"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("option", null, "Correct"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("option", null, "Incorrect"))) : "", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("option", null, "Unsure"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("option", null, "Correct"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("option", null, "Incorrect"))) : "", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("div", {
     className: "globalViewPage mt-5"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(_Components_GlobalTable_Table__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement(_Components_GlobalTable_Table__WEBPACK_IMPORTED_MODULE_5__["default"], {
     columns: columns,
     data: formDataLatest.current,
     autoResetPageIndex: autoResetPageIndex
   })));
 }
 function GlobalViewPage() {
-  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)([]),
-    _useState18 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState17, 2),
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)([]),
+    _useState18 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__["default"])(_useState17, 2),
     data = _useState18[0],
     setData = _useState18[1];
-  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(true),
-    _useState20 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState19, 2),
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(true),
+    _useState20 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__["default"])(_useState19, 2),
     isLoading = _useState20[0],
     setIsLoading = _useState20[1];
-  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
-    _useState22 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1__["default"])(_useState21, 2),
+  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(null),
+    _useState22 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__["default"])(_useState21, 2),
     error = _useState22[0],
     setError = _useState22[1];
-  (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
-    (0,_Utils__WEBPACK_IMPORTED_MODULE_5__.GetAllAliases)().then(function (fetchedData) {
+  (0,react__WEBPACK_IMPORTED_MODULE_3__.useEffect)(function () {
+    (0,_Utils__WEBPACK_IMPORTED_MODULE_6__.GetAllAliases)().then(function (fetchedData) {
       fetchedData.forEach(function (item) {
         if (item.feedbackSelection == null) {
           item.feedbackSelection = "Unsure";
@@ -5480,7 +5532,7 @@ function GlobalViewPage() {
       setData(fetchedData);
       setIsLoading(false);
       setError(false);
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(Wrapper, {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement(Wrapper, {
         data: fetchedData
       });
     })["catch"](function (err) {
@@ -5488,16 +5540,16 @@ function GlobalViewPage() {
       setIsLoading(false);
     });
   }, []);
-  (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
+  (0,react__WEBPACK_IMPORTED_MODULE_3__.useEffect)(function () {
     document.title = "FABLE: Replacement URLs for links marked permanently dead";
   }, []);
   if (isLoading) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("p", null, "Loading Data");
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("p", null, "Loading Data");
   }
   if (error) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("p", null, "Error Fetching Data");
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("p", null, "Error Fetching Data");
   }
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(Wrapper, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement(Wrapper, {
     data: data
   });
 }
@@ -5514,6 +5566,8 @@ function GlobalViewPage() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   GetAllAliases: () => (/* binding */ GetAllAliases),
+/* harmony export */   GetLogin: () => (/* binding */ GetLogin),
+/* harmony export */   GetLogout: () => (/* binding */ GetLogout),
 /* harmony export */   GetSearchAliases: () => (/* binding */ GetSearchAliases),
 /* harmony export */   PostAliasInfo: () => (/* binding */ PostAliasInfo)
 /* harmony export */ });
@@ -5646,6 +5700,94 @@ function _GetSearchAliases() {
   }));
   return _GetSearchAliases.apply(this, arguments);
 }
+function GetLogin() {
+  return _GetLogin.apply(this, arguments);
+}
+function _GetLogin() {
+  _GetLogin = (0,_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee4() {
+    var url, response, obj;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee4$(_context4) {
+      while (1) switch (_context4.prev = _context4.next) {
+        case 0:
+          url = "/api/login";
+          _context4.next = 3;
+          return fetch(url, {
+            method: "GET",
+            // *GET, POST, PUT, DELETE, etc.
+            mode: "cors",
+            // no-cors, *cors, same-origin
+            cache: "no-cache",
+            // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: "same-origin",
+            // include, *same-origin, omit
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json"
+            }
+          });
+        case 3:
+          response = _context4.sent;
+          _context4.next = 6;
+          return response.json();
+        case 6:
+          obj = _context4.sent;
+          return _context4.abrupt("return", obj);
+        case 8:
+        case "end":
+          return _context4.stop();
+      }
+    }, _callee4);
+  }));
+  return _GetLogin.apply(this, arguments);
+}
+function GetLogout() {
+  return _GetLogout.apply(this, arguments);
+}
+function _GetLogout() {
+  _GetLogout = (0,_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee5() {
+    var url, response;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee5$(_context5) {
+      while (1) switch (_context5.prev = _context5.next) {
+        case 0:
+          url = "/api/logout";
+          _context5.next = 3;
+          return fetch(url, {
+            method: "GET",
+            // *GET, POST, PUT, DELETE, etc.
+            mode: "cors",
+            // no-cors, *cors, same-origin
+            cache: "no-cache",
+            // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: "same-origin",
+            // include, *same-origin, omit
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json"
+            }
+          });
+        case 3:
+          response = _context5.sent;
+          if (!response.ok) {
+            _context5.next = 8;
+            break;
+          }
+          return _context5.abrupt("return", {
+            success: true,
+            status: response.status
+          });
+        case 8:
+          return _context5.abrupt("return", {
+            success: false,
+            status: response.status
+          });
+        case 9:
+        case "end":
+          return _context5.stop();
+      }
+    }, _callee5);
+  }));
+  return _GetLogout.apply(this, arguments);
+}
 
 /***/ }),
 
@@ -5766,7 +5908,7 @@ a:hover {
   color: rgba(30, 64, 175, 1);
   color: rgba(30, 64, 175, var(--tw-text-opacity));
 }
-`, "",{"version":3,"sources":["webpack://./fablesite/js/App.css"],"names":[],"mappings":"AAAA;EACE,YAAY;EACZ,iBAAiB;EACjB,kBAAkB;EAClB,mBAAmB;AACrB;;AAEA;EACE,cAAc;EACd,oBAAoB;AACtB;;AAEA;EACE;IACE,4CAA4C;EAC9C;AACF;;AAEA;EACE,yBAAyB;EACzB,iBAAiB;EACjB,aAAa;EACb,sBAAsB;EACtB,mBAAmB;EACnB,uBAAuB;EACvB,6BAA6B;EAC7B,YAAY;AACd;;AAEA;EACE,cAAc;AAChB;;AAEA;EACE;IACE,uBAAuB;EACzB;EACA;IACE,yBAAyB;EAC3B;AACF;;AAGE;EAAA,oBAAyE;EAAzE,2BAAyE;EAAzE,gDAAyE;EAAzE;AAAyE;;AAAzE;EAAA;AAAyE;;AAAzE;EAAA,oBAAyE;EAAzE,2BAAyE;EAAzE;AAAyE","sourcesContent":[".App {\n  margin: auto;\n  padding-top: 2rem;\n  padding-left: 5rem;\n  padding-right: 5rem;\n}\n\n.App-logo {\n  height: 40vmin;\n  pointer-events: none;\n}\n\n@media (prefers-reduced-motion: no-preference) {\n  .App-logo {\n    animation: App-logo-spin infinite 20s linear;\n  }\n}\n\n.App-header {\n  background-color: #282c34;\n  min-height: 100vh;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  font-size: calc(10px + 2vmin);\n  color: white;\n}\n\n.App-link {\n  color: #61dafb;\n}\n\n@keyframes App-logo-spin {\n  from {\n    transform: rotate(0deg);\n  }\n  to {\n    transform: rotate(360deg);\n  }\n}\n\na {\n  @apply underline text-blue-600 hover:text-blue-800 visited:text-purple-600\n}\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./fablesite/js/App.css"],"names":[],"mappings":"AAAA;EACE,YAAY;EACZ,iBAAiB;EACjB,kBAAkB;EAClB,mBAAmB;AACrB;;AAEA;EACE,cAAc;EACd,oBAAoB;AACtB;;AAEA;EACE;IACE,4CAA4C;EAC9C;AACF;;AAEA;EACE,yBAAyB;EACzB,iBAAiB;EACjB,aAAa;EACb,sBAAsB;EACtB,mBAAmB;EACnB,uBAAuB;EACvB,6BAA6B;EAC7B,YAAY;AACd;;AAEA;EACE,cAAc;AAChB;;AAEA;EACE;IACE,uBAAuB;EACzB;EACA;IACE,yBAAyB;EAC3B;AACF;;AAGE;EAAA,oBAAyE;EAAzE,2BAAyE;EAAzE,gDAAyE;EAAzE;AAAyE;;AAAzE;EAAA;AAAyE;;AAAzE;EAAA,oBAAyE;EAAzE,2BAAyE;EAAzE;AAAyE","sourcesContent":[".App {\r\n  margin: auto;\r\n  padding-top: 2rem;\r\n  padding-left: 5rem;\r\n  padding-right: 5rem;\r\n}\r\n\r\n.App-logo {\r\n  height: 40vmin;\r\n  pointer-events: none;\r\n}\r\n\r\n@media (prefers-reduced-motion: no-preference) {\r\n  .App-logo {\r\n    animation: App-logo-spin infinite 20s linear;\r\n  }\r\n}\r\n\r\n.App-header {\r\n  background-color: #282c34;\r\n  min-height: 100vh;\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  justify-content: center;\r\n  font-size: calc(10px + 2vmin);\r\n  color: white;\r\n}\r\n\r\n.App-link {\r\n  color: #61dafb;\r\n}\r\n\r\n@keyframes App-logo-spin {\r\n  from {\r\n    transform: rotate(0deg);\r\n  }\r\n  to {\r\n    transform: rotate(360deg);\r\n  }\r\n}\r\n\r\na {\r\n  @apply underline text-blue-600 hover:text-blue-800 visited:text-purple-600\r\n}\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -5805,7 +5947,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.infoPanel {
 
 div {
     margin: 0;
-}`, "",{"version":3,"sources":["webpack://./fablesite/js/Components/AliasInfoPanel/AliasInfoPanel.css"],"names":[],"mappings":"AAAA;IACI,aAAa;IACb,qBAAyB;IACzB,qBAAqB;AACzB;;AAEA;IACI,gBAAgB;AACpB;;AAEA;IACI,SAAS;AACb","sourcesContent":[".infoPanel {\n    padding: 1rem;\n    overflow-wrap: break-word;\n    word-wrap: break-word;\n}\n\n.buttonPanel {\n    margin-top: 1rem;\n}\n\ndiv {\n    margin: 0;\n}"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./fablesite/js/Components/AliasInfoPanel/AliasInfoPanel.css"],"names":[],"mappings":"AAAA;IACI,aAAa;IACb,qBAAyB;IACzB,qBAAqB;AACzB;;AAEA;IACI,gBAAgB;AACpB;;AAEA;IACI,SAAS;AACb","sourcesContent":[".infoPanel {\r\n    padding: 1rem;\r\n    overflow-wrap: break-word;\r\n    word-wrap: break-word;\r\n}\r\n\r\n.buttonPanel {\r\n    margin-top: 1rem;\r\n}\r\n\r\ndiv {\r\n    margin: 0;\r\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -5834,7 +5976,10 @@ var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBP
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `.aliasPage {
     margin-top: 1rem;
-}`, "",{"version":3,"sources":["webpack://./fablesite/js/Pages/GlobalViewPage/GlobalViewPage.css"],"names":[],"mappings":"AAAA;IACI,gBAAgB;AACpB","sourcesContent":[".aliasPage {\n    margin-top: 1rem;\n}"],"sourceRoot":""}]);
+}
+.ml-auto {
+    margin-left: auto;
+}`, "",{"version":3,"sources":["webpack://./fablesite/js/Pages/GlobalViewPage/GlobalViewPage.css"],"names":[],"mappings":"AAAA;IACI,gBAAgB;AACpB;AACA;IACI,iBAAiB;AACrB","sourcesContent":[".aliasPage {\r\n    margin-top: 1rem;\r\n}\r\n.ml-auto {\r\n    margin-left: auto;\r\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -5863,7 +6008,7 @@ var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBP
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `.aliasPage {
     margin-top: 1rem;
-}`, "",{"version":3,"sources":["webpack://./fablesite/js/Pages/IndividualAliasPage/AliasPage.css"],"names":[],"mappings":"AAAA;IACI,gBAAgB;AACpB","sourcesContent":[".aliasPage {\n    margin-top: 1rem;\n}"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./fablesite/js/Pages/IndividualAliasPage/AliasPage.css"],"names":[],"mappings":"AAAA;IACI,gBAAgB;AACpB","sourcesContent":[".aliasPage {\r\n    margin-top: 1rem;\r\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -6490,6 +6635,9 @@ video {
 .mb-5 {
   margin-bottom: 1.25rem;
 }
+.ml-auto {
+  margin-left: auto;
+}
 .mr-2 {
   margin-right: 0.5rem;
 }
@@ -6647,6 +6795,11 @@ video {
   background-color: rgba(74, 222, 128, 1);
   background-color: rgba(74, 222, 128, var(--tw-bg-opacity));
 }
+.bg-green-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgba(34, 197, 94, 1);
+  background-color: rgba(34, 197, 94, var(--tw-bg-opacity));
+}
 .bg-green-600 {
   --tw-bg-opacity: 1;
   background-color: rgba(22, 163, 74, 1);
@@ -6656,6 +6809,11 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgba(21, 128, 61, 1);
   background-color: rgba(21, 128, 61, var(--tw-bg-opacity));
+}
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgba(239, 68, 68, 1);
+  background-color: rgba(239, 68, 68, var(--tw-bg-opacity));
 }
 .bg-red-600 {
   --tw-bg-opacity: 1;
@@ -6896,10 +7054,20 @@ video {
   background-color: rgba(22, 163, 74, 1);
   background-color: rgba(22, 163, 74, var(--tw-bg-opacity));
 }
+.hover\\:bg-green-700:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgba(21, 128, 61, 1);
+  background-color: rgba(21, 128, 61, var(--tw-bg-opacity));
+}
 .hover\\:bg-green-800:hover {
   --tw-bg-opacity: 1;
   background-color: rgba(22, 101, 52, 1);
   background-color: rgba(22, 101, 52, var(--tw-bg-opacity));
+}
+.hover\\:bg-red-700:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgba(185, 28, 28, 1);
+  background-color: rgba(185, 28, 28, var(--tw-bg-opacity));
 }
 .hover\\:bg-red-800:hover {
   --tw-bg-opacity: 1;
@@ -7034,7 +7202,7 @@ video {
     --tw-ring-opacity: 1;
     --tw-ring-color: rgba(113, 63, 18, var(--tw-ring-opacity));
   }
-}`, "",{"version":3,"sources":["webpack://./fablesite/js/style.css"],"names":[],"mappings":"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","sourcesContent":["@tailwind base;\n@tailwind components;\n@tailwind utilities;"],"sourceRoot":""}]);
+}`, "",{"version":3,"sources":["webpack://./fablesite/js/style.css"],"names":[],"mappings":"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","sourcesContent":["@tailwind base;\r\n@tailwind components;\r\n@tailwind utilities;"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -45764,6 +45932,36 @@ function _asyncToGenerator(fn) {
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/defineProperty.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _defineProperty)
+/* harmony export */ });
+/* harmony import */ var _toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./toPropertyKey.js */ "./node_modules/@babel/runtime/helpers/esm/toPropertyKey.js");
+
+function _defineProperty(obj, key, value) {
+  key = (0,_toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__["default"])(key);
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+  return obj;
+}
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime/helpers/esm/extends.js":
 /*!************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/esm/extends.js ***!
@@ -45930,6 +46128,77 @@ __webpack_require__.r(__webpack_exports__);
 
 function _toConsumableArray(arr) {
   return (0,_arrayWithoutHoles_js__WEBPACK_IMPORTED_MODULE_0__["default"])(arr) || (0,_iterableToArray_js__WEBPACK_IMPORTED_MODULE_1__["default"])(arr) || (0,_unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__["default"])(arr) || (0,_nonIterableSpread_js__WEBPACK_IMPORTED_MODULE_3__["default"])();
+}
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/toPrimitive.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/toPrimitive.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ toPrimitive)
+/* harmony export */ });
+/* harmony import */ var _typeof_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./typeof.js */ "./node_modules/@babel/runtime/helpers/esm/typeof.js");
+
+function toPrimitive(t, r) {
+  if ("object" != (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(t) || !t) return t;
+  var e = t[Symbol.toPrimitive];
+  if (void 0 !== e) {
+    var i = e.call(t, r || "default");
+    if ("object" != (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(i)) return i;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return ("string" === r ? String : Number)(t);
+}
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/toPropertyKey.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/toPropertyKey.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ toPropertyKey)
+/* harmony export */ });
+/* harmony import */ var _typeof_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./typeof.js */ "./node_modules/@babel/runtime/helpers/esm/typeof.js");
+/* harmony import */ var _toPrimitive_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./toPrimitive.js */ "./node_modules/@babel/runtime/helpers/esm/toPrimitive.js");
+
+
+function toPropertyKey(t) {
+  var i = (0,_toPrimitive_js__WEBPACK_IMPORTED_MODULE_1__["default"])(t, "string");
+  return "symbol" == (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(i) ? i : i + "";
+}
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/typeof.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/typeof.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _typeof)
+/* harmony export */ });
+function _typeof(o) {
+  "@babel/helpers - typeof";
+
+  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
+    return typeof o;
+  } : function (o) {
+    return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
+  }, _typeof(o);
 }
 
 /***/ }),

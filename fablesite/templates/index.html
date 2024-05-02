@@ -1,14 +1,10 @@
+
+<script type="text/javascript">
+  window.APP_DATA = {
+      username: "{{ username }}"
+  };
+</script>
 <body>
-  <!-- Plain old HTML and jinja2 nav bar goes here -->
-  <nav>
-    {% if username %}
-      <p>Welcome, {{ username }}!</p>
-    {% else %}
-    <p>Welcome, Guest!</p>
-    {% endif %}
-  </nav>
-
-
   <div id="reactEntry">
     Loading ...
   </div>
