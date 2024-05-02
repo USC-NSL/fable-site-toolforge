@@ -11,3 +11,6 @@ CREATE TABLE aliases (
   feedbackInput TEXT,
   PRIMARY KEY (id)
 )
+
+ALTER TABLE aliases
+ADD COLUMN lastModifiedBy VARCHAR(255);
