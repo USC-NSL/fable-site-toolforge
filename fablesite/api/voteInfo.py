@@ -9,7 +9,9 @@ from flask_cors import cross_origin
 @cross_origin()
 def logout():
     flask.session.clear()
-    return flask.redirect(flask.url_for("show_index"))
+    # return flask.redirect(flask.url_for("show_index"))
+    redirect = {'response':'success'}
+    return flask.jsonify(redirect)
 
 
 @fablesite.app.route("/api/login", methods=["GET"])

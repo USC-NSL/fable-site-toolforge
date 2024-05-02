@@ -5080,7 +5080,10 @@ function Wrapper(_ref) {
   var queryClient = (0,_tanstack_react_query__WEBPACK_IMPORTED_MODULE_11__.useQueryClient)();
   var formDataLatest = (0,react__WEBPACK_IMPORTED_MODULE_3__.useRef)(formData);
   var searchBoolRef = (0,react__WEBPACK_IMPORTED_MODULE_3__.useRef)(searchBool);
-  var username = window.APP_DATA.username != "None" ? window.APP_DATA.username : null;
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(window.APP_DATA.username !== "None" ? window.APP_DATA.username : null),
+    _useState18 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__["default"])(_useState17, 2),
+    username = _useState18[0],
+    setUsername = _useState18[1];
   (0,react__WEBPACK_IMPORTED_MODULE_3__.useEffect)(function () {
     formDataLatest.current = formData;
   }, [formData]);
@@ -5141,13 +5144,20 @@ function Wrapper(_ref) {
   var onLogin = function onLogin() {
     queryClient.fetchQuery(["login"], function () {
       return (0,_Utils__WEBPACK_IMPORTED_MODULE_6__.GetLogin)();
-    }).then()["catch"]();
+    }).then(function (res) {
+      window.location.href = res.url;
+    })["catch"](function (error) {
+      react_toastify__WEBPACK_IMPORTED_MODULE_7__.toast.error("Failed to Login", {
+        autoClose: 2000
+      });
+    });
   };
 
   //Logout API Call
   var onLogout = function onLogout() {
     queryClient.fetchQuery(["logout"], _Utils__WEBPACK_IMPORTED_MODULE_6__.GetLogout).then(function (response) {
-      console.log('Logout successful:', response);
+      setUsername(null);
+      window.APP_DATA.username = "None";
     })["catch"](function (error) {
       react_toastify__WEBPACK_IMPORTED_MODULE_7__.toast.error("Failed to Logout", {
         autoClose: 2000
@@ -5457,7 +5467,7 @@ function Wrapper(_ref) {
     className: "flex items-center gap-2"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("label", {
     className: "text-lg font-bold"
-  }, "Show only links tagged as Unsure"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("select", {
+  }, "Show only links tagged as :"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("select", {
     className: "form-select block pl-3 pr-3 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5",
     value: unsureFilter,
     onChange: function onChange(e) {
@@ -5503,18 +5513,18 @@ function Wrapper(_ref) {
   })));
 }
 function GlobalViewPage() {
-  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)([]),
-    _useState18 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__["default"])(_useState17, 2),
-    data = _useState18[0],
-    setData = _useState18[1];
-  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(true),
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)([]),
     _useState20 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__["default"])(_useState19, 2),
-    isLoading = _useState20[0],
-    setIsLoading = _useState20[1];
-  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(null),
+    data = _useState20[0],
+    setData = _useState20[1];
+  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(true),
     _useState22 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__["default"])(_useState21, 2),
-    error = _useState22[0],
-    setError = _useState22[1];
+    isLoading = _useState22[0],
+    setIsLoading = _useState22[1];
+  var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(null),
+    _useState24 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__["default"])(_useState23, 2),
+    error = _useState24[0],
+    setError = _useState24[1];
   (0,react__WEBPACK_IMPORTED_MODULE_3__.useEffect)(function () {
     (0,_Utils__WEBPACK_IMPORTED_MODULE_6__.GetAllAliases)().then(function (fetchedData) {
       fetchedData.forEach(function (item) {
@@ -5710,13 +5720,10 @@ function _GetLogin() {
           _context4.next = 3;
           return fetch(url, {
             method: "GET",
-            // *GET, POST, PUT, DELETE, etc.
             mode: "cors",
-            // no-cors, *cors, same-origin
             cache: "no-cache",
-            // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: "same-origin",
-            // include, *same-origin, omit
+            credentials: "include",
+            redirect: "follow",
             headers: {
               Accept: "application/json",
               "Content-Type": "application/json"
@@ -5755,8 +5762,9 @@ function _GetLogout() {
             // no-cors, *cors, same-origin
             cache: "no-cache",
             // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: "same-origin",
+            credentials: "include",
             // include, *same-origin, omit
+            redirect: "follow",
             headers: {
               Accept: "application/json",
               "Content-Type": "application/json"

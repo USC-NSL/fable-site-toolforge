@@ -34,7 +34,7 @@ function Wrapper({ data }) {
 
   const formDataLatest = useRef(formData);
   const searchBoolRef = useRef(searchBool);
-  const username = window.APP_DATA.username != "None" ? window.APP_DATA.username : null;
+  const [username, setUsername] = useState(window.APP_DATA.username !== "None" ? window.APP_DATA.username : null);
 
   useEffect(() => {
     formDataLatest.current = formData;
@@ -95,8 +95,14 @@ function Wrapper({ data }) {
   const onLogin = () => {
     queryClient
       .fetchQuery(["login"], () => GetLogin())
-      .then()
-      .catch()
+      .then((res) => {
+        window.location.href = res.url;
+      })
+      .catch(error => {
+        toast.error("Failed to Login", {
+          autoClose: 2000,
+        });
+      });
 
   }
 
@@ -104,7 +110,8 @@ function Wrapper({ data }) {
   const onLogout = () => {
     queryClient.fetchQuery(["logout"], GetLogout)
       .then(response => {
-        console.log('Logout successful:', response);
+        setUsername(null);
+        window.APP_DATA.username = "None";
       })
       .catch(error => {
         toast.error("Failed to Logout", {
@@ -453,7 +460,7 @@ function Wrapper({ data }) {
             }}
           /> */}
           <label className="text-lg font-bold">
-            Show only links tagged as Unsure
+            Show only links tagged as :
           </label>
           <select
             className="form-select block pl-3 pr-3 py-2 text-base leading-6 border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"

@@ -71,10 +71,11 @@ export async function GetSearchAliases(searchStr) {
 export async function GetLogin() {
   const url = "/api/login";
   const response = await fetch(url, {
-    method: "GET", // *GET, POST, PUT, DELETE, etc.
-    mode: "cors", // no-cors, *cors, same-origin
-    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: "same-origin", // include, *same-origin, omit
+    method: "GET",
+    mode: "cors",
+    cache: "no-cache",
+    credentials: "include",
+    redirect: "follow",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -90,7 +91,8 @@ export async function GetLogout() {
     method: "GET", // *GET, POST, PUT, DELETE, etc.
     mode: "cors", // no-cors, *cors, same-origin
     cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: "same-origin", // include, *same-origin, omit
+    credentials: "include", // include, *same-origin, omit
+    redirect: "follow",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
