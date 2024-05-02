@@ -2,15 +2,18 @@ import flask
 import fablesite
 import mwoauth
 from flask import request
+from flask_cors import cross_origin
 
 
 @fablesite.app.route("/api/logout", methods=["GET"])
+@cross_origin()
 def logout():
     flask.session.clear()
     return flask.redirect(flask.url_for("show_index"))
 
 
 @fablesite.app.route("/api/login", methods=["GET"])
+@cross_origin()
 def login():
     """Display / route."""
     try:
@@ -22,10 +25,12 @@ def login():
             "https://meta.wikimedia.org/w/index.php", consumer_token
         )
     except Exception:
-        return flask.redirect(flask.url_for("show_index"))
+        # return flask.redirect(flask.url_for("show_index"))
+        return flask.jsonify(error="OAuth initiation failed"), 500
     else:
         flask.session["request_token"] = dict(zip(request_token._fields, request_token))
-        return flask.redirect(redirect)
+        # return flask.redirect(redirect)
+        return flask.jsonify(url=redirect)
 
 
 @fablesite.app.route("/api/oauth-callback")
