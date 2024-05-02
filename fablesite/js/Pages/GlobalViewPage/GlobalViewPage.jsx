@@ -109,7 +109,6 @@ function Wrapper({ data }) {
   const onLogout = () => {
     queryClient.fetchQuery(["logout"], GetLogout)
       .then(response => {
-        setUsername(null);
         window.APP_DATA.username = "None";
       })
       .catch(error => {

@@ -5152,7 +5152,6 @@ function Wrapper(_ref) {
   //Logout API Call
   var onLogout = function onLogout() {
     queryClient.fetchQuery(["logout"], _Utils__WEBPACK_IMPORTED_MODULE_6__.GetLogout).then(function (response) {
-      setUsername(null);
       window.APP_DATA.username = "None";
     })["catch"](function (error) {
       react_toastify__WEBPACK_IMPORTED_MODULE_7__.toast.error("Failed to Logout", {
