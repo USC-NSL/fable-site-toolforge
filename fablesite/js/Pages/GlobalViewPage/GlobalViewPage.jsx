@@ -34,7 +34,6 @@ function Wrapper({ data }) {
 
   const formDataLatest = useRef(formData);
   const searchBoolRef = useRef(searchBool);
-  const [username, setUsername] = useState(window.APP_DATA.username !== "None" ? window.APP_DATA.username : null);
 
   useEffect(() => {
     formDataLatest.current = formData;
@@ -237,10 +236,10 @@ function Wrapper({ data }) {
   });
 
   const onSubmit = (submitData) => {
-    if (username) {
+    if (window.APP_DATA.username !== "None") {
       let newSubmitData = submitData.map(item => ({
         ...item,
-        username: username
+        username: window.APP_DATA.username
       }));
       mutate({ data: newSubmitData });
     } else {
@@ -423,8 +422,8 @@ function Wrapper({ data }) {
           Replacement URLs for links marked permanently dead
         </h1>
         <div className="flex items-center gap-2">
-          {username ? <p>Welcome, {username}!</p> : <p>Welcome, Guest!</p>}
-          {username ? (
+          {window.APP_DATA.username != "None" ? <p>Welcome, {window.APP_DATA.username}!</p> : <p>Welcome, Guest!</p>}
+          {window.APP_DATA.username != "None" ? (
             <button
               className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
               type="button"

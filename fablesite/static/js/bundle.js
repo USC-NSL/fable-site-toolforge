@@ -5080,10 +5080,6 @@ function Wrapper(_ref) {
   var queryClient = (0,_tanstack_react_query__WEBPACK_IMPORTED_MODULE_11__.useQueryClient)();
   var formDataLatest = (0,react__WEBPACK_IMPORTED_MODULE_3__.useRef)(formData);
   var searchBoolRef = (0,react__WEBPACK_IMPORTED_MODULE_3__.useRef)(searchBool);
-  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(window.APP_DATA.username !== "None" ? window.APP_DATA.username : null),
-    _useState18 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__["default"])(_useState17, 2),
-    username = _useState18[0],
-    setUsername = _useState18[1];
   (0,react__WEBPACK_IMPORTED_MODULE_3__.useEffect)(function () {
     formDataLatest.current = formData;
   }, [formData]);
@@ -5278,10 +5274,10 @@ function Wrapper(_ref) {
     }),
     mutate = _useMutation.mutate;
   var onSubmit = function onSubmit(submitData) {
-    if (username) {
+    if (window.APP_DATA.username !== "None") {
       var newSubmitData = submitData.map(function (item) {
         return _objectSpread(_objectSpread({}, item), {}, {
-          username: username
+          username: window.APP_DATA.username
         });
       });
       mutate({
@@ -5451,7 +5447,7 @@ function Wrapper(_ref) {
     className: "text-3xl font-bold"
   }, "Replacement URLs for links marked permanently dead"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("div", {
     className: "flex items-center gap-2"
-  }, username ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("p", null, "Welcome, ", username, "!") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("p", null, "Welcome, Guest!"), username ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("button", {
+  }, window.APP_DATA.username != "None" ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("p", null, "Welcome, ", window.APP_DATA.username, "!") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("p", null, "Welcome, Guest!"), window.APP_DATA.username != "None" ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement("button", {
     className: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded",
     type: "button",
     onClick: onLogout
@@ -5513,18 +5509,18 @@ function Wrapper(_ref) {
   })));
 }
 function GlobalViewPage() {
-  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)([]),
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)([]),
+    _useState18 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__["default"])(_useState17, 2),
+    data = _useState18[0],
+    setData = _useState18[1];
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(true),
     _useState20 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__["default"])(_useState19, 2),
-    data = _useState20[0],
-    setData = _useState20[1];
-  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(true),
+    isLoading = _useState20[0],
+    setIsLoading = _useState20[1];
+  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(null),
     _useState22 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__["default"])(_useState21, 2),
-    isLoading = _useState22[0],
-    setIsLoading = _useState22[1];
-  var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_3__.useState)(null),
-    _useState24 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_2__["default"])(_useState23, 2),
-    error = _useState24[0],
-    setError = _useState24[1];
+    error = _useState22[0],
+    setError = _useState22[1];
   (0,react__WEBPACK_IMPORTED_MODULE_3__.useEffect)(function () {
     (0,_Utils__WEBPACK_IMPORTED_MODULE_6__.GetAllAliases)().then(function (fetchedData) {
       fetchedData.forEach(function (item) {
