@@ -34,7 +34,7 @@ function Wrapper({ data }) {
 
   const formDataLatest = useRef(formData);
   const searchBoolRef = useRef(searchBool);
-  const username = window.APP_DATA.username != "None" ? window.APP_DATA.username : "Darpan";
+  const username = window.APP_DATA.username != "None" ? window.APP_DATA.username : null;
 
   useEffect(() => {
     formDataLatest.current = formData;
