@@ -5080,7 +5080,7 @@ function Wrapper(_ref) {
   var queryClient = (0,_tanstack_react_query__WEBPACK_IMPORTED_MODULE_11__.useQueryClient)();
   var formDataLatest = (0,react__WEBPACK_IMPORTED_MODULE_3__.useRef)(formData);
   var searchBoolRef = (0,react__WEBPACK_IMPORTED_MODULE_3__.useRef)(searchBool);
-  var username = window.APP_DATA.username != "None" ? window.APP_DATA.username : "Darpan";
+  var username = window.APP_DATA.username != "None" ? window.APP_DATA.username : null;
   (0,react__WEBPACK_IMPORTED_MODULE_3__.useEffect)(function () {
     formDataLatest.current = formData;
   }, [formData]);
@@ -5268,15 +5268,12 @@ function Wrapper(_ref) {
     }),
     mutate = _useMutation.mutate;
   var onSubmit = function onSubmit(submitData) {
-    console.log(submitData);
     if (username) {
-      submitData[0].username = username;
       var newSubmitData = submitData.map(function (item) {
         return _objectSpread(_objectSpread({}, item), {}, {
           username: username
         });
       });
-      console.log(newSubmitData);
       mutate({
         data: newSubmitData
       });
