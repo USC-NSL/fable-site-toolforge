@@ -5153,6 +5153,7 @@ function Wrapper(_ref) {
   var onLogout = function onLogout() {
     queryClient.fetchQuery(["logout"], _Utils__WEBPACK_IMPORTED_MODULE_6__.GetLogout).then(function (response) {
       window.APP_DATA.username = "None";
+      window.location.reload();
     })["catch"](function (error) {
       react_toastify__WEBPACK_IMPORTED_MODULE_7__.toast.error("Failed to Logout", {
         autoClose: 2000

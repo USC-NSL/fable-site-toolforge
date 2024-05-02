@@ -110,6 +110,7 @@ function Wrapper({ data }) {
     queryClient.fetchQuery(["logout"], GetLogout)
       .then(response => {
         window.APP_DATA.username = "None";
+        window.location.reload();
       })
       .catch(error => {
         toast.error("Failed to Logout", {
