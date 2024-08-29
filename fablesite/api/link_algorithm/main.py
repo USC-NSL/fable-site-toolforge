@@ -5,10 +5,6 @@ import json
 from collections import defaultdict
 import logging
 import difflib
-import os
-
-script_dir = os.path.dirname(os.path.abspath(__file__))
-os.chdir(script_dir)
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -121,7 +117,7 @@ def identify_pattern(old_urls, new_urls):
         else:
             final_pattern['path'].append(('variable', i, actions))
     
-    logging.debug(f"Identified pattern: {final_pattern}")
+    # logging.debug(f"Identified pattern: {final_pattern}")
     return final_pattern
 
 def apply_pattern(url, pattern):
@@ -202,8 +198,8 @@ def apply_pattern(url, pattern):
     if new_query:
         new_url += f"?{new_query}"
     
-    logging.debug(f"Original URL: {url}")
-    logging.debug(f"Predicted URL: {new_url}")
+    # logging.debug(f"Original URL: {url}")
+    # logging.debug(f"Predicted URL: {new_url}")
     
     return new_url
 
@@ -231,14 +227,17 @@ def process_urls(data, training_size, randomness):
         domains[domain].append(item)
     
     results = []
-    correct_predictions = 0
+    correct_predictions = 0 
     total = 0
     unsolvable_few_urls = 0
     urls_used_for_training = 0
     unpredictable_urls = 0
     
     for domain, items in domains.items():
+        logging.debug(f"Processing domain: {domain} with {len(items)} items")
+        
         if len(items) < training_size + 1:
+            logging.debug(f"Domain {domain} has too few items: {len(items)}")
             unsolvable_few_urls += len(items)
             continue
 
@@ -278,7 +277,7 @@ def process_urls(data, training_size, randomness):
             is_correct = predicted_url.lower() == actual_new_url.lower()
             
             if is_correct:
-                correct_predictions += 1
+                correct_predictions += 1  
             total += 1
             
             results.append({
@@ -288,10 +287,15 @@ def process_urls(data, training_size, randomness):
                 'is_correct': is_correct
             })
     
-    accuracy = correct_predictions / (total - unpredictable_urls) if total > 0 else 0
+    logging.debug(f"Processed URLs: {total}, Correct predictions: {correct_predictions}, Unpredictable URLs: {unpredictable_urls}")
     
-    return results, accuracy, unsolvable_few_urls, total, urls_used_for_training, unpredictable_urls
-
+    if total - unpredictable_urls == 0:
+        logging.warning("All processed URLs were unpredictable")
+        accuracy = 0
+    else:
+        accuracy = correct_predictions / (total - unpredictable_urls)
+    
+    return results, accuracy, unsolvable_few_urls, total, urls_used_for_training, unpredictable_urls, correct_predictions
 def print_and_write(file, message):
     print(message)
     file.write(message + "\n")
@@ -314,26 +318,28 @@ if __name__ == "__main__":
         for run in range(num_runs):
             with open('stats.txt', 'a') as stats_file:  
                 print_and_write(stats_file, f"\nPerforming run {run + 1} of {num_runs}...")
-            results, accuracy, unsolvable_few_urls, total, urls_used_for_training, unpredictable_urls = process_urls(data, training_size, randomness)
+            results, accuracy, unsolvable_few_urls, total, urls_used_for_training, unpredictable_urls, correct_predictions = process_urls(data, training_size, randomness)
             
             run_accuracies.append(accuracy)
             
             if accuracy > best_accuracy:
                 best_accuracy = accuracy
                 best_results = results
-                best_stats = (accuracy, unsolvable_few_urls, total, urls_used_for_training, unpredictable_urls)
+                best_stats = (accuracy, unsolvable_few_urls, total, urls_used_for_training, unpredictable_urls, correct_predictions)
             with open('stats.txt', 'a') as stats_file:  
                 print_and_write(stats_file, f"\nRun {run + 1} accuracy: {accuracy:.2%}")
 
         print("\n--------- Best Results ---------")
-        accuracy, unsolvable_few_urls, total, urls_used_for_training, unpredictable_urls = best_stats
+        accuracy, unsolvable_few_urls, total, urls_used_for_training, unpredictable_urls, correct_predictions = best_stats
         results_to_save = best_results
     else:
-        results, accuracy, unsolvable_few_urls, total, urls_used_for_training, unpredictable_urls = process_urls(data, training_size, randomness)
+        results, accuracy, unsolvable_few_urls, total, urls_used_for_training, unpredictable_urls, correct_predictions = process_urls(data, training_size, randomness)
         print("\n--------- Results ---------")
         results_to_save = results
 
-    with open('stats.txt', 'w') as stats_file:        
+    with open('stats.txt', 'w') as stats_file: 
+        total_predictable = total - unpredictable_urls
+        accuracy_predictable = correct_predictions / total_predictable if total_predictable > 0 else 0       
         print_and_write(stats_file, f"1. Total URLs in dataset: {len(data)}")
         print_and_write(stats_file, "   Context: This is the total number of URL pairs (old and new) in the input data.\n")
         
@@ -353,8 +359,11 @@ if __name__ == "__main__":
         
         print_and_write(stats_file, f"\n6. Best Accuracy: {accuracy:.2%}")
         print_and_write(stats_file, "   Context: The highest percentage of correctly predicted new URLs out of all processed URLs.")
+        # print_and_write(stats_file, "   Mean: {:.2%}".format(sum(run_accuracies) / num_runs) if randomness else "")
+        # print_and_write(stats_file, "   Mode: {:.2%}".format(max(set(run_accuracies), key=run_accuracies.count)) if randomness else "")
+        print_and_write(stats_file, f"\n    Accuracy (predictable URLs only): {accuracy_predictable:.2%}")
+        print_and_write(stats_file, "       Context: The percentage of correctly predicted new URLs out of URLs that were deemed predictable.")
 
-        
         print_and_write(stats_file, f"\n7. Unsolvable due to few URLs in the domain: {unsolvable_few_urls}")
         print_and_write(stats_file, "   Context: Number of URLs in domains that had fewer URLs than the specified training size.\n")
         
@@ -371,6 +380,16 @@ if __name__ == "__main__":
         print_and_write(stats_file, f"11. Total URLs accounted for: {total_accounted}")
         print_and_write(stats_file, "    Context: Sum of unsolvable, processed, training, and unpredictable URLs.\n")
 
+        print_and_write(stats_file, "\nUSER INTERACTION BUCKETS")
+        print_and_write(stats_file, "--------------------------------")
+        print_and_write(stats_file, f"1. URLs used for training:      {urls_used_for_training:5d} ({urls_used_for_training/total_accounted:.2%})")
+        print_and_write(stats_file, f"2. Manual user intervention:    {unsolvable_few_urls + unpredictable_urls + (total - correct_predictions):5d} ({(unsolvable_few_urls + unpredictable_urls + (total - correct_predictions))/total_accounted:.2%})")
+        print_and_write(stats_file, f"   a. Unsolvable (few URLs):    {unsolvable_few_urls:5d} ({unsolvable_few_urls/total_accounted:.2%})")
+        print_and_write(stats_file, f"   b. Unpredictable:            {unpredictable_urls:5d} ({unpredictable_urls/total_accounted:.2%})")
+        print_and_write(stats_file, f"   c. Incorrectly predicted:    {total - correct_predictions:5d} ({(total - correct_predictions)/total_accounted:.2%})")
+        print_and_write(stats_file, f"3. Correctly predicted:         {correct_predictions:5d} ({correct_predictions/total_accounted:.2%})")
+        print_and_write(stats_file, f"                                -----")
+        print_and_write(stats_file, f"   Total:                       {total_accounted:5d} (100.00%)")
     with open('output.json', 'w') as f:
         json.dump(results_to_save, f, indent=2)
     print("Prediction results saved to output.json")

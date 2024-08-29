@@ -1,8 +1,8 @@
 import flask
 import fablesite
 import mwoauth
-from flask import request
-
+from flask import request, jsonify
+from link_algorithm import identify_pattern, apply_pattern, is_unpredictable
 
 @fablesite.app.route("/api/logout", methods=["GET"])
 def logout():
@@ -230,3 +230,41 @@ def post_alias(id):
     except Exception as e:
         print(e)
         flask.abort(500)
+
+@fablesite.app.route("/api/v1/autocomplete", methods=["POST"])
+def autocomplete():
+    data = flask.request.get_json()
+    
+    if not data or 'training_links' not in data or 'links_to_autocomplete' not in data:
+        return flask.jsonify({'error': 'Invalid input format'}), 400
+    
+    training_data = data['training_links']
+    autocomplete_data = data['links_to_autocomplete']
+    
+    if len(training_data) < 2:
+        return flask.jsonify({'error': 'Training data must contain at least 2 URL pairs'}), 400
+    
+    old_urls = [item['link'] for item in training_data]
+    new_urls = [item['alias'] for item in training_data]
+    
+    if any(is_unpredictable(old, new) for old, new in zip(old_urls, new_urls)):
+        return flask.jsonify({'error': 'Training data contains unpredictable URLs'}), 400
+    
+    pattern = identify_pattern(old_urls, new_urls)
+    
+    results = []
+    for item in autocomplete_data:
+        predicted_url = apply_pattern(item['link'], pattern)
+        
+        if predicted_url.startswith('http://') and any(new_url.startswith('https://') for new_url in new_urls):
+            predicted_url = 'https://' + predicted_url[7:]
+        
+        result = item.copy()
+        
+        result['alias'] = predicted_url
+        
+        result['feedbackSelection'] = "Correct"
+
+        results.append(result)
+    
+    return flask.jsonify(results)
