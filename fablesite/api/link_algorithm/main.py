@@ -7,7 +7,8 @@ import logging
 import difflib
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
-
+def get_domain(url):
+    return urlparse(url).netloc
 def tokenize_url(url):
     parsed = urlparse(url)
     path = parsed.path.strip('/').split('/')

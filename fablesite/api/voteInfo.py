@@ -2,7 +2,7 @@ import flask
 import fablesite
 import mwoauth
 from flask import request, jsonify
-from link_algorithm import identify_pattern, apply_pattern, is_unpredictable
+from link_algorithm import identify_pattern, apply_pattern, is_unpredictable, get_domain
 
 @fablesite.app.route("/api/logout", methods=["GET"])
 def logout():
@@ -244,27 +244,48 @@ def autocomplete():
     if len(training_data) < 2:
         return flask.jsonify({'error': 'Training data must contain at least 2 URL pairs'}), 400
     
-    old_urls = [item['link'] for item in training_data]
-    new_urls = [item['alias'] for item in training_data]
+    training_by_domain = {}
+    for item in training_data:
+        domain = get_domain(item['link'])
+        if domain not in training_by_domain:
+            training_by_domain[domain] = []
+        training_by_domain[domain].append(item)
     
-    if any(is_unpredictable(old, new) for old, new in zip(old_urls, new_urls)):
-        return flask.jsonify({'error': 'Training data contains unpredictable URLs'}), 400
+    for domain, items in training_by_domain.items():
+        if len(items) < 2:
+            return flask.jsonify({'error': f'Domain {domain} has less than 2 training pairs'}), 400
     
-    pattern = identify_pattern(old_urls, new_urls)
+    autocomplete_by_domain = {}
+    for item in autocomplete_data:
+        domain = get_domain(item['link'])
+        if domain not in autocomplete_by_domain:
+            autocomplete_by_domain[domain] = []
+        autocomplete_by_domain[domain].append(item)
+    
+    for domain in autocomplete_by_domain:
+        if domain not in training_by_domain:
+            return flask.jsonify({'error': f'No training data for domain {domain}'}), 400
     
     results = []
-    for item in autocomplete_data:
-        predicted_url = apply_pattern(item['link'], pattern)
+    for domain, items in autocomplete_by_domain.items():
+        training_items = training_by_domain[domain]
+        old_urls = [item['link'] for item in training_items]
+        new_urls = [item['alias'] for item in training_items]
         
-        if predicted_url.startswith('http://') and any(new_url.startswith('https://') for new_url in new_urls):
-            predicted_url = 'https://' + predicted_url[7:]
+        if any(is_unpredictable(old, new) for old, new in zip(old_urls, new_urls)):
+            return flask.jsonify({'error': f'Training data for domain {domain} contains unpredictable URLs'}), 400
         
-        result = item.copy()
+        pattern = identify_pattern(old_urls, new_urls)
         
-        result['alias'] = predicted_url
-        
-        result['feedbackSelection'] = "Correct"
-
-        results.append(result)
+        for item in items:
+            predicted_url = apply_pattern(item['link'], pattern)
+            
+            if predicted_url.startswith('http://') and any(new_url.startswith('https://') for new_url in new_urls):
+                predicted_url = 'https://' + predicted_url[7:]
+            
+            result = item.copy()
+            result['alias'] = predicted_url
+            result['feedbackSelection'] = "Correct"
+            results.append(result)
     
     return flask.jsonify(results)
