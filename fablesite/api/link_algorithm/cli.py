@@ -1,13 +1,35 @@
 import re
 import json
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import urlparse, parse_qs, urlunsplit
 from collections import defaultdict
 import os
 
 os.chdir('fablesite/api/link_algorithm')
+def sanitize_url(url):
+    if url.startswith('url='):
+        url = url[4:]
+    
+    parsed = urlparse(url)
+    
+    scheme = parsed.scheme.lower() or 'http'
+    
+    domain = parsed.netloc.lower()
+    
+    path = parsed.path.strip('/').split('/')
+    
+    if path and '.' in path[-1]:
+        name, ext = path[-1].rsplit('.', 1)
+        path[-1] = f"{name}.{ext.lower()}"
+    
+    path = '/'.join(path)
+    
+    clean_url = urlunsplit((scheme, domain, f"/{path}", parsed.query, parsed.fragment))
+    
+    return clean_url
 
 def tokenize_url(url):
-    parsed = urlparse(url.replace('url=', '', 1))
+    url = sanitize_url(url)
+    parsed = urlparse(url)
     path = parsed.path.strip('/').split('/')
     query = parse_qs(parsed.query)
     
