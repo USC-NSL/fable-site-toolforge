@@ -5,6 +5,13 @@ from collections import defaultdict
 import os
 
 os.chdir('fablesite/api/link_algorithm')
+def segment_to_regex(segment):
+    if segment.isalpha():
+        return r'[a-zA-Z]+'
+    elif segment.isdigit():
+        return r'\d+'
+    else:
+        return r'[a-zA-Z0-9]+'
 def sanitize_url(url):
     if url.startswith('url='):
         url = url[4:]
@@ -69,16 +76,15 @@ def tokenize_url_segments(url, constants):
         path[-1] = path[-1].rsplit('.', 1)[0]
     
     tokenized = f"{parsed.netloc}"
-    next_token = 1
     segments = []
     
     for segment in path:
         if segment in constants:
             tokenized += f"/{segment}"
         else:
-            tokenized += f"/${next_token}"
+            regex_pattern = segment_to_regex(segment)
+            tokenized += f"/{regex_pattern}"
             segments.append(segment)
-            next_token += 1
     
     return tokenized, segments
 
@@ -133,7 +139,7 @@ def process_urls(data):
                     new_tokenized_url += '.html'
                 
                 old_tokenized.append(old_token)
-                new_tokenized.append(new_tokenized_url)
+                new_tokenized.append(new_token)  
             
             patterns[domain] = {
                 'old_constants': old_constants,
@@ -145,7 +151,6 @@ def process_urls(data):
             }
     
     return patterns
-
 def main():
     with open('data.json', 'r') as f:
         data = json.load(f)
@@ -178,8 +183,8 @@ def main():
                         print(f"\nExample {i+1}:")
                         print(f"Old URL: {pattern['old_urls'][i]}")
                         print(f"New URL: {pattern['new_urls'][i]}")
-                        print(f"Old URL (tokenized): {pattern['old_tokenized'][i]}")
-                        print(f"New URL (tokenized): {pattern['new_tokenized'][i]}")
+                        print(f"Old URL (regex pattern): {pattern['old_tokenized'][i]}")
+                        print(f"New URL (regex pattern): {pattern['new_tokenized'][i]}")
             else:
                 print("Invalid choice. Please try again.")
         except ValueError:
