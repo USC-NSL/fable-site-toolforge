@@ -184,6 +184,63 @@ def process_urls(data):
             }
     
     return patterns
+def validate_input_url(url, domain):
+    parsed_url = urlparse(url)
+    return parsed_url.netloc.lower() == domain.lower()
+
+def match_old_pattern(url, old_regex):
+    return re.match(old_regex, urlparse(url).netloc + urlparse(url).path) is not None
+
+def transform_url(url, old_pattern, new_pattern):
+    old_parsed = urlparse(url)
+    old_path = old_parsed.path.strip('/').split('/')
+    
+    new_parsed = urlparse(new_pattern)
+    new_path = new_parsed.path.strip('/').split('/')
+    
+    transformed_path = []
+    variable_mapping = {}
+    
+    # Extract variables from old URL
+    for old_segment, pattern_segment in zip(old_path, old_pattern.split('/')):
+        if pattern_segment.startswith('$'):
+            variable_mapping[pattern_segment] = old_segment
+    
+    # Construct new URL
+    for segment in new_path:
+        if segment.startswith('$'):
+            transformed_path.append(variable_mapping.get(segment, segment))
+        else:
+            transformed_path.append(segment)
+    
+    new_url = urlunsplit((
+        new_parsed.scheme,
+        new_parsed.netloc,
+        '/' + '/'.join(transformed_path),
+        '',
+        ''
+    ))
+    
+    return new_url
+
+def predict_url(domain, patterns):
+    while True:
+        input_url = input("\nEnter an old URL to predict (or 'b' to go back): ").strip()
+        
+        if input_url.lower() == 'b':
+            return
+        
+        if not validate_input_url(input_url, domain):
+            print(f"The entered URL does not belong to the domain {domain}. Please try again.")
+            continue
+        
+        if match_old_pattern(input_url, patterns['old_regex'][0]):
+            predicted_url = transform_url(input_url, patterns['old_tokenized'][0], patterns['new_tokenized'][0])
+            print(f"\nOriginal URL: {input_url}")
+            print(f"Predicted New URL: {predicted_url}")
+            print("\nNote: This prediction is based on observed patterns and may not be 100% accurate.")
+        else:
+            print("The entered URL does not match the expected pattern for this domain. Please try again.")
 
 def main():
     with open('data.json', 'r') as f:
@@ -213,14 +270,15 @@ def main():
                     print(f"Constants in old URLs: {pattern['old_constants']}")
                     print(f"Constants in new URLs: {pattern['new_constants']}")
                     
-                    for i in range(min(len(pattern['old_urls']), len(pattern['new_urls']))):
-                        print(f"\nExample {i+1}:")
-                        print(f"Old URL: {pattern['old_urls'][i]}")
-                        print(f"New URL: {pattern['new_urls'][i]}")
-                        print(f"Old URL (regex pattern): {pattern['old_regex'][i]}")
-                        print(f"New URL (regex pattern): {pattern['new_regex'][i]}")
-                        # print(f"Old URL (token pattern): {pattern['old_tokenized'][i]}")
-                        # print(f"New URL (token pattern): {pattern['new_tokenized'][i]}")
+                    # for i in range(min(len(pattern['old_urls']), len(pattern['new_urls']))):
+                    #     print(f"\nExample {i+1}:")
+                    print(f"Old URL: {pattern['old_urls'][0]}")
+                    print(f"New URL: {pattern['new_urls'][0]}")
+                    print(f"Old URL (regex pattern): {pattern['old_regex'][0]}")
+                    print(f"New URL (regex pattern): {pattern['new_regex'][0]}")
+                    
+                    
+                    predict_url(domain, pattern)
             else:
                 print("Invalid choice. Please try again.")
         except ValueError:
