@@ -72,21 +72,16 @@ def tokenize_url_segments(url, constants):
     parsed = urlparse(url)
     path = parsed.path.strip('/').split('/')
     
-    if path and '.' in path[-1]:
-        path[-1] = path[-1].rsplit('.', 1)[0]
-    
     tokenized = f"{parsed.netloc}"
     segments = []
     
-    for i, segment in enumerate(path, 1):
+    for segment in path:
         if segment in constants:
             tokenized += f"/{segment}"
         else:
-            tokenized += f"/${i}"
+            token = f"${len(segments) + 1}"
+            tokenized += f"/{token}"
             segments.append(segment)
-    
-    if parsed.path.endswith('.html'):
-        tokenized += '.html'
     
     return tokenized, segments
 
@@ -95,17 +90,8 @@ def generate_regex_pattern(url, constants):
     path = parsed.path.strip('/').split('/')
     regex_parts = [re.escape(parsed.netloc)]
     
-    for i, segment in enumerate(path):
-        if i == len(path) - 1 and '.' in segment: 
-            name, ext = segment.rsplit('.', 1)
-            if name in constants:
-                regex_parts.append(re.escape(name))
-            elif name.isdigit():
-                regex_parts.append(r'\d+')
-            else:
-                regex_parts.append(r'[a-zA-Z0-9-]+')
-            regex_parts[-1] += r'\.' + re.escape(ext)
-        elif segment in constants:
+    for segment in path:
+        if segment in constants:
             regex_parts.append(re.escape(segment))
         elif segment.isdigit():
             regex_parts.append(r'\d+')
@@ -195,28 +181,28 @@ def transform_url(url, old_pattern, new_pattern):
     old_parsed = urlparse(url)
     old_path = old_parsed.path.strip('/').split('/')
     
-    new_parsed = urlparse(new_pattern)
-    new_path = new_parsed.path.strip('/').split('/')
+    old_pattern_parts = old_pattern.split('/')
+    new_pattern_parts = new_pattern.split('/')
     
-    transformed_path = []
     variable_mapping = {}
     
     # Extract variables from old URL
-    for old_segment, pattern_segment in zip(old_path, old_pattern.split('/')):
+    for old_segment, pattern_segment in zip(old_path[1:], old_pattern_parts[1:]):  # Skip domain
         if pattern_segment.startswith('$'):
             variable_mapping[pattern_segment] = old_segment
     
     # Construct new URL
-    for segment in new_path:
+    new_path = []
+    for segment in new_pattern_parts[1:]:  # Skip domain
         if segment.startswith('$'):
-            transformed_path.append(variable_mapping.get(segment, segment))
+            new_path.append(variable_mapping.get(segment, segment))
         else:
-            transformed_path.append(segment)
+            new_path.append(segment)
     
     new_url = urlunsplit((
-        new_parsed.scheme,
-        new_parsed.netloc,
-        '/' + '/'.join(transformed_path),
+        old_parsed.scheme,
+        new_pattern_parts[0],  # Use the domain from the new pattern
+        '/' + '/'.join(new_path),
         '',
         ''
     ))
@@ -267,8 +253,8 @@ def main():
                     print(f"\nPattern for {domain}: {pattern}")
                 else:
                     print(f"\nPattern for {domain}:")
-                    print(f"Constants in old URLs: {pattern['old_constants']}")
-                    print(f"Constants in new URLs: {pattern['new_constants']}")
+                    # print(f"Constants in old URLs: {pattern['old_constants']}")
+                    # print(f"Constants in new URLs: {pattern['new_constants']}")
                     
                     # for i in range(min(len(pattern['old_urls']), len(pattern['new_urls']))):
                     #     print(f"\nExample {i+1}:")
@@ -276,6 +262,8 @@ def main():
                     print(f"New URL: {pattern['new_urls'][0]}")
                     print(f"Old URL (regex pattern): {pattern['old_regex'][0]}")
                     print(f"New URL (regex pattern): {pattern['new_regex'][0]}")
+                    print(f"Old URL (tokenized pattern): {pattern['old_tokenized'][0]}")
+                    print(f"New URL (tokenized pattern): {pattern['new_tokenized'][0]}")
                     
                     
                     predict_url(domain, pattern)
