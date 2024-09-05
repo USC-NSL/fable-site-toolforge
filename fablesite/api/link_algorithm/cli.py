@@ -78,15 +78,35 @@ def tokenize_url_segments(url, constants):
     tokenized = f"{parsed.netloc}"
     segments = []
     
-    for segment in path:
+    for i, segment in enumerate(path, 1):
         if segment in constants:
             tokenized += f"/{segment}"
         else:
-            regex_pattern = segment_to_regex(segment)
-            tokenized += f"/{regex_pattern}"
+            tokenized += f"/${i}"
             segments.append(segment)
     
+    if parsed.path.endswith('.html'):
+        tokenized += '.html'
+    
     return tokenized, segments
+
+def generate_regex_pattern(url, constants):
+    parsed = urlparse(url)
+    path = parsed.path.strip('/').split('/')
+    regex_parts = [re.escape(parsed.netloc)]
+    
+    for segment in path:
+        if segment in constants:
+            regex_parts.append(re.escape(segment))
+        elif segment.isdigit():
+            regex_parts.append(r'\d+')
+        else:
+            regex_parts.append(r'[a-zA-Z0-9-]+')
+    
+    if url.endswith('.html'):
+        regex_parts[-1] += r'\.html'
+    
+    return '/'.join(regex_parts)
 
 def process_urls(data):
     domains = defaultdict(lambda: {'old': [], 'new': []})
@@ -105,6 +125,8 @@ def process_urls(data):
             
             old_tokenized = []
             new_tokenized = []
+            old_regex = []
+            new_regex = []
             for old_url, new_url in zip(urls['old'], urls['new']):
                 old_token, old_segments = tokenize_url_segments(old_url, old_constants)
                 new_token, new_segments = tokenize_url_segments(new_url, new_constants)
@@ -139,18 +161,24 @@ def process_urls(data):
                     new_tokenized_url += '.html'
                 
                 old_tokenized.append(old_token)
-                new_tokenized.append(new_token)  
+                new_tokenized.append(new_tokenized_url)
+                
+                old_regex.append(generate_regex_pattern(old_url, old_constants))
+                new_regex.append(generate_regex_pattern(new_url, new_constants))
             
             patterns[domain] = {
                 'old_constants': old_constants,
                 'new_constants': new_constants,
                 'old_tokenized': old_tokenized[:2],
                 'new_tokenized': new_tokenized[:2],
+                'old_regex': old_regex[:2],
+                'new_regex': new_regex[:2],
                 'old_urls': urls['old'][:2],
                 'new_urls': urls['new'][:2]
             }
     
     return patterns
+
 def main():
     with open('data.json', 'r') as f:
         data = json.load(f)
@@ -183,13 +211,15 @@ def main():
                         print(f"\nExample {i+1}:")
                         print(f"Old URL: {pattern['old_urls'][i]}")
                         print(f"New URL: {pattern['new_urls'][i]}")
-                        print(f"Old URL (regex pattern): {pattern['old_tokenized'][i]}")
-                        print(f"New URL (regex pattern): {pattern['new_tokenized'][i]}")
+                        print(f"Old URL (regex pattern): {pattern['old_regex'][i]}")
+                        print(f"New URL (regex pattern): {pattern['new_regex'][i]}")
+                        # print(f"Old URL (token pattern): {pattern['old_tokenized'][i]}")
+                        # print(f"New URL (token pattern): {pattern['new_tokenized'][i]}")
             else:
                 print("Invalid choice. Please try again.")
         except ValueError:
             print("Invalid input. Please enter a number or 'q'.")
-        
+            
         input("\nPress Enter to continue...")
 if __name__ == "__main__":
     main()
