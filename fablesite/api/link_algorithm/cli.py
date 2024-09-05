@@ -95,16 +95,22 @@ def generate_regex_pattern(url, constants):
     path = parsed.path.strip('/').split('/')
     regex_parts = [re.escape(parsed.netloc)]
     
-    for segment in path:
-        if segment in constants:
+    for i, segment in enumerate(path):
+        if i == len(path) - 1 and '.' in segment: 
+            name, ext = segment.rsplit('.', 1)
+            if name in constants:
+                regex_parts.append(re.escape(name))
+            elif name.isdigit():
+                regex_parts.append(r'\d+')
+            else:
+                regex_parts.append(r'[a-zA-Z0-9-]+')
+            regex_parts[-1] += r'\.' + re.escape(ext)
+        elif segment in constants:
             regex_parts.append(re.escape(segment))
         elif segment.isdigit():
             regex_parts.append(r'\d+')
         else:
             regex_parts.append(r'[a-zA-Z0-9-]+')
-    
-    if url.endswith('.html'):
-        regex_parts[-1] += r'\.html'
     
     return '/'.join(regex_parts)
 
