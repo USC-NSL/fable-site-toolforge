@@ -119,9 +119,18 @@ def process_urls(data):
             new_tokenized = []
             old_regex = []
             new_regex = []
+            is_predictable = True
             for old_url, new_url in zip(urls['old'], urls['new']):
                 old_token, old_segments = tokenize_url_segments(old_url, old_constants)
                 new_token, new_segments = tokenize_url_segments(new_url, new_constants)
+
+                old_variables = [seg for seg in old_token.split('/') if seg.startswith('$')]
+                new_variables = [seg for seg in new_token.split('/') if seg.startswith('$')]
+
+                if len(new_variables) > len(old_variables):
+                    is_predictable = False
+                    break             
+                
                 
                 old_mapping = {seg.lower(): f"${i+1}" for i, seg in enumerate(old_segments)}
                 
@@ -158,16 +167,19 @@ def process_urls(data):
                 old_regex.append(generate_regex_pattern(old_url, old_constants))
                 new_regex.append(generate_regex_pattern(new_url, new_constants))
             
-            patterns[domain] = {
-                'old_constants': old_constants,
-                'new_constants': new_constants,
-                'old_tokenized': old_tokenized[:2],
-                'new_tokenized': new_tokenized[:2],
-                'old_regex': old_regex[:2],
-                'new_regex': new_regex[:2],
-                'old_urls': urls['old'][:2],
-                'new_urls': urls['new'][:2]
-            }
+            if not is_predictable:
+                patterns[domain] = "Unpredictable due to new information in alias URL"
+            else:
+                patterns[domain] = {
+                    'old_constants': old_constants,
+                    'new_constants': new_constants,
+                    'old_tokenized': old_tokenized[:2],
+                    'new_tokenized': new_tokenized[:2],
+                    'old_regex': old_regex[:2],
+                    'new_regex': new_regex[:2],
+                    'old_urls': urls['old'][:2],
+                    'new_urls': urls['new'][:2]
+                }
     
     return patterns
 def validate_input_url(url, domain):
@@ -186,25 +198,26 @@ def transform_url(url, old_pattern, new_pattern):
     
     variable_mapping = {}
     
-    # Extract variables from old URL
-    for old_segment, pattern_segment in zip(old_path[1:], old_pattern_parts[1:]):  # Skip domain
+    for old_segment, pattern_segment in zip(old_path, old_pattern_parts[1:]):  
         if pattern_segment.startswith('$'):
             variable_mapping[pattern_segment] = old_segment
     
-    # Construct new URL
     new_path = []
-    for segment in new_pattern_parts[1:]:  # Skip domain
+    for segment in new_pattern_parts[1:]:  
         if segment.startswith('$'):
-            new_path.append(variable_mapping.get(segment, segment))
+            if segment in variable_mapping:
+                new_path.append(variable_mapping[segment])
+            else:
+                new_path.append(segment)
         else:
             new_path.append(segment)
     
     new_url = urlunsplit((
         old_parsed.scheme,
-        new_pattern_parts[0],  # Use the domain from the new pattern
+        new_pattern_parts[0],
         '/' + '/'.join(new_path),
-        '',
-        ''
+        old_parsed.query,
+        old_parsed.fragment
     ))
     
     return new_url
