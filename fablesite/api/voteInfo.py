@@ -2,7 +2,7 @@ import flask
 import fablesite
 import mwoauth
 from flask import request, jsonify
-from link_algorithm import identify_pattern, apply_pattern, is_unpredictable, get_domain
+from fablesite.api.link_algorithm import identify_pattern, apply_pattern, is_unpredictable, get_domain
 
 @fablesite.app.route("/api/logout", methods=["GET"])
 def logout():
