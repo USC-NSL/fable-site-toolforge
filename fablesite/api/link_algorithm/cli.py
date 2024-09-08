@@ -108,6 +108,7 @@ def process_urls(data):
         domains[domain]['new'].append(item['alias'])
     
     patterns = {}
+    all_domains = {}
     for domain, urls in domains.items():
         if len(urls['old']) == 1:
             patterns[domain] = "Unpredictable due to missing training"
@@ -170,17 +171,20 @@ def process_urls(data):
             if not is_predictable:
                 patterns[domain] = "Unpredictable due to new information in alias URL"
             else:
-                patterns[domain] = {
+                domain_data = {
                     'old_constants': old_constants,
                     'new_constants': new_constants,
-                    'old_tokenized': old_tokenized[:2],
-                    'new_tokenized': new_tokenized[:2],
-                    'old_regex': old_regex[:2],
-                    'new_regex': new_regex[:2],
-                    'old_urls': urls['old'][:2],
-                    'new_urls': urls['new'][:2]
+                    'old_tokenized': old_tokenized[0] if old_tokenized else None,
+                    'new_tokenized': new_tokenized[0] if new_tokenized else None,
+                    'old_regex': old_regex[0] if old_regex else None,
+                    'new_regex': new_regex[0] if new_regex else None,
+                    'old_example': urls['old'][0] if urls['old'] else None,
+                    'new_example': urls['new'][0] if urls['new'] else None
                 }
-    
+                patterns[domain] = domain_data
+                all_domains[domain] = domain_data
+    with open('out.json', 'w') as f:
+        json.dump(all_domains, f, indent=4)
     return patterns
 def validate_input_url(url, domain):
     parsed_url = urlparse(url)
@@ -266,13 +270,9 @@ def main():
                     print(f"\nPattern for {domain}: {pattern}")
                 else:
                     print(f"\nPattern for {domain}:")
-                    # print(f"Constants in old URLs: {pattern['old_constants']}")
-                    # print(f"Constants in new URLs: {pattern['new_constants']}")
-                    
-                    # for i in range(min(len(pattern['old_urls']), len(pattern['new_urls']))):
-                    #     print(f"\nExample {i+1}:")
-                    print(f"Old URL: {pattern['old_urls'][0]}")
-                    print(f"New URL: {pattern['new_urls'][0]}")
+
+                    print(f"Old URL: {pattern['old_example'][0]}")
+                    print(f"New URL: {pattern['new_example'][0]}")
                     print(f"Old URL (regex pattern): {pattern['old_regex'][0]}")
                     print(f"New URL (regex pattern): {pattern['new_regex'][0]}")
                     print(f"Old URL (tokenized pattern): {pattern['old_tokenized'][0]}")
