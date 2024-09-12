@@ -127,7 +127,10 @@ def process_urls(data):
 
                 old_variables = [seg for seg in old_token.split('/') if seg.startswith('$')]
                 new_variables = [seg for seg in new_token.split('/') if seg.startswith('$')]
-
+                # print(domain)
+                # print(len(new_variables), len(old_variables))
+                # print(new_variables, old_variables)
+                # print("----")
                 if len(new_variables) > len(old_variables):
                     is_predictable = False
                     break             
@@ -167,6 +170,9 @@ def process_urls(data):
                 
                 old_regex.append(generate_regex_pattern(old_url, old_constants))
                 new_regex.append(generate_regex_pattern(new_url, new_constants))
+                if any(token not in old_mapping.values() for token in new_tokenized_segments):
+                    is_predictable = False
+                    break
             
             if not is_predictable:
                 patterns[domain] = "Unpredictable due to new information in alias URL"
@@ -186,6 +192,7 @@ def process_urls(data):
     with open('out.json', 'w') as f:
         json.dump(all_domains, f, indent=4)
     return patterns
+
 def validate_input_url(url, domain):
     parsed_url = urlparse(url)
     return parsed_url.netloc.lower() == domain.lower()
@@ -251,6 +258,19 @@ def main():
     
     patterns = process_urls(data)
     
+    predictable_count = 0
+    unpredictable_count = 0
+    
+    for pattern in patterns.values():
+        if isinstance(pattern, str):
+            unpredictable_count += 1
+        else:
+            predictable_count += 1
+    
+    print(f"\nTotal domains processed: {len(patterns)}")
+    print(f"Predictable domains: {predictable_count}")
+    print(f"Unpredictable domains: {unpredictable_count}")
+    
     while True:
         print("\nAvailable domains:")
         for i, domain in enumerate(patterns.keys(), 1):
@@ -270,14 +290,12 @@ def main():
                     print(f"\nPattern for {domain}: {pattern}")
                 else:
                     print(f"\nPattern for {domain}:")
-
                     print(f"Old URL: {pattern['old_example']}")
                     print(f"New URL: {pattern['new_example']}")
                     print(f"Old URL (regex pattern): {pattern['old_regex']}")
                     print(f"New URL (regex pattern): {pattern['new_regex']}")
                     print(f"Old URL (tokenized pattern): {pattern['old_tokenized']}")
                     print(f"New URL (tokenized pattern): {pattern['new_tokenized']}")
-                    
                     
                     predict_url(domain, pattern)
             else:
@@ -286,5 +304,6 @@ def main():
             print("Invalid input. Please enter a number or 'q'.")
             
         input("\nPress Enter to continue...")
+
 if __name__ == "__main__":
     main()

@@ -57,22 +57,6 @@
         "old_example": "http://herbaria4.herb.berkeley.edu/eflora_display.php?tid=47088",
         "new_example": "https://ucjeps.berkeley.edu/eflora/eflora_display.php?tid=47088"
     },
-    "www.fallingrain.com": {
-        "old_constants": [
-            "world",
-            "PK"
-        ],
-        "new_constants": [
-            "world",
-            "PK"
-        ],
-        "old_tokenized": "www.fallingrain.com/world/PK/$1/$2",
-        "new_tokenized": "www.fallingrain.com/world/PK/$3/$2.html",
-        "old_regex": "www\\.fallingrain\\.com/world/PK/\\d+/[a-zA-Z0-9-]+",
-        "new_regex": "www\\.fallingrain\\.com/world/PK/\\d+/[a-zA-Z0-9-]+",
-        "old_example": "http://www.fallingrain.com/world/PK/3/Toru.html",
-        "new_example": "http://www.fallingrain.com/world/PK/03/Toru.html"
-    },
     "www.quinzaine-realisateurs.com": {
         "old_constants": [
             "qz_an"
@@ -87,91 +71,6 @@
         "new_regex": "www\\.quinzaine\\-cineastes\\.fr/fr/edition/\\d+",
         "old_example": "http://www.quinzaine-realisateurs.com/qz_an/1998/",
         "new_example": "http://www.quinzaine-cineastes.fr/fr/edition/1998"
-    },
-    "byucougars.com": {
-        "old_constants": [],
-        "new_constants": [
-            "athlete",
-            "football"
-        ],
-        "old_tokenized": "byucougars.com/$1/$2/$3/$4",
-        "new_tokenized": "byucougars.com/athlete/football/$5/$6",
-        "old_regex": "byucougars\\.com/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+",
-        "new_regex": "byucougars\\.com/athlete/football/\\d+/[a-zA-Z0-9-]+",
-        "old_example": "https://byucougars.com/story/football/nid/hank-tuipulotu-2016-byu-football-recruiting-class/",
-        "new_example": "http://byucougars.com/athlete/football/1285436/hank-tuipulotu"
-    },
-    "www.bbc.co.uk": {
-        "old_constants": [
-            "sport"
-        ],
-        "new_constants": [
-            "sport",
-            "football"
-        ],
-        "old_tokenized": "www.bbc.co.uk/sport/$1/$2/$3",
-        "new_tokenized": "www.bbc.co.uk/sport/football/$4",
-        "old_regex": "www\\.bbc\\.co\\.uk/sport/\\d+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+",
-        "new_regex": "www\\.bbc\\.co\\.uk/sport/football/\\d+",
-        "old_example": "https://www.bbc.co.uk/sport/0/football/25203020s",
-        "new_example": "https://www.bbc.co.uk/sport/football/25203020"
-    },
-    "news.bbc.co.uk": {
-        "old_constants": [],
-        "new_constants": [
-            "sport2",
-            "hi"
-        ],
-        "old_tokenized": "news.bbc.co.uk/$1/$2/$3/$4/$5",
-        "new_tokenized": "news.bbc.co.uk/sport2/hi/$6/$7/$5",
-        "old_regex": "news\\.bbc\\.co\\.uk/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+",
-        "new_regex": "news\\.bbc\\.co\\.uk/sport2/hi/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+",
-        "old_example": "http://news.bbc.co.uk/solpda/ukfs_sport/hi/newsid_6205000/6205647.stm",
-        "new_example": "http://news.bbc.co.uk/sport2/hi/football/eng_div_1/6205647.stm"
-    },
-    "www.sherdog.com": {
-        "old_constants": [
-            "news",
-            "press%20releases"
-        ],
-        "new_constants": [
-            "news",
-            "pressreleases"
-        ],
-        "old_tokenized": "www.sherdog.com/news/press%20releases/$1",
-        "new_tokenized": "www.sherdog.com/news/pressreleases/$2",
-        "old_regex": "www\\.sherdog\\.com/news/press%20releases/[a-zA-Z0-9-]+",
-        "new_regex": "www\\.sherdog\\.com/news/pressreleases/[a-zA-Z0-9-]+",
-        "old_example": "http://www.sherdog.com/news/press%20releases/Cage-Warriors-Announce-Line-Up-10246",
-        "new_example": "https://www.sherdog.com/news/pressreleases/Cage-Warriors-Announce-LineUp-10246"
-    },
-    "m.billboard.com": {
-        "old_constants": [
-            "entry",
-            "view",
-            "id"
-        ],
-        "new_constants": [
-            "pro"
-        ],
-        "old_tokenized": "m.billboard.com/entry/view/id/$1",
-        "new_tokenized": "www.billboard.com/pro/$2",
-        "old_regex": "m\\.billboard\\.com/entry/view/id/\\d+",
-        "new_regex": "www\\.billboard\\.com/pro/[a-zA-Z0-9-]+",
-        "old_example": "http://m.billboard.com/entry/view/id/128316",
-        "new_example": "http://www.billboard.com/pro/chart-highlights-shawn-mendes-sews-up-first-pop-songs-airplay/"
-    },
-    "www.scribd.com": {
-        "old_constants": [],
-        "new_constants": [
-            "doc"
-        ],
-        "old_tokenized": "www.scribd.com/$1/$2/$3",
-        "new_tokenized": "www.scribd.com/doc/$4/$5",
-        "old_regex": "www\\.scribd\\.com/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+",
-        "new_regex": "www\\.scribd\\.com/doc/\\d+/[a-zA-Z0-9-]+",
-        "old_example": "https://www.scribd.com/panhwar/d/6518336-Zulfiqar-Ali-Bhutto-The-Architect-of-New-Pakistan",
-        "new_example": "https://www.scribd.com/doc/6518336/Zulfiqar-Ali-Bhutto-The-Architect-of-New-Pakistan"
     },
     "beta.latimes.com": {
         "old_constants": [],
@@ -210,44 +109,6 @@
         "old_example": "http://news-en.trend.az/sports/1378914.html",
         "new_example": "https://en.trend.az/azerbaijan/society/1378914.html"
     },
-    "www.city-data.com": {
-        "old_constants": [
-            "township"
-        ],
-        "new_constants": [
-            "township"
-        ],
-        "old_tokenized": "www.city-data.com/township/$1",
-        "new_tokenized": "www.city-data.com/township/$2.html",
-        "old_regex": "www\\.city\\-data\\.com/township/[a-zA-Z0-9-]+",
-        "new_regex": "www\\.city\\-data\\.com/township/[a-zA-Z0-9-]+",
-        "old_example": "http://www.city-data.com/township/Jackson_Pope_AR.html",
-        "new_example": "http://www.city-data.com/township/Jackson-Pope-AR.html"
-    },
-    "www.hrc.org": {
-        "old_constants": [],
-        "new_constants": [],
-        "old_tokenized": "www.hrc.org/$1/$2",
-        "new_tokenized": "www.hrc.org/$3/$4",
-        "old_regex": "www\\.hrc\\.org/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+",
-        "new_regex": "www\\.hrc\\.org/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+",
-        "old_example": "https://www.hrc.org/blog/hrc-endorses-u.s.-rep.-colin-allred-and-state-rep.-julie-johnson",
-        "new_example": "https://www.hrc.org/news/hrc-endorses-u-s-rep-colin-allred-and-state-rep-julie-johnson"
-    },
-    "www.bbc.com": {
-        "old_constants": [
-            "news"
-        ],
-        "new_constants": [
-            "news"
-        ],
-        "old_tokenized": "www.bbc.com/news/$1",
-        "new_tokenized": "www.bbc.com/news/$2",
-        "old_regex": "www\\.bbc\\.com/news/[a-zA-Z0-9-]+",
-        "new_regex": "www\\.bbc\\.com/news/[a-zA-Z0-9-]+",
-        "old_example": "https://www.bbc.com/news/world-middle-east-12791738l",
-        "new_example": "https://www.bbc.com/news/world-middle-east-12791738"
-    },
     "www.arrs.run": {
         "old_constants": [],
         "new_constants": [
@@ -259,20 +120,6 @@
         "new_regex": "arrs\\.run/MaraRank/[a-zA-Z0-9-]+",
         "old_example": "http://www.arrs.run/ATM_Mara1984.htm",
         "new_example": "https://arrs.run/MaraRank/ATM_Mara1984.htm"
-    },
-    "www.pcworld.com": {
-        "old_constants": [
-            "article"
-        ],
-        "new_constants": [
-            "article"
-        ],
-        "old_tokenized": "www.pcworld.com/article/$1/$2",
-        "new_tokenized": "www.pcworld.com/article/$3/$4.html",
-        "old_regex": "www\\.pcworld\\.com/article/\\d+/[a-zA-Z0-9-]+",
-        "new_regex": "www\\.pcworld\\.com/article/\\d+/[a-zA-Z0-9-]+",
-        "old_example": "https://www.pcworld.com/article/153848/ctia_drops_lawsuit_against_fccs_open_access_rules.html",
-        "new_example": "http://www.pcworld.com/article/532039/article-7021.html"
     },
     "www.algerie360.com": {
         "old_constants": [
@@ -321,20 +168,6 @@
         "old_example": "https://www.boxingscene.com/%20/arum-fury-wilder-happen-even-2021-then-joshua-whyte--150822",
         "new_example": "https://www.boxingscene.com/arum-fury-wilder-happen-even-2021-then-joshua-whyte--150822"
     },
-    "adb.anu.edu.au": {
-        "old_constants": [
-            "biography"
-        ],
-        "new_constants": [
-            "biography"
-        ],
-        "old_tokenized": "adb.anu.edu.au/biography/$1",
-        "new_tokenized": "adb.anu.edu.au/biography/$2",
-        "old_regex": "adb\\.anu\\.edu\\.au/biography/[a-zA-Z0-9-]+",
-        "new_regex": "adb\\.anu\\.edu\\.au/biography/[a-zA-Z0-9-]+",
-        "old_example": "http://adb.anu.edu.au/biography/riddell-walter-john\u20138208",
-        "new_example": "https://adb.anu.edu.au/biography/riddell-walter-john-8208"
-    },
     "www.nzfootball.co.nz": {
         "old_constants": [
             "newsarticle"
@@ -348,44 +181,6 @@
         "new_regex": "www\\.nzfootball\\.co\\.nz/newsarticle/\\d+",
         "old_example": "https://www.nzfootball.co.nz/newsarticle/77966?newsfeedId=569432",
         "new_example": "https://www.nzfootball.co.nz/newsarticle/77966"
-    },
-    "www.fbschedules.com": {
-        "old_constants": [],
-        "new_constants": [],
-        "old_tokenized": "www.fbschedules.com/$1/$2/$3",
-        "new_tokenized": "fbschedules.com/$4",
-        "old_regex": "www\\.fbschedules\\.com/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+",
-        "new_regex": "fbschedules\\.com/[a-zA-Z0-9-]+",
-        "old_example": "http://www.fbschedules.com/ncaa-16/big-12/2016-iowa-state-cyclones-football-schedule.php",
-        "new_example": "https://fbschedules.com/2016-iowa-state-football-schedule/"
-    },
-    "www.lancashiretelegraph.co.uk": {
-        "old_constants": [
-            "sport"
-        ],
-        "new_constants": [
-            "sport"
-        ],
-        "old_tokenized": "www.lancashiretelegraph.co.uk/sport/$1/$2/$3/$4",
-        "new_tokenized": "www.lancashiretelegraph.co.uk/sport/$5",
-        "old_regex": "www\\.lancashiretelegraph\\.co\\.uk/sport/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+",
-        "new_regex": "www\\.lancashiretelegraph\\.co\\.uk/sport/[a-zA-Z0-9-]+",
-        "old_example": "http://www.lancashiretelegraph.co.uk/sport/football/blackburn_rovers/news/9793717.Best_signs_for_Blackburn_Rovers/",
-        "new_example": "https://www.lancashiretelegraph.co.uk/sport/9793717.best-signs-blackburn-rovers/"
-    },
-    "tvseriesfinale.com": {
-        "old_constants": [
-            "tv-show"
-        ],
-        "new_constants": [
-            "tv-show"
-        ],
-        "old_tokenized": "tvseriesfinale.com/tv-show/$1",
-        "new_tokenized": "tvseriesfinale.com/tv-show/$2",
-        "old_regex": "tvseriesfinale\\.com/tv\\-show/[a-zA-Z0-9-]+",
-        "new_regex": "tvseriesfinale\\.com/tv\\-show/[a-zA-Z0-9-]+",
-        "old_example": "http://tvseriesfinale.com/tv-show/the-ricki-lake-show-daytime-tv-series-Canceled-no-season-two/",
-        "new_example": "https://tvseriesfinale.com/tv-show/the-ricki-lake-show-daytime-tv-series-cancelled-no-season-two/"
     },
     "www.schooldigger.com": {
         "old_constants": [
@@ -403,37 +198,6 @@
         "old_example": "http://www.schooldigger.com/schoolrank.aspx?Level=3&findschool=1728004964",
         "new_example": "https://www.schooldigger.com/go/NJ/schoolrank.aspx?Level=3&findschool=1728004964"
     },
-    "m.goal.com": {
-        "old_constants": [
-            "s",
-            "en-my",
-            "news",
-            "3896",
-            "malaysia",
-            "2017",
-            "05"
-        ],
-        "new_constants": [
-            "en-my",
-            "news"
-        ],
-        "old_tokenized": "m.goal.com/s/en-my/news/3896/malaysia/2017/05/$1/$2/$3",
-        "new_tokenized": "www.goal.com/en-my/news/$4/$5",
-        "old_regex": "m\\.goal\\.com/s/en\\-my/news/3896/malaysia/2017/05/\\d+/\\d+/[a-zA-Z0-9-]+",
-        "new_regex": "www\\.goal\\.com/en\\-my/news/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+",
-        "old_example": "http://m.goal.com/s/en-my/news/3896/malaysia/2017/05/17/35584702/transfer-golden-boy-amri-yahyah-returns-to-selangor",
-        "new_example": "http://www.goal.com/en-my/news/golden-boy-amri-yahyah-returns-to-selangor/19a9pv9yvx922161c0q132hh46"
-    },
-    "www.allmusic.com": {
-        "old_constants": [],
-        "new_constants": [],
-        "old_tokenized": "www.allmusic.com/$1/$2",
-        "new_tokenized": "www.allmusic.com/$1/$3",
-        "old_regex": "www\\.allmusic\\.com/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+",
-        "new_regex": "www\\.allmusic\\.com/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+",
-        "old_example": "https://www.allmusic.com/album/shakin-things-up-mw00000261521",
-        "new_example": "https://www.allmusic.com/album/shakin-things-up-mw0000026152"
-    },
     "archive.thisischeshire.co.uk": {
         "old_constants": [],
         "new_constants": [
@@ -445,22 +209,6 @@
         "new_regex": "www\\.warringtonguardian\\.co\\.uk/archive/\\d+/\\d+/\\d+/[a-zA-Z0-9-]+",
         "old_example": "http://archive.thisischeshire.co.uk/1998/12/2/235051.html",
         "new_example": "https://www.warringtonguardian.co.uk/archive/1998/12/2/235051.html/"
-    },
-    "www.swimmingworldmagazine.com": {
-        "old_constants": [
-            "lane9",
-            "news",
-            "World"
-        ],
-        "new_constants": [
-            "news"
-        ],
-        "old_tokenized": "www.swimmingworldmagazine.com/lane9/news/World/$1",
-        "new_tokenized": "www.swimmingworldmagazine.com/news/$2",
-        "old_regex": "www\\.swimmingworldmagazine\\.com/lane9/news/World/[a-zA-Z0-9-]+",
-        "new_regex": "www\\.swimmingworldmagazine\\.com/news/[a-zA-Z0-9-]+",
-        "old_example": "http://www.swimmingworldmagazine.com/lane9/news/World/30513.asp?q=German-Olympic-Trials:-Trio-of-German-Records-Tumble",
-        "new_example": "https://www.swimmingworldmagazine.com/news/german-olympic-trials-trio-of-german-records-tumble/"
     },
     "www.birmingham2022.com": {
         "old_constants": [
@@ -477,30 +225,6 @@
         "new_regex": "www\\.birmingham2022\\.com/partnerships/[a-zA-Z0-9-]+",
         "old_example": "https://www.birmingham2022.com/partnerships/www.birmingham2022.com/partnerships/chase",
         "new_example": "https://www.birmingham2022.com/partnerships/chase"
-    },
-    "www.smithsonianmag.com": {
-        "old_constants": [
-            "history-archaeology"
-        ],
-        "new_constants": [
-            "history"
-        ],
-        "old_tokenized": "www.smithsonianmag.com/history-archaeology/$1",
-        "new_tokenized": "www.smithsonianmag.com/history/$2",
-        "old_regex": "www\\.smithsonianmag\\.com/history\\-archaeology/[a-zA-Z0-9-]+",
-        "new_regex": "www\\.smithsonianmag\\.com/history/[a-zA-Z0-9-]+",
-        "old_example": "http://www.smithsonianmag.com/history-archaeology/patent.html?c=y&page=4",
-        "new_example": "https://www.smithsonianmag.com/history/back-to-the-future-122460718/"
-    },
-    "nonleaguescotland.org.uk": {
-        "old_constants": [],
-        "new_constants": [],
-        "old_tokenized": "nonleaguescotland.org.uk/$1",
-        "new_tokenized": "nonleaguescotland.org.uk/$2.html",
-        "old_regex": "nonleaguescotland\\.org\\.uk/[a-zA-Z0-9-]+",
-        "new_regex": "nonleaguescotland\\.org\\.uk/[a-zA-Z0-9-]+",
-        "old_example": "http://nonleaguescotland.org.uk/nairncounty.htm",
-        "new_example": "http://nonleaguescotland.org.uk/nairncounty.html"
     },
     "development.americasfuture.org": {
         "old_constants": [
@@ -520,40 +244,6 @@
         "old_example": "http://development.americasfuture.org/doublethink/2004/05/02/betrayal-in-pennsylvania",
         "new_example": "https://americasfuture.org/betrayal-in-pennsylvania/"
     },
-    "www.mediapost.com": {
-        "old_constants": [
-            "publications",
-            "index"
-        ],
-        "new_constants": [
-            "publications",
-            "article"
-        ],
-        "old_tokenized": "www.mediapost.com/publications/$1",
-        "new_tokenized": "www.mediapost.com/publications/article/$2",
-        "old_regex": "www\\.mediapost\\.com/publications/[a-zA-Z0-9-]+",
-        "new_regex": "www\\.mediapost\\.com/publications/article/\\d+",
-        "old_example": "http://www.mediapost.com/publications/index.cfm?fa=Articles.showArticle&art_aid=80921",
-        "new_example": "https://www.mediapost.com/publications/article/80921/"
-    },
-    "thehill.com": {
-        "old_constants": [
-            "blogs",
-            "blog-briefing-room",
-            "news"
-        ],
-        "new_constants": [
-            "blogs",
-            "blog-briefing-room",
-            "news"
-        ],
-        "old_tokenized": "thehill.com/blogs/blog-briefing-room/news/$1",
-        "new_tokenized": "thehill.com/blogs/blog-briefing-room/news/$2",
-        "old_regex": "thehill\\.com/blogs/blog\\-briefing\\-room/news/[a-zA-Z0-9-]+",
-        "new_regex": "thehill\\.com/blogs/blog\\-briefing\\-room/news/[a-zA-Z0-9-]+",
-        "old_example": "http://thehill.com/blogs/blog-briefing-room/news/380116-organizers-estimateda-800k-people-in-dc-for-march-so-far",
-        "new_example": "https://thehill.com/blogs/blog-briefing-room/news/380116-organizers-estimate-800k-people-in-dc-for-march-so-far/"
-    },
     "www.247sports.com": {
         "old_constants": [
             "nfl",
@@ -572,20 +262,6 @@
         "old_example": "https://www.247sports.com/nfl/chicago-bears/Bolt/Have-the-Chicago-Bears-found-their-safety-duo-for-the-future-in-Adrian-Amos-and-Eddie-Jackson-109432229/",
         "new_example": "https://247sports.com/nfl/chicago-bears/article/have-the-chicago-bears-found-their-safety-duo-for-the-future-in-adrian-amos-and-eddie-jackson-109432229/"
     },
-    "247sports.com": {
-        "old_constants": [
-            "nfl"
-        ],
-        "new_constants": [
-            "nfl"
-        ],
-        "old_tokenized": "247sports.com/nfl/$1/$2/$3",
-        "new_tokenized": "247sports.com/nfl/$1/$4/$3",
-        "old_regex": "247sports\\.com/nfl/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+",
-        "new_regex": "247sports\\.com/nfl/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+",
-        "old_example": "https://247sports.com/nfl/chicago-bears/Bolt/Jordan-Howard-Akiem-Hicks-Kyle-Long-and-Tarik-Cohen-named-Pro-Bowl-alternates-for-Chicago-Bears-112536406",
-        "new_example": "https://247sports.com/nfl/chicago-bears/article/jordan-howard-akiem-hicks-kyle-long-and-tarik-cohen-named-pro-bowl-alternates-for-chicago-bears-112536406/"
-    },
     "archive.thisishampshire.net": {
         "old_constants": [],
         "new_constants": [
@@ -597,21 +273,6 @@
         "new_regex": "www\\.dailyecho\\.co\\.uk/archive/\\d+/\\d+/\\d+/[a-zA-Z0-9-]+",
         "old_example": "http://archive.thisishampshire.net/2003/11/4/41145.html",
         "new_example": "https://www.dailyecho.co.uk/archive/2003/11/4/41145.html/"
-    },
-    "projects.militarytimes.com": {
-        "old_constants": [
-            "citations-medals-awards",
-            "recipient"
-        ],
-        "new_constants": [
-            "hero"
-        ],
-        "old_tokenized": "projects.militarytimes.com/citations-medals-awards/$1",
-        "new_tokenized": "valor.militarytimes.com/hero/$2",
-        "old_regex": "projects\\.militarytimes\\.com/citations\\-medals\\-awards/[a-zA-Z0-9-]+",
-        "new_regex": "valor\\.militarytimes\\.com/hero/\\d+",
-        "old_example": "http://projects.militarytimes.com/citations-medals-awards/recipient.php?recipientid=1068",
-        "new_example": "https://valor.militarytimes.com/hero/1068"
     },
     "www.bundesliga.com": {
         "old_constants": [
@@ -644,36 +305,6 @@
         "new_regex": "www\\.racingsportscars\\.com/results/[a-zA-Z0-9-]+",
         "old_example": "http://www.racingsportscars.com/result/Sebring-1958-03-22.html",
         "new_example": "https://www.racingsportscars.com/results/Sebring-1958-03-22.html"
-    },
-    "timesofindia.com": {
-        "old_constants": [],
-        "new_constants": [],
-        "old_tokenized": "timesofindia.com/$1/$2/$3/$4/$5/$6/$7",
-        "new_tokenized": "timesofindia.indiatimes.com/$1/$2/$3/$4/$5/$8/$7",
-        "old_regex": "timesofindia\\.com/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+",
-        "new_regex": "timesofindia\\.indiatimes\\.com/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+",
-        "old_example": "https://timesofindia.com/entertainment/malayalam/movies/news/aadu-3-shajipappan-and-team-will-come-back-with-yet-another-laugh-riot-in-2019/amp_articleshow/63300591.cms",
-        "new_example": "https://timesofindia.indiatimes.com/entertainment/malayalam/movies/news/aadu-3-shajipappan-and-team-will-come-back-with-yet-another-laugh-riot-in-2019/articleshow/63300591.cms"
-    },
-    "www.dcunited.com": {
-        "old_constants": [],
-        "new_constants": [],
-        "old_tokenized": "www.dcunited.com/$1/$2/$3/$4/$5",
-        "new_tokenized": "www.dcunited.com/$6/$7",
-        "old_regex": "www\\.dcunited\\.com/[a-zA-Z0-9-]+/\\d+/\\d+/\\d+/[a-zA-Z0-9-]+",
-        "new_regex": "www\\.dcunited\\.com/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+",
-        "old_example": "https://www.dcunited.com/post/2018/08/15/goal-fisher-scores-his-first-black-and-red",
-        "new_example": "https://www.dcunited.com/video/goal-fisher-scores-his-first-in-the-black-and-red-5822687796001"
-    },
-    "www.baseball-reference.com": {
-        "old_constants": [],
-        "new_constants": [],
-        "old_tokenized": "www.baseball-reference.com/$1/$2/$3",
-        "new_tokenized": "www.baseball-reference.com/$1/$2/$4",
-        "old_regex": "www\\.baseball\\-reference\\.com/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+",
-        "new_regex": "www\\.baseball\\-reference\\.com/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+",
-        "old_example": "https://www.baseball-reference.com/boxes/OAK/OAK198810190.shtml=baseball-reference.com",
-        "new_example": "https://www.baseball-reference.com/boxes/OAK/OAK198810190.shtml"
     },
     "www.ubs.com": {
         "old_constants": [
@@ -708,20 +339,6 @@
         "old_example": "https://www.premierlacrosseleague.com/article/stonybrookannouncment",
         "new_example": "https://premierlacrosseleague.com/articles/stonybrookannouncment"
     },
-    "www.timbers.com": {
-        "old_constants": [
-            "news"
-        ],
-        "new_constants": [
-            "news"
-        ],
-        "old_tokenized": "www.timbers.com/news/$1/$2/$3",
-        "new_tokenized": "www.timbers.com/news/$4",
-        "old_regex": "www\\.timbers\\.com/news/\\d+/\\d+/[a-zA-Z0-9-]+",
-        "new_regex": "www\\.timbers\\.com/news/[a-zA-Z0-9-]+",
-        "old_example": "http://www.timbers.com/news/2014/12/portland-timbers-acquire-defender-nat-borchers-real-salt-lake-e",
-        "new_example": "http://www.timbers.com/news/portland-timbers-acquire-defender-nat-borchers-real-salt-lake-exchange-allocatio"
-    },
     "www.uslpdl.com": {
         "old_constants": [
             "news_article",
@@ -738,22 +355,6 @@
         "old_example": "http://www.uslpdl.com/news_article/show/759968?referrer_id=2313812",
         "new_example": "https://www.uslleaguetwo.com/news_article/show/759968"
     },
-    "geoelections.free.fr": {
-        "old_constants": [
-            "USA",
-            "elec_comtes"
-        ],
-        "new_constants": [
-            "USA",
-            "elec_comtes"
-        ],
-        "old_tokenized": "geoelections.free.fr/USA/elec_comtes/$1",
-        "new_tokenized": "geoelections.free.fr/USA/elec_comtes/$2",
-        "old_regex": "geoelections\\.free\\.fr/USA/elec_comtes/[a-zA-Z0-9-]+",
-        "new_regex": "geoelections\\.free\\.fr/USA/elec_comtes/[a-zA-Z0-9-]+",
-        "old_example": "http://geoelections.free.fr/USA/elec_comtes/1892bidw",
-        "new_example": "http://geoelections.free.fr/USA/elec_comtes/1892bidw.htm"
-    },
     "m.pitchfork.com": {
         "old_constants": [
             "news"
@@ -767,23 +368,6 @@
         "new_regex": "pitchfork\\.com/news/[a-zA-Z0-9-]+",
         "old_example": "http://m.pitchfork.com/news/63742-kanye-west-says-new-album-coming-this-summer/",
         "new_example": "https://pitchfork.com/news/63742-kanye-west-says-new-album-coming-this-summer/"
-    },
-    "www.nostalgiacentral.com": {
-        "old_constants": [
-            "television",
-            "comedy"
-        ],
-        "new_constants": [
-            "television",
-            "tv-by-decade",
-            "tv-shows-1970s"
-        ],
-        "old_tokenized": "www.nostalgiacentral.com/television/comedy/$1",
-        "new_tokenized": "nostalgiacentral.com/television/tv-by-decade/tv-shows-1970s/$2",
-        "old_regex": "www\\.nostalgiacentral\\.com/television/comedy/[a-zA-Z0-9-]+",
-        "new_regex": "nostalgiacentral\\.com/television/tv\\-by\\-decade/tv\\-shows\\-1970s/[a-zA-Z0-9-]+",
-        "old_example": "http://www.nostalgiacentral.com/television/comedy/andmothermakesfive.htm",
-        "new_example": "http://nostalgiacentral.com/television/tv-by-decade/tv-shows-1970s/mother-makes-five/"
     },
     "ffsagt.gt4series.com": {
         "old_constants": [
@@ -817,21 +401,6 @@
         "old_example": "http://aba-liga.com/news/tabid/86/id/35946/december-mvp-miro-bilan.aspx",
         "new_example": "https://www.aba-liga.com/news/35946"
     },
-    "goldbook.iupac.org": {
-        "old_constants": [
-            "goldbook"
-        ],
-        "new_constants": [
-            "terms",
-            "view"
-        ],
-        "old_tokenized": "goldbook.iupac.org/goldbook/$1",
-        "new_tokenized": "goldbook.iupac.org/terms/view/$2",
-        "old_regex": "goldbook\\.iupac\\.org/goldbook/[a-zA-Z0-9-]+",
-        "new_regex": "goldbook\\.iupac\\.org/terms/view/[a-zA-Z0-9-]+",
-        "old_example": "http://goldbook.iupac.org/goldbook/A00446.html",
-        "new_example": "https://goldbook.iupac.org/terms/view/A00446"
-    },
     "www.eintracht.de": {
         "old_constants": [
             "en",
@@ -859,21 +428,6 @@
         "new_regex": "www\\.rugby15\\.co\\.za/[a-zA-Z0-9-]+",
         "old_example": "http://www.rugby15.co.za/2015/08/maks-van-dyk-heads-back-to-bloem-lizo-extends-his-stay-at-the-kings-and-elgar-confirmed-a-king",
         "new_example": "http://www.rugby15.co.za/maks-van-dyk-heads-back-to-bloem-lizo-extends-his-stay-at-the-kings-and-elgar-confirmed-a-king/"
-    },
-    "www.allmovie.com": {
-        "old_constants": [
-            "cg",
-            "avg"
-        ],
-        "new_constants": [
-            "movie"
-        ],
-        "old_tokenized": "www.allmovie.com/cg/$1",
-        "new_tokenized": "www.allmovie.com/movie/$2",
-        "old_regex": "www\\.allmovie\\.com/cg/[a-zA-Z0-9-]+",
-        "new_regex": "www\\.allmovie\\.com/movie/[a-zA-Z0-9-]+",
-        "old_example": "http://www.allmovie.com/cg/avg.dll?p=avg&sql=1:254559",
-        "new_example": "http://www.allmovie.com/movie/american-experience--chicago-1968-vm204590"
     },
     "www.newvision.co.ug": {
         "old_constants": [
@@ -903,21 +457,6 @@
         "old_example": "https://www.sportskindle.com/2020/10/12/odisha-fcs-grassroots-program/",
         "new_example": "http://sportskindle.com/odisha-fcs-grassroots-program/"
     },
-    "www.brecorder.com": {
-        "old_constants": [
-            "pakistan",
-            "general-news"
-        ],
-        "new_constants": [
-            "news"
-        ],
-        "old_tokenized": "www.brecorder.com/pakistan/general-news/$1",
-        "new_tokenized": "www.brecorder.com/news/$2",
-        "old_regex": "www\\.brecorder\\.com/pakistan/general\\-news/[a-zA-Z0-9-]+",
-        "new_regex": "www\\.brecorder\\.com/news/\\d+",
-        "old_example": "http://www.brecorder.com/pakistan/general-news/79137-france-extends-condolences-to-bereaved-families.html",
-        "new_example": "https://www.brecorder.com/news/79137"
-    },
     "www.yfmghana.com": {
         "old_constants": [],
         "new_constants": [],
@@ -927,33 +466,5 @@
         "new_regex": "yfmghana\\.com/[a-zA-Z0-9-]+",
         "old_example": "https://www.yfmghana.com/2016/07/27/shatta-wiyaala-yvonne-okoro-others-win-at-city-people-entertainment-awards/",
         "new_example": "https://yfmghana.com/shatta-wiyaala-yvonne-okoro-others-win-at-city-people-entertainment-awards/"
-    },
-    "www.thedailyherald.sx": {
-        "old_constants": [
-            "islands"
-        ],
-        "new_constants": [
-            "islands"
-        ],
-        "old_tokenized": "www.thedailyherald.sx/islands/$1",
-        "new_tokenized": "www.thedailyherald.sx/islands/$2",
-        "old_regex": "www\\.thedailyherald\\.sx/islands/[a-zA-Z0-9-]+",
-        "new_regex": "www\\.thedailyherald\\.sx/islands/[a-zA-Z0-9-]+",
-        "old_example": "https://www.thedailyherald.sx/islands/80864-all-good-news-at-state-of-the-industry-st-maarten-event",
-        "new_example": "https://www.thedailyherald.sx/islands/all-good-news-at-state-of-the-industry-st-maarten-event"
-    },
-    "www.fgr.co.uk": {
-        "old_constants": [
-            "news"
-        ],
-        "new_constants": [
-            "news"
-        ],
-        "old_tokenized": "www.fgr.co.uk/news/$1/$2",
-        "new_tokenized": "www.fgr.co.uk/news/$3",
-        "old_regex": "www\\.fgr\\.co\\.uk/news/[a-zA-Z0-9-]+/[a-zA-Z0-9-]+",
-        "new_regex": "www\\.fgr\\.co\\.uk/news/[a-zA-Z0-9-]+",
-        "old_example": "https://www.fgr.co.uk/news/august-2020/news-smith-departs-for-yeovil",
-        "new_example": "https://www.fgr.co.uk/news/smith-departs-for-yeovil"
     }
 }
