@@ -271,12 +271,12 @@ def main():
                 else:
                     print(f"\nPattern for {domain}:")
 
-                    print(f"Old URL: {pattern['old_example'][0]}")
-                    print(f"New URL: {pattern['new_example'][0]}")
-                    print(f"Old URL (regex pattern): {pattern['old_regex'][0]}")
-                    print(f"New URL (regex pattern): {pattern['new_regex'][0]}")
-                    print(f"Old URL (tokenized pattern): {pattern['old_tokenized'][0]}")
-                    print(f"New URL (tokenized pattern): {pattern['new_tokenized'][0]}")
+                    print(f"Old URL: {pattern['old_example']}")
+                    print(f"New URL: {pattern['new_example']}")
+                    print(f"Old URL (regex pattern): {pattern['old_regex']}")
+                    print(f"New URL (regex pattern): {pattern['new_regex']}")
+                    print(f"Old URL (tokenized pattern): {pattern['old_tokenized']}")
+                    print(f"New URL (tokenized pattern): {pattern['new_tokenized']}")
                     
                     
                     predict_url(domain, pattern)
