@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useRef } from "react";
 import "./GlobalViewPage.css"; // Import regular stylesheet
 import GlobalTable from "../../Components/GlobalTable/Table";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { GetLogin, GetLogout, PostAliasInfo } from "./Utils";
+import { Autocomplete, GetLogin, GetLogout, PostAliasInfo } from "./Utils";
 import { GetAllAliases } from "./Utils";
 import { GetSearchAliases } from "./Utils";
 import { ToastContainer, toast } from "react-toastify";
@@ -26,6 +26,8 @@ function Wrapper({ data }) {
   const [searchBool, setSearchBoolValue] = useState(false);
   const [markAllValue, setMarkAllValue] = useState("Unsure");
   const [autoResetPageIndex, setAutoResetPageIndex] = useState(true);
+  const [autoCompleteData, setAutoCompleteData] = useState([]);
+  const [autoCompleteBool, setAutoCompleteBoolValue] = useState(false);
   const [oldFeedbackValue, setoldFeedbackValue] = useState({
     oldIndex: -1,
     value: "",
@@ -34,6 +36,7 @@ function Wrapper({ data }) {
 
   const formDataLatest = useRef(formData);
   const searchBoolRef = useRef(searchBool);
+  const autoCompleteDataLatest = useRef(autoCompleteData);
 
   useEffect(() => {
     formDataLatest.current = formData;
@@ -42,6 +45,10 @@ function Wrapper({ data }) {
   useEffect(() => {
     searchBoolRef.current = searchBool;
   }, [searchBool]);
+
+  useEffect(() => {
+    autoCompleteDataLatest.current = autoCompleteData;
+  }, [autoCompleteData]);
 
   //Search on Enter key
   const handleKeyPress = (e) => {
@@ -87,6 +94,10 @@ function Wrapper({ data }) {
       item.feedbackSelection = res;
       subData.push(item);
     });
+    setAutoCompleteData([]);
+    if (res == "Correct") {
+      setAutoCompleteData([...subData]);
+    }
     onSubmit(subData);
   };
 
@@ -119,6 +130,16 @@ function Wrapper({ data }) {
       });
   }
 
+  const getHostname = (url) => {
+    try {
+      const { hostname } = new URL(url);
+      return hostname;
+    } catch (error) {
+      console.error('Invalid URL:', url);
+      return null; // Return null for invalid URLs
+    }
+  };
+
   //Search for specfic aliases
   const onSearch = () => {
     setAutoResetPageIndex(true);
@@ -142,13 +163,31 @@ function Wrapper({ data }) {
           setFormData(formDataLatest.current);
           setUnsureFilter(false);
           setSearchBoolValue(true);
+          setAutoCompleteData([]);
           setMarkAllValue("Unsure");
+
+
+          const hosts = searchData.map((item) => getHostname(item.link));
+          console.log("Host name : ", hosts);
+          // Filter out any null values due to invalid URLs
+          const validHosts = hosts.filter((host) => host !== null);
+
+          // Check if all hostnames are the same
+          const allSameHost = validHosts.every((host) => host === validHosts[0]);
+          console.log("All same Host : ", allSameHost);
+          if (allSameHost) {
+            setAutoCompleteBoolValue(true);
+          } else {
+            setAutoCompleteBoolValue(false);
+          }
         })
         .catch((error) => {
           toast.error("Search unsuccessful", {
             autoClose: 2000,
           });
+          setAutoCompleteData([]);
           setSearchBoolValue(false);
+          setAutoCompleteBoolValue(false);
         });
     } else {
       queryClient
@@ -168,14 +207,20 @@ function Wrapper({ data }) {
           setSearchResult([]);
           setUnsureFilter(false);
           setSearchBoolValue(false);
+          setAutoCompleteData([]);
+          setAutoCompleteBoolValue(false);
         })
         .catch((error) => {
           toast.error("Failed to fetch data", {
             autoClose: 2000,
           });
           setSearchBoolValue(false);
+          setAutoCompleteData([]);
+          setAutoCompleteBoolValue(false);
         });
       setSearchBoolValue(false);
+      setAutoCompleteData([]);
+      setAutoCompleteBoolValue(false);
     }
   };
 
@@ -184,6 +229,16 @@ function Wrapper({ data }) {
     formDataLatest.current[index].feedbackSelection = feedbackSelection;
     setFormData(formDataLatest.current);
     const subData = [formDataLatest.current[index]];
+    if (searchBoolRef.current && feedbackSelection == "Correct") {
+      const subDataIndex = autoCompleteDataLatest.current.findIndex(data => data[0].id === subData[0].id);
+
+      if (subDataIndex === -1) {
+        autoCompleteDataLatest.current.push(subData);
+      } else {
+        autoCompleteDataLatest.current[subDataIndex][0].feedbackSelection = feedbackSelection;
+      }
+      setAutoCompleteData([...autoCompleteDataLatest.current]);
+    }
     onSubmit(subData);
   };
 
@@ -246,6 +301,76 @@ function Wrapper({ data }) {
       onLogin();
     }
   };
+
+  //Autocomplete
+  const { mutate: autoCompleteMutate } = useMutation(Autocomplete, {
+    onSuccess: (searchData) => {
+      console.log('Autocomplete Data : ', searchData);
+      const isConfirmed = window.confirm(`Number of similar URLs found: ${Object.keys(searchData).length}. Do you want to proceed with the next action?`);
+
+      if (isConfirmed) {
+        // Call the second API here
+        formDataLatest.current.forEach((formItem) => {
+          const matchingSearchItem = searchData.find((searchItem) => searchItem.id === formItem.id);
+          console.log("matched ", formItem.id, " : ", matchingSearchItem)
+          if (matchingSearchItem) {
+            formItem.feedbackSelection = matchingSearchItem.feedbackSelection;
+          }
+        });
+        setFormData(formDataLatest.current);
+        console.log('Latest Data : ', formDataLatest.current);
+        onSubmit(searchData);
+        setAutoCompleteData([]);
+        setFormData(formDataLatest.current);
+        console.log('Latest Data : ', formDataLatest.current);
+      }
+    },
+    onError: () => {
+      toast.error("There was an error uploading your feedback", {
+        autoClose: 2000,
+      });
+    },
+  });
+
+  const checkAutoComplete = async (e) => {
+
+    if (autoCompleteData.length < 2) {
+      toast.error("Please update more than 2 data", {
+        autoClose: 2000,
+      });
+    } else {
+      try {
+        const unsureEntries = formDataLatest.current.filter(entry => entry.feedbackSelection === "Unsure");
+
+        console.log(unsureEntries);
+
+        if (unsureEntries.length > 0) {
+          const obj = {
+            training_links: autoCompleteData.map(dataArray => ({
+              link: dataArray[0].link,
+              alias: dataArray[0].alias
+            })),
+            links_to_autocomplete: unsureEntries.map(dataArray => ({
+              id: dataArray.id,
+              link: dataArray.link,
+              article: dataArray.article,
+              feedbackInput: dataArray.feedbackInput,
+              feedbackSelection: dataArray.feedbackSelection
+            }))
+          };
+          autoCompleteMutate({ data: obj });
+        } else {
+          toast.error("There are no Unsure Feedback Selection remaining", {
+            autoClose: 2000,
+          });
+        }
+      } catch (error) {
+        toast.error("Search Failed", {
+          autoClose: 2000,
+        });
+      }
+    }
+  }
 
   //Main HTML Page
   const columns = useMemo(
@@ -497,26 +622,38 @@ function Wrapper({ data }) {
         <ToastContainer />
       </div>
       {searchBool ? (
-        <div className="flex items-center gap-2">
-          <label className="text-lg font-bold">
-            Mark response for all search results :
-          </label>
-          <select
-            value={markAllValue}
-            onChange={(e) => {
-              e.preventDefault();
-              setMarkAllValue(e.target.value);
-              markAll(e.target.value);
-            }}
-          >
-            <option>Unsure</option>
-            <option>Correct</option>
-            <option>Incorrect</option>
-          </select>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <label className="text-lg font-bold">
+              Mark response for all search results :
+            </label>
+            <select
+              value={markAllValue}
+              onChange={(e) => {
+                e.preventDefault();
+                setMarkAllValue(e.target.value);
+                markAll(e.target.value);
+              }}
+            >
+              <option>Unsure</option>
+              <option>Correct</option>
+              <option>Incorrect</option>
+            </select>
+          </div>
+
+          {autoCompleteBool ? (
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              type="button"
+              onClick={checkAutoComplete}
+            >
+              Autocomplete
+            </button>) : ("")}
         </div>
       ) : (
         ""
       )}
+
       <div className="globalViewPage mt-5">
         <GlobalTable
           columns={columns}

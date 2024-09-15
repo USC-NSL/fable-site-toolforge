@@ -104,3 +104,22 @@ export async function GetLogout() {
     return { success: false, status: response.status };
   }
 }
+
+export async function Autocomplete({ data }) {
+  const url = "/api/v1/autocomplete";
+  const response = await fetch(url, {
+    method: "POST", // *GET, POST, PUT, DELETE, etc.
+    mode: "cors", // no-cors, *cors, same-origin
+    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: "same-origin", // include, *same-origin, omit
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  const obj = await response.json();
+  return obj;
+  // return {}
+}

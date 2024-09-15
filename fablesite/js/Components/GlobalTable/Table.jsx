@@ -26,7 +26,7 @@ export default function GlobalTable({
   }
 
   return (
-    <div className="relative overflow-x-auto">
+    <div className="relative overflow-x-hidden">
       <table
         className="table-auto w-full text-medium text-left bg-gray-150 dark:text-black"
         style={{ tableLayout: "fixed" }}
