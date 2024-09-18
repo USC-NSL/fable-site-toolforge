@@ -2,7 +2,8 @@ import flask
 import fablesite
 import mwoauth
 from flask import request, jsonify
-from fablesite.api.link_algorithm import identify_pattern, apply_pattern, is_unpredictable, get_domain
+from fablesite.api.link_algorithm import identify_pattern, apply_pattern, is_unpredictable, get_domain, generate_url_regex
+import re
 
 @fablesite.app.route("/api/logout", methods=["GET"])
 def logout():
@@ -277,15 +278,23 @@ def autocomplete():
         
         pattern = identify_pattern(old_urls, new_urls)
         
+        training_regex = generate_url_regex(old_urls)
+        
         for item in items:
-            predicted_url = apply_pattern(item['link'], pattern)
+            if re.match(training_regex, item['link']):
+                predicted_url = apply_pattern(item['link'], pattern)
+                
+                if predicted_url.startswith('http://') and any(new_url.startswith('https://') for new_url in new_urls):
+                    predicted_url = 'https://' + predicted_url[7:]
+                
+                result = item.copy()
+                result['alias'] = predicted_url
+                result['feedbackSelection'] = "Correct"
+            else:
+                result = item.copy()
+                result['alias'] = item['link'] 
+                result['feedbackSelection'] = "Unsure"
             
-            if predicted_url.startswith('http://') and any(new_url.startswith('https://') for new_url in new_urls):
-                predicted_url = 'https://' + predicted_url[7:]
-            
-            result = item.copy()
-            result['alias'] = predicted_url
-            result['feedbackSelection'] = "Correct"
             results.append(result)
     
     return flask.jsonify(results)

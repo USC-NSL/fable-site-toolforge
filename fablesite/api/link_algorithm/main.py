@@ -25,6 +25,22 @@ def tokenize_url(url):
         'query': query,
         'extension': extension
     }
+def generate_url_regex(urls):
+    paths = [urlparse(url).path for url in urls]
+    
+    path_parts = [path.split('/') for path in paths]
+    regex_parts = []
+    
+    for parts in zip(*path_parts):
+        if all(part == parts[0] for part in parts):
+            regex_parts.append(re.escape(parts[0]))
+        elif all(part.isdigit() for part in parts):
+            regex_parts.append(r'\d+')
+        else:
+            regex_parts.append(r'[^/]+')
+    
+    full_regex = r'^https?://[^/]+/' + '/'.join(regex_parts) + r'(\?[^#]*)?(#.*)?$'
+    return full_regex
 
 def is_similar(s1, s2):
     return len(s1) == len(s2) and sum(a != b for a, b in zip(s1, s2)) <= 1
