@@ -236,7 +236,7 @@ def post_alias(id):
 def autocomplete():
     data = flask.request.get_json()
     
-    if not data or 'training_links' not in data or 'links_to_autocomplete' not in data:
+    if not data or not isinstance(data, list):
         return flask.jsonify({'error': 'Invalid input format'}), 400
     
     training_data = [item for item in data if item.get('feedbackSelection') == "Correct"]
