@@ -239,8 +239,8 @@ def autocomplete():
     if not data or 'training_links' not in data or 'links_to_autocomplete' not in data:
         return flask.jsonify({'error': 'Invalid input format'}), 400
     
-    training_data = data['training_links']
-    autocomplete_data = data['links_to_autocomplete']
+    training_data = [item for item in data if item.get('feedbackSelection') == "Correct"]
+    autocomplete_data = [item for item in data if item.get('feedbackSelection') == "Unsure"]
     
     if len(training_data) < 2:
         return flask.jsonify({'error': 'Training data must contain at least 2 URL pairs'}), 400
