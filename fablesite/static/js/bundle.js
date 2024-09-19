@@ -5395,7 +5395,7 @@ function Wrapper(_ref) {
             });
             console.log("matched ", formItem.id, " : ", matchingSearchItem);
             if (matchingSearchItem) {
-              formItem.feedbackSelection = matchingSearchItem.feedbackSelection == "Correct" ? matchingSearchItem.feedbackSelection : "Correct";
+              formItem.feedbackSelection = matchingSearchItem.feedbackSelection;
               formItem.feedbackInput = "AutoCompleted";
             }
           });
