@@ -2,7 +2,10 @@ import flask
 import fablesite
 import mwoauth
 from flask import request, jsonify
-from fablesite.api.link_algorithm import identify_pattern, apply_pattern, is_unpredictable, get_domain, generate_url_regex
+
+# from fablesite.api.link_algorithm import identify_pattern, apply_pattern, is_unpredictable, get_domain, generate_url_regex
+from fablesite.api.link_algorithm.cli import process_urls, match_old_pattern, transform_url
+from urllib.parse import urlparse
 import re
 
 @fablesite.app.route("/api/logout", methods=["GET"])
@@ -239,62 +242,46 @@ def autocomplete():
     if not data or not isinstance(data, list):
         return flask.jsonify({'error': 'Invalid input format'}), 400
     
-    training_data = [item for item in data if item.get('feedbackSelection') == "Correct"]
+    training_data = [{'link': item['link'], 'alias': item['alias']} 
+                     for item in data if item.get('feedbackSelection') == "Correct"]
     autocomplete_data = [item for item in data if item.get('feedbackSelection') == "Unsure"]
     
     if len(training_data) < 2:
         return flask.jsonify({'error': 'Training data must contain at least 2 URL pairs'}), 400
     
-    training_by_domain = {}
-    for item in training_data:
-        domain = get_domain(item['link'])
-        if domain not in training_by_domain:
-            training_by_domain[domain] = []
-        training_by_domain[domain].append(item)
-    
-    for domain, items in training_by_domain.items():
-        if len(items) < 2:
-            return flask.jsonify({'error': f'Domain {domain} has less than 2 training pairs'}), 400
-    
-    autocomplete_by_domain = {}
-    for item in autocomplete_data:
-        domain = get_domain(item['link'])
-        if domain not in autocomplete_by_domain:
-            autocomplete_by_domain[domain] = []
-        autocomplete_by_domain[domain].append(item)
-    
-    for domain in autocomplete_by_domain:
-        if domain not in training_by_domain:
-            return flask.jsonify({'error': f'No training data for domain {domain}'}), 400
+    patterns = process_urls(training_data)
     
     results = []
-    for domain, items in autocomplete_by_domain.items():
-        training_items = training_by_domain[domain]
-        old_urls = [item['link'] for item in training_items]
-        new_urls = [item['alias'] for item in training_items]
+    for item in autocomplete_data:
+        domain = urlparse(item['link']).netloc
         
-        if any(is_unpredictable(old, new) for old, new in zip(old_urls, new_urls)):
-            return flask.jsonify({'error': f'Training data for domain {domain} contains unpredictable URLs'}), 400
-        
-        pattern = identify_pattern(old_urls, new_urls)
-        
-        training_regex = generate_url_regex(old_urls)
-        
-        for item in items:
-            if re.match(training_regex, item['link']):
-                predicted_url = apply_pattern(item['link'], pattern)
-                
-                if predicted_url.startswith('http://') and any(new_url.startswith('https://') for new_url in new_urls):
-                    predicted_url = 'https://' + predicted_url[7:]
-                
-                result = item.copy()
-                result['alias'] = predicted_url
-                result['feedbackSelection'] = "Correct"
-            else:
-                result = item.copy()
-                result['alias'] = item['link'] 
-                result['feedbackSelection'] = "Unsure"
-            
+        if domain not in patterns:
+            result = item.copy()
+            result['feedbackSelection'] = "Unsure"
             results.append(result)
+            continue
+        
+        pattern = patterns[domain]
+        
+        if isinstance(pattern, str):
+            result = item.copy()
+            result['feedbackSelection'] = "Unsure"
+            results.append(result)
+            continue
+        
+        if match_old_pattern(item['link'], pattern['old_regex']):
+            predicted_url = transform_url(item['link'], pattern['old_tokenized'], pattern['new_tokenized'])
+            
+            result = item.copy()
+            result['alias'] = predicted_url
+            result['feedbackSelection'] = "Correct"
+        else:
+            result = item.copy()
+            result['feedbackSelection'] = "Unsure"
+        
+        results.append(result)
     
     return flask.jsonify(results)
+
+
+
