@@ -2,9 +2,7 @@ import re
 import json
 from urllib.parse import urlparse, parse_qs, urlunsplit
 from collections import defaultdict
-import os
 
-os.chdir('fablesite/api/link_algorithm')
 def segment_to_regex(segment):
     if segment.isalpha():
         return r'[a-zA-Z]+'
@@ -100,7 +98,7 @@ def generate_regex_pattern(url, constants):
     
     return '/'.join(regex_parts)
 
-def process_urls(data):
+def process_urls(data, save=True):
     domains = defaultdict(lambda: {'old': [], 'new': []})
     for item in data:
         domain = urlparse(item['link']).netloc
@@ -189,8 +187,9 @@ def process_urls(data):
                 }
                 patterns[domain] = domain_data
                 all_domains[domain] = domain_data
-    with open('out.json', 'w') as f:
-        json.dump(all_domains, f, indent=4)
+    if save:
+        with open('out.json', 'w') as f:
+            json.dump(all_domains, f, indent=4)
     return patterns
 
 def validate_input_url(url, domain):

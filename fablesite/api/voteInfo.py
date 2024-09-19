@@ -3,7 +3,6 @@ import fablesite
 import mwoauth
 from flask import request, jsonify
 
-# from fablesite.api.link_algorithm import identify_pattern, apply_pattern, is_unpredictable, get_domain, generate_url_regex
 from fablesite.api.link_algorithm.cli import process_urls, match_old_pattern, transform_url
 from urllib.parse import urlparse
 import re
@@ -249,7 +248,7 @@ def autocomplete():
     if len(training_data) < 2:
         return flask.jsonify({'error': 'Training data must contain at least 2 URL pairs'}), 400
     
-    patterns = process_urls(training_data)
+    patterns = process_urls(training_data, False)
     
     results = []
     for item in autocomplete_data:
