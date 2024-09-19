@@ -29,7 +29,7 @@ export default function GlobalTable({
     <div className="relative overflow-x-hidden">
       <table
         className="table-auto w-full text-medium text-left bg-gray-150 dark:text-black"
-        style={{ tableLayout: "fixed" }}
+        style={{ tableLayout: "fixed", width: "auto" }}
       >
         <thead className="text-medium dark:bg-slate-100 break-word w-auto">
           {table.getHeaderGroups().map((headerGroup) => (

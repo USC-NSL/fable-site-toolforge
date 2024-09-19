@@ -4837,7 +4837,8 @@ function GlobalTable(_ref) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("table", {
     className: "table-auto w-full text-medium text-left bg-gray-150 dark:text-black",
     style: {
-      tableLayout: "fixed"
+      tableLayout: "fixed",
+      width: "auto"
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("thead", {
     className: "text-medium dark:bg-slate-100 break-word w-auto"
@@ -5067,7 +5068,7 @@ function Wrapper(_ref) {
     _useState10 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_3__["default"])(_useState9, 2),
     searchBool = _useState10[0],
     setSearchBoolValue = _useState10[1];
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)("Unsure"),
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)(""),
     _useState12 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_3__["default"])(_useState11, 2),
     markAllValue = _useState12[0],
     setMarkAllValue = _useState12[1];
@@ -5134,7 +5135,7 @@ function Wrapper(_ref) {
     console.log(formDataLatest.current.length);
     setFormData(formDataLatest.current);
     if (searchBoolRef.current) {
-      setMarkAllValue("Unsure");
+      setMarkAllValue("");
     }
   };
 
@@ -5148,11 +5149,17 @@ function Wrapper(_ref) {
     var subData = [];
     formDataLatest.current.forEach(function (item) {
       item.feedbackSelection = res;
+      if (item.feedbackInput == "AutoCompleted") {
+        item.feedbackInput = "";
+      }
       subData.push(item);
     });
     setAutoCompleteData([]);
     if (res == "Correct") {
-      setAutoCompleteData([].concat(subData));
+      autoCompleteDataLatest.current.push(subData);
+      setAutoCompleteData(autoCompleteDataLatest.current);
+    } else if (res == "Unsure" && searchBoolRef.current) {
+      setAutoCompleteBoolValue(true);
     }
     onSubmit(subData);
   };
@@ -5214,27 +5221,40 @@ function Wrapper(_ref) {
         setUnsureFilter(false);
         setSearchBoolValue(true);
         setAutoCompleteData([]);
-        setMarkAllValue("Unsure");
-        var hosts = searchData.map(function (item) {
-          return getHostname(item.link);
-        });
-        console.log("Host name : ", hosts);
-        // Filter out any null values due to invalid URLs
-        var validHosts = hosts.filter(function (host) {
-          return host !== null;
-        });
+        setMarkAllValue("");
+        if (searchData.length != 0) {
+          var hosts = searchData.map(function (item) {
+            return getHostname(item.link);
+          });
+          console.log("Host name : ", hosts);
+          // Filter out any null values due to invalid URLs
+          var validHosts = hosts.filter(function (host) {
+            return host !== null;
+          });
 
-        // Check if all hostnames are the same
-        var allSameHost = validHosts.every(function (host) {
-          return host === validHosts[0];
-        });
-        console.log("All same Host : ", allSameHost);
-        if (allSameHost) {
-          setAutoCompleteBoolValue(true);
-        } else {
-          setAutoCompleteBoolValue(false);
+          // Check if all hostnames are the same
+          var allSameHost = validHosts.every(function (host) {
+            return host === validHosts[0];
+          });
+          console.log("All same Host : ", allSameHost);
+          if (allSameHost) {
+            setAutoCompleteBoolValue(true);
+            var subData = formDataLatest.current.filter(function (entry) {
+              return entry.feedbackSelection === "Correct";
+            });
+            if (subData.length > 0) {
+              subData.map(function (data) {
+                autoCompleteDataLatest.current.push([data]);
+              });
+              setAutoCompleteData(autoCompleteDataLatest.current);
+            }
+          } else {
+            setAutoCompleteBoolValue(false);
+            setAutoCompleteData([]);
+          }
         }
       })["catch"](function (error) {
+        console.log(error);
         react_toastify__WEBPACK_IMPORTED_MODULE_9__.toast.error("Search unsuccessful", {
           autoClose: 2000
         });
@@ -5281,16 +5301,20 @@ function Wrapper(_ref) {
     formDataLatest.current[index].feedbackSelection = feedbackSelection;
     setFormData(formDataLatest.current);
     var subData = [formDataLatest.current[index]];
-    if (searchBoolRef.current && feedbackSelection == "Correct") {
+    if (searchBoolRef.current) {
       var subDataIndex = autoCompleteDataLatest.current.findIndex(function (data) {
         return data[0].id === subData[0].id;
       });
       if (subDataIndex === -1) {
         autoCompleteDataLatest.current.push(subData);
       } else {
-        autoCompleteDataLatest.current[subDataIndex][0].feedbackSelection = feedbackSelection;
+        if (feedbackSelection === "Unsure" || feedbackSelection === "Incorrect") {
+          autoCompleteDataLatest.current.splice(subDataIndex, 1);
+        } else {
+          autoCompleteDataLatest.current[subDataIndex][0].feedbackSelection = feedbackSelection;
+        }
       }
-      setAutoCompleteData((0,_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2__["default"])(autoCompleteDataLatest.current));
+      setAutoCompleteData(autoCompleteDataLatest.current);
     }
     onSubmit(subData);
   };
@@ -5362,7 +5386,7 @@ function Wrapper(_ref) {
   var _useMutation2 = (0,_tanstack_react_query__WEBPACK_IMPORTED_MODULE_14__.useMutation)(_Utils__WEBPACK_IMPORTED_MODULE_8__.Autocomplete, {
       onSuccess: function onSuccess(searchData) {
         console.log('Autocomplete Data : ', searchData);
-        var isConfirmed = window.confirm("Number of similar URLs found: ".concat(Object.keys(searchData).length, ". Do you want to proceed with the next action?"));
+        var isConfirmed = window.confirm("Aliases for ".concat(Object.keys(searchData).length, " other URL determined to be Correct. Do you want to update them from Unsure to Correct?"));
         if (isConfirmed) {
           // Call the second API here
           formDataLatest.current.forEach(function (formItem) {
@@ -5371,7 +5395,8 @@ function Wrapper(_ref) {
             });
             console.log("matched ", formItem.id, " : ", matchingSearchItem);
             if (matchingSearchItem) {
-              formItem.feedbackSelection = matchingSearchItem.feedbackSelection;
+              formItem.feedbackSelection = matchingSearchItem.feedbackSelection == "Correct" ? matchingSearchItem.feedbackSelection : "Correct";
+              formItem.feedbackInput = "AutoCompleted";
             }
           });
           setFormData(formDataLatest.current);
@@ -5380,6 +5405,14 @@ function Wrapper(_ref) {
           setAutoCompleteData([]);
           setFormData(formDataLatest.current);
           console.log('Latest Data : ', formDataLatest.current);
+          var unsureEntries = formDataLatest.current.filter(function (entry) {
+            return entry.feedbackSelection === "Unsure";
+          });
+          if (unsureEntries.length > 0) {
+            setAutoCompleteBoolValue(true);
+          } else {
+            setAutoCompleteBoolValue(false);
+          }
         }
       },
       onError: function onError() {
@@ -5395,8 +5428,8 @@ function Wrapper(_ref) {
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
-            if (autoCompleteData.length < 2) {
-              react_toastify__WEBPACK_IMPORTED_MODULE_9__.toast.error("Please update more than 2 data", {
+            if (autoCompleteDataLatest.current.length < 2) {
+              react_toastify__WEBPACK_IMPORTED_MODULE_9__.toast.error("Please ensure at least 2 rows are marked Correct", {
                 autoClose: 2000
               });
             } else {
@@ -5407,7 +5440,7 @@ function Wrapper(_ref) {
                 console.log(unsureEntries);
                 if (unsureEntries.length > 0) {
                   obj = {
-                    training_links: autoCompleteData.map(function (dataArray) {
+                    training_links: autoCompleteDataLatest.current.map(function (dataArray) {
                       return {
                         link: dataArray[0].link,
                         alias: dataArray[0].alias
@@ -5427,11 +5460,12 @@ function Wrapper(_ref) {
                     data: obj
                   });
                 } else {
-                  react_toastify__WEBPACK_IMPORTED_MODULE_9__.toast.error("There are no Unsure Feedback Selection remaining", {
+                  react_toastify__WEBPACK_IMPORTED_MODULE_9__.toast.error("Nothing to autocomplete: No rows marked Unsure", {
                     autoClose: 2000
                   });
                 }
               } catch (error) {
+                console.log(error);
                 react_toastify__WEBPACK_IMPORTED_MODULE_9__.toast.error("Search Failed", {
                   autoClose: 2000
                 });
@@ -5479,7 +5513,7 @@ function Wrapper(_ref) {
         }, "\u25BC"), " "));
       },
       accessorKey: "article",
-      width: 220,
+      width: '15%',
       cell: function cell(_ref3) {
         var getValue = _ref3.getValue;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("a", {
@@ -5517,7 +5551,7 @@ function Wrapper(_ref) {
         }, "\u25BC"), " "));
       },
       accessorKey: "link",
-      width: 350,
+      width: '30%',
       cell: function cell(_ref4) {
         var getValue = _ref4.getValue;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("a", {
@@ -5529,7 +5563,7 @@ function Wrapper(_ref) {
     }, {
       header: "New URL for same page",
       accessorKey: "alias",
-      width: 350,
+      width: '30%',
       cell: function cell(_ref5) {
         var getValue = _ref5.getValue;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("a", {
@@ -5540,7 +5574,7 @@ function Wrapper(_ref) {
       }
     }, {
       header: "Is new URL correct?",
-      width: 130,
+      width: '10%',
       accessorKey: "feedbackSelection",
       cell: function cell(_ref6) {
         var row = _ref6.row;
@@ -5588,7 +5622,6 @@ function Wrapper(_ref) {
         });
       },
       accessorKey: "newLink",
-      width: 350,
       cell: function cell(_ref8) {
         var getValue = _ref8.getValue;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("a", {
@@ -5607,7 +5640,7 @@ function Wrapper(_ref) {
     className: "text-3xl font-bold"
   }, "Replacement URLs for links marked permanently dead"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("div", {
     className: "flex items-center gap-2"
-  }, window.APP_DATA.username != "None" ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("p", null, "Welcome, ", window.APP_DATA.username, "!") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("p", null, "Welcome, Guest!"), window.APP_DATA.username != "None" ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("button", {
+  }, window.APP_DATA.username != "None" ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("p", null, "Welcome, ", window.APP_DATA.username, "!") : "", window.APP_DATA.username != "None" ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("button", {
     className: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded",
     type: "button",
     onClick: onLogout
@@ -5615,8 +5648,8 @@ function Wrapper(_ref) {
     className: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded",
     type: "button",
     onClick: onLogin
-  }, "Login"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("h3", null, "For more information about FABLE, click", " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("a", {
-    href: "https://webresearch.eecs.umich.edu/fable/"
+  }, "Login to Wikimedia account"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("h3", null, "For more information about FABLE, click", " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("a", {
+    href: "https://nsl.usc.edu/projects/fable"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("b", null, "here"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("div", {
     className: "flex items-center justify-between py-5"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("div", {
@@ -5662,7 +5695,7 @@ function Wrapper(_ref) {
       setMarkAllValue(e.target.value);
       markAll(e.target.value);
     }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("option", null, "Unsure"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("option", null, "Correct"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("option", null, "Incorrect"))), autoCompleteBool ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("button", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("option", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("option", null, "Unsure"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("option", null, "Correct"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("option", null, "Incorrect"))), autoCompleteBool ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("button", {
     className: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded",
     type: "button",
     onClick: checkAutoComplete
