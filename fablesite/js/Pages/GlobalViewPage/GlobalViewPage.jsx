@@ -336,7 +336,7 @@ function Wrapper({ data }) {
           const matchingSearchItem = searchData.find((searchItem) => searchItem.id === formItem.id);
           console.log("matched ", formItem.id, " : ", matchingSearchItem)
           if (matchingSearchItem) {
-            formItem.feedbackSelection = matchingSearchItem.feedbackSelection == "Correct" ? matchingSearchItem.feedbackSelection : "Correct";
+            formItem.feedbackSelection = matchingSearchItem.feedbackSelection;
             formItem.feedbackInput = "AutoCompleted";
           }
         });
