@@ -5395,9 +5395,13 @@ function Wrapper(_ref) {
             });
             console.log("matched ", formItem.id, " : ", matchingSearchItem);
             if (matchingSearchItem) {
-              formItem.feedbackSelection = matchingSearchItem.feedbackSelection;
+              formItem.feedbackSelection = matchingSearchItem.feedbackSelection == "Correct" ? matchingSearchItem.feedbackSelection : "Correct";
               formItem.feedbackInput = "AutoCompleted";
             }
+          });
+          searchData.forEach(function (item) {
+            item.feedbackSelection = item.feedbackSelection == "Correct" ? item.feedbackSelection : "Correct";
+            item.feedbackInput = "AutoCompleted";
           });
           setFormData(formDataLatest.current);
           console.log('Latest Data : ', formDataLatest.current);
@@ -5439,11 +5443,12 @@ function Wrapper(_ref) {
                 });
                 console.log(unsureEntries);
                 if (unsureEntries.length > 0) {
-                  obj = {
+                  obj = [{
                     training_links: autoCompleteDataLatest.current.map(function (dataArray) {
                       return {
                         link: dataArray[0].link,
-                        alias: dataArray[0].alias
+                        alias: dataArray[0].alias,
+                        feedbackSelection: dataArray[0].feedbackSelection
                       };
                     }),
                     links_to_autocomplete: unsureEntries.map(function (dataArray) {
@@ -5455,7 +5460,7 @@ function Wrapper(_ref) {
                         feedbackSelection: dataArray.feedbackSelection
                       };
                     })
-                  };
+                  }];
                   autoCompleteMutate({
                     data: obj
                   });

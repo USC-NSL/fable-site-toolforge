@@ -240,11 +240,11 @@ def autocomplete():
     
     if not data or not isinstance(data, list):
         return flask.jsonify({'error': 'Invalid input format'}), 400
-    
+
     training_data = [{'link': item['link'], 'alias': item['alias']} 
-                     for item in data if item.get('feedbackSelection') == "Correct"]
-    autocomplete_data = [item for item in data if item.get('feedbackSelection') == "Unsure"]
-    
+                     for item in data[0]['training_links'] if item.get('feedbackSelection') == "Correct"]
+    autocomplete_data = [item for item in data[0]['links_to_autocomplete'] if item.get('feedbackSelection') == "Unsure"]
+
     if len(training_data) < 2:
         return flask.jsonify({'error': 'Training data must contain at least 2 URL pairs'}), 400
     

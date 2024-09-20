@@ -336,10 +336,14 @@ function Wrapper({ data }) {
           const matchingSearchItem = searchData.find((searchItem) => searchItem.id === formItem.id);
           console.log("matched ", formItem.id, " : ", matchingSearchItem)
           if (matchingSearchItem) {
-            formItem.feedbackSelection = matchingSearchItem.feedbackSelection;
+            formItem.feedbackSelection = matchingSearchItem.feedbackSelection == "Correct"? matchingSearchItem.feedbackSelection : "Correct";
             formItem.feedbackInput = "AutoCompleted";
           }
         });
+        searchData.forEach((item) => {
+          item.feedbackSelection = item.feedbackSelection == "Correct"? item.feedbackSelection : "Correct";
+          item.feedbackInput = "AutoCompleted";
+        })
         setFormData(formDataLatest.current);
         console.log('Latest Data : ', formDataLatest.current);
         onSubmit(searchData);
@@ -374,10 +378,11 @@ function Wrapper({ data }) {
         console.log(unsureEntries);
 
         if (unsureEntries.length > 0) {
-          const obj = {
+          const obj = [{
             training_links: autoCompleteDataLatest.current.map(dataArray => ({
               link: dataArray[0].link,
-              alias: dataArray[0].alias
+              alias: dataArray[0].alias,
+              feedbackSelection: dataArray[0].feedbackSelection
             })),
             links_to_autocomplete: unsureEntries.map(dataArray => ({
               id: dataArray.id,
@@ -386,7 +391,7 @@ function Wrapper({ data }) {
               feedbackInput: dataArray.feedbackInput,
               feedbackSelection: dataArray.feedbackSelection
             }))
-          };
+          }];
           autoCompleteMutate({ data: obj });
         } else {
           toast.error("Nothing to autocomplete: No rows marked Unsure", {
