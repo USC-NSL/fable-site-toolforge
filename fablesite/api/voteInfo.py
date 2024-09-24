@@ -263,9 +263,6 @@ def autocomplete():
         pattern = patterns[domain]
         
         if isinstance(pattern, str):
-            result = item.copy()
-            result['feedbackSelection'] = "Unsure"
-            results.append(result)
             continue
         
         if match_old_pattern(item['link'], pattern['old_regex']):
@@ -275,8 +272,7 @@ def autocomplete():
             result['alias'] = predicted_url
             result['feedbackSelection'] = "Correct"
         else:
-            result = item.copy()
-            result['feedbackSelection'] = "Unsure"
+            continue
         
         results.append(result)
     
