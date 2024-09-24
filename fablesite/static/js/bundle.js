@@ -5084,13 +5084,17 @@ function Wrapper(_ref) {
     _useState18 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_3__["default"])(_useState17, 2),
     autoCompleteBool = _useState18[0],
     setAutoCompleteBoolValue = _useState18[1];
-  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)({
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)(false),
+    _useState20 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_3__["default"])(_useState19, 2),
+    clearAutoCompleteBool = _useState20[0],
+    setClearAutoCompleteBoolValue = _useState20[1];
+  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)({
       oldIndex: -1,
       value: ""
     }),
-    _useState20 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_3__["default"])(_useState19, 2),
-    oldFeedbackValue = _useState20[0],
-    setoldFeedbackValue = _useState20[1];
+    _useState22 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_3__["default"])(_useState21, 2),
+    oldFeedbackValue = _useState22[0],
+    setoldFeedbackValue = _useState22[1];
   var queryClient = (0,_tanstack_react_query__WEBPACK_IMPORTED_MODULE_13__.useQueryClient)();
   var formDataLatest = (0,react__WEBPACK_IMPORTED_MODULE_5__.useRef)(formData);
   var searchBoolRef = (0,react__WEBPACK_IMPORTED_MODULE_5__.useRef)(searchBool);
@@ -5220,9 +5224,11 @@ function Wrapper(_ref) {
         setFormData(formDataLatest.current);
         setUnsureFilter(false);
         setSearchBoolValue(true);
+        autoCompleteDataLatest.current = [];
         setAutoCompleteData([]);
         setMarkAllValue("");
         if (searchData.length != 0) {
+          //Autocomplete Button
           var hosts = searchData.map(function (item) {
             return getHostname(item.link);
           });
@@ -5252,6 +5258,16 @@ function Wrapper(_ref) {
             setAutoCompleteBoolValue(false);
             setAutoCompleteData([]);
           }
+
+          //Clear Autocomplete Button
+          var clearSubData = formDataLatest.current.filter(function (entry) {
+            return entry.feedbackInput === "Autocompleted" || entry.feedbackInput === "AutoCompleted";
+          });
+          if (clearSubData.length > 0) {
+            setClearAutoCompleteBoolValue(true);
+          } else {
+            setClearAutoCompleteBoolValue(false);
+          }
         }
       })["catch"](function (error) {
         console.log(error);
@@ -5261,6 +5277,7 @@ function Wrapper(_ref) {
         setAutoCompleteData([]);
         setSearchBoolValue(false);
         setAutoCompleteBoolValue(false);
+        setClearAutoCompleteBoolValue(false);
       });
     } else {
       queryClient.fetchQuery(["aliasInfo"], function () {
@@ -5282,6 +5299,7 @@ function Wrapper(_ref) {
         setSearchBoolValue(false);
         setAutoCompleteData([]);
         setAutoCompleteBoolValue(false);
+        setClearAutoCompleteBoolValue(false);
       })["catch"](function (error) {
         react_toastify__WEBPACK_IMPORTED_MODULE_9__.toast.error("Failed to fetch data", {
           autoClose: 2000
@@ -5289,16 +5307,21 @@ function Wrapper(_ref) {
         setSearchBoolValue(false);
         setAutoCompleteData([]);
         setAutoCompleteBoolValue(false);
+        setClearAutoCompleteBoolValue(false);
       });
       setSearchBoolValue(false);
       setAutoCompleteData([]);
       setAutoCompleteBoolValue(false);
+      setClearAutoCompleteBoolValue(false);
     }
   };
 
   // Update feedback selection
   var updateFeedbackSelection = function updateFeedbackSelection(index, feedbackSelection) {
     formDataLatest.current[index].feedbackSelection = feedbackSelection;
+    if (feedbackSelection == "Unsure" && (formDataLatest.current[index].feedbackInput === "Autocompleted" || formDataLatest.current[index].feedbackInput === "AutoCompleted")) {
+      formDataLatest.current[index].feedbackInput = "";
+    }
     setFormData(formDataLatest.current);
     var subData = [formDataLatest.current[index]];
     if (searchBoolRef.current) {
@@ -5386,37 +5409,59 @@ function Wrapper(_ref) {
   var _useMutation2 = (0,_tanstack_react_query__WEBPACK_IMPORTED_MODULE_14__.useMutation)(_Utils__WEBPACK_IMPORTED_MODULE_8__.Autocomplete, {
       onSuccess: function onSuccess(searchData) {
         console.log('Autocomplete Data : ', searchData);
-        var isConfirmed = window.confirm("Aliases for ".concat(Object.keys(searchData).length, " other URL determined to be Correct. Do you want to update them from Unsure to Correct?"));
-        if (isConfirmed) {
-          // Call the second API here
-          formDataLatest.current.forEach(function (formItem) {
-            var matchingSearchItem = searchData.find(function (searchItem) {
-              return searchItem.id === formItem.id;
+        if (Object.keys(searchData).length != 0) {
+          var isConfirmed = window.confirm("Aliases for ".concat(Object.keys(searchData).length, " other URLs determined to be Correct. Do you want to update them from Unsure to Correct?"));
+          if (isConfirmed) {
+            // Call the second API here
+            var submitCallFlag = false;
+            formDataLatest.current.forEach(function (formItem) {
+              var matchingSearchItem = searchData.find(function (searchItem) {
+                return searchItem.id === formItem.id;
+              });
+              console.log("matched ", formItem.id, " : ", matchingSearchItem);
+              if (matchingSearchItem && matchingSearchItem.feedbackSelection == "Correct") {
+                formItem.feedbackSelection = matchingSearchItem.feedbackSelection;
+                formItem.feedbackInput = "Autocompleted";
+                submitCallFlag = true;
+              }
             });
-            console.log("matched ", formItem.id, " : ", matchingSearchItem);
-            if (matchingSearchItem) {
-              formItem.feedbackSelection = matchingSearchItem.feedbackSelection == "Correct" ? matchingSearchItem.feedbackSelection : "Correct";
-              formItem.feedbackInput = "AutoCompleted";
+            searchData.forEach(function (item) {
+              if (item.feedbackSelection == "Correct") {
+                item.feedbackSelection = item.feedbackSelection == "Correct" ? item.feedbackSelection : "Correct";
+                item.feedbackInput = "Autocompleted";
+              }
+            });
+            setFormData(formDataLatest.current);
+            console.log('Latest Data : ', formDataLatest.current);
+            if (submitCallFlag) {
+              onSubmit(searchData);
             }
-          });
-          searchData.forEach(function (item) {
-            item.feedbackSelection = item.feedbackSelection == "Correct" ? item.feedbackSelection : "Correct";
-            item.feedbackInput = "AutoCompleted";
-          });
-          setFormData(formDataLatest.current);
-          console.log('Latest Data : ', formDataLatest.current);
-          onSubmit(searchData);
-          setAutoCompleteData([]);
-          setFormData(formDataLatest.current);
-          console.log('Latest Data : ', formDataLatest.current);
-          var unsureEntries = formDataLatest.current.filter(function (entry) {
-            return entry.feedbackSelection === "Unsure";
-          });
-          if (unsureEntries.length > 0) {
-            setAutoCompleteBoolValue(true);
-          } else {
-            setAutoCompleteBoolValue(false);
+            setAutoCompleteData([]);
+            setFormData(formDataLatest.current);
+            console.log('Latest Data : ', formDataLatest.current);
+            var unsureEntries = formDataLatest.current.filter(function (entry) {
+              return entry.feedbackSelection === "Unsure";
+            });
+            if (unsureEntries.length > 0) {
+              setAutoCompleteBoolValue(true);
+            } else {
+              setAutoCompleteBoolValue(false);
+            }
+
+            //Clear Autocomplete Button
+            var clearSubData = formDataLatest.current.filter(function (entry) {
+              return entry.feedbackInput === "Autocompleted" || entry.feedbackInput === "AutoCompleted";
+            });
+            if (clearSubData.length > 0) {
+              setClearAutoCompleteBoolValue(true);
+            } else {
+              setClearAutoCompleteBoolValue(false);
+            }
           }
+        } else {
+          react_toastify__WEBPACK_IMPORTED_MODULE_9__.toast.error("No URLs determined to be Correct", {
+            autoClose: 2000
+          });
         }
       },
       onError: function onError() {
@@ -5426,6 +5471,50 @@ function Wrapper(_ref) {
       }
     }),
     autoCompleteMutate = _useMutation2.mutate;
+  var clearAutoComplete = function clearAutoComplete(event) {
+    var clearSubData = formDataLatest.current.filter(function (entry) {
+      return entry.feedbackInput === "Autocompleted" || entry.feedbackInput === "AutoCompleted";
+    });
+    formDataLatest.current.forEach(function (item) {
+      if (item.feedbackInput === "Autocompleted" || item.feedbackInput === "AutoCompleted") {
+        item.feedbackSelection = "Unsure";
+        item.feedbackInput = "";
+      }
+    });
+    clearSubData.forEach(function (item) {
+      item.feedbackSelection = "Unsure";
+      item.feedbackInput = "";
+    });
+    setFormData(formDataLatest.current);
+    var hosts = formDataLatest.current.map(function (item) {
+      return getHostname(item.link);
+    });
+    console.log("Host name : ", hosts);
+    var validHosts = hosts.filter(function (host) {
+      return host !== null;
+    });
+    var allSameHost = validHosts.every(function (host) {
+      return host === validHosts[0];
+    });
+    console.log("All same Host : ", allSameHost);
+    if (allSameHost) {
+      setAutoCompleteBoolValue(true);
+      var subData = formDataLatest.current.filter(function (entry) {
+        return entry.feedbackSelection === "Correct";
+      });
+      if (subData.length > 0) {
+        subData.map(function (data) {
+          autoCompleteDataLatest.current.push([data]);
+        });
+        setAutoCompleteData(autoCompleteDataLatest.current);
+      }
+    } else {
+      setAutoCompleteBoolValue(false);
+      setAutoCompleteData([]);
+    }
+    setClearAutoCompleteBoolValue(false);
+    onSubmit(clearSubData);
+  };
   var checkAutoComplete = /*#__PURE__*/function () {
     var _ref2 = (0,_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().mark(function _callee(e) {
       var unsureEntries, obj;
@@ -5700,11 +5789,17 @@ function Wrapper(_ref) {
       setMarkAllValue(e.target.value);
       markAll(e.target.value);
     }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("option", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("option", null, "Unsure"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("option", null, "Correct"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("option", null, "Incorrect"))), autoCompleteBool ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("button", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("option", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("option", null, "Unsure"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("option", null, "Correct"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("option", null, "Incorrect"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("div", {
+    className: "flex items-center gap-2"
+  }, autoCompleteBool ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("button", {
     className: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded",
     type: "button",
     onClick: checkAutoComplete
-  }, "Autocomplete") : "") : "", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("div", {
+  }, "Autocomplete") : "", clearAutoCompleteBool ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("button", {
+    className: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded",
+    type: "button",
+    onClick: clearAutoComplete
+  }, "Revert Autocompletes") : "")) : "", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement("div", {
     className: "globalViewPage mt-5"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_5___default().createElement(_Components_GlobalTable_Table__WEBPACK_IMPORTED_MODULE_7__["default"], {
     columns: columns,
@@ -5713,18 +5808,18 @@ function Wrapper(_ref) {
   })));
 }
 function GlobalViewPage() {
-  var _useState21 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)([]),
-    _useState22 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_3__["default"])(_useState21, 2),
-    data = _useState22[0],
-    setData = _useState22[1];
-  var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)(true),
+  var _useState23 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)([]),
     _useState24 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_3__["default"])(_useState23, 2),
-    isLoading = _useState24[0],
-    setIsLoading = _useState24[1];
-  var _useState25 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)(null),
+    data = _useState24[0],
+    setData = _useState24[1];
+  var _useState25 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)(true),
     _useState26 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_3__["default"])(_useState25, 2),
-    error = _useState26[0],
-    setError = _useState26[1];
+    isLoading = _useState26[0],
+    setIsLoading = _useState26[1];
+  var _useState27 = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)(null),
+    _useState28 = (0,_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_3__["default"])(_useState27, 2),
+    error = _useState28[0],
+    setError = _useState28[1];
   (0,react__WEBPACK_IMPORTED_MODULE_5__.useEffect)(function () {
     (0,_Utils__WEBPACK_IMPORTED_MODULE_8__.GetAllAliases)().then(function (fetchedData) {
       fetchedData.forEach(function (item) {
