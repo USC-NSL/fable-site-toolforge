@@ -60,7 +60,10 @@ def identify_constants(urls):
     constants = []
     for i in range(min_length):
         if all(path[i] == tokenized_urls[0][i] for path in tokenized_urls):
-            constants.append(tokenized_urls[0][i])
+            if tokenized_urls[0][i].isnumeric():
+                constants.append(f"${i+1}")
+            else:
+                constants.append(tokenized_urls[0][i])
         else:
             break
     
@@ -125,10 +128,7 @@ def process_urls(data, save=True):
 
                 old_variables = [seg for seg in old_token.split('/') if seg.startswith('$')]
                 new_variables = [seg for seg in new_token.split('/') if seg.startswith('$')]
-                # print(domain)
-                # print(len(new_variables), len(old_variables))
-                # print(new_variables, old_variables)
-                # print("----")
+
                 if len(new_variables) > len(old_variables):
                     is_predictable = False
                     break             
@@ -168,7 +168,11 @@ def process_urls(data, save=True):
                 
                 old_regex.append(generate_regex_pattern(old_url, old_constants))
                 new_regex.append(generate_regex_pattern(new_url, new_constants))
+
+                print(old_token, new_tokenized_url)
                 if any(token not in old_mapping.values() for token in new_tokenized_segments):
+                    print("Unpredictable due to new information in alias URL")
+                    print(new_tokenized_segments, old_mapping.values())
                     is_predictable = False
                     break
             
