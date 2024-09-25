@@ -3,7 +3,7 @@ import fablesite
 import mwoauth
 from flask import request, jsonify
 
-from fablesite.api.link_algorithm.cli import process_urls, match_old_pattern, transform_url
+from fablesite.api.link_algorithm.cli import process_urls, match_old_pattern, transform_url, clean_broken_link
 from urllib.parse import urlparse
 import re
 
@@ -241,9 +241,10 @@ def autocomplete():
     if not data or not isinstance(data, list):
         return flask.jsonify({'error': 'Invalid input format'}), 400
 
-    training_data = [{'link': item['link'], 'alias': item['alias']} 
+    training_data = [{'link': clean_broken_link(item['link']), 'alias': clean_broken_link(item['alias'])} 
                      for item in data[0]['training_links'] if item.get('feedbackSelection') == "Correct"]
-    autocomplete_data = [item for item in data[0]['links_to_autocomplete'] if item.get('feedbackSelection') == "Unsure"]
+    autocomplete_data = [{'link': clean_broken_link(item['link']), 'alias': clean_broken_link(item.get('alias', '')), "id": item['id']}
+                         for item in data[0]['links_to_autocomplete'] if item.get('feedbackSelection') == "Unsure"]
 
     if len(training_data) < 2:
         return flask.jsonify({'error': 'Training data must contain at least 2 URL pairs'}), 400

@@ -3,6 +3,13 @@ import json
 from urllib.parse import urlparse, parse_qs, urlunsplit
 from collections import defaultdict
 
+def clean_broken_link(url):
+    parsed = urlparse(url)
+    if parsed.scheme and parsed.netloc:
+        if parsed.path.startswith(f"/{parsed.scheme}://{parsed.netloc}"):
+            cleaned_path = parsed.path[len(f"/{parsed.scheme}://{parsed.netloc}"):]
+            return urlunsplit((parsed.scheme, parsed.netloc, cleaned_path, parsed.query, parsed.fragment))
+    return url
 def segment_to_regex(segment):
     if segment.isalpha():
         return r'[a-zA-Z]+'
@@ -11,6 +18,8 @@ def segment_to_regex(segment):
     else:
         return r'[a-zA-Z0-9]+'
 def sanitize_url(url):
+    url = clean_broken_link(url)
+    
     if url.startswith('url='):
         url = url[4:]
     
@@ -31,7 +40,6 @@ def sanitize_url(url):
     clean_url = urlunsplit((scheme, domain, f"/{path}", parsed.query, parsed.fragment))
     
     return clean_url
-
 def tokenize_url(url):
     url = sanitize_url(url)
     parsed = urlparse(url)
