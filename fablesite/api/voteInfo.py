@@ -2,7 +2,6 @@ import flask
 import fablesite
 import mwoauth
 from flask import request, jsonify
-
 from fablesite.api.link_algorithm.cli import process_urls, match_old_pattern, transform_url, clean_broken_link
 from urllib.parse import urlparse
 import re
