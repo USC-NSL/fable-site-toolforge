@@ -5444,6 +5444,15 @@ function Wrapper(_ref) {
             });
             if (unsureEntries.length > 0) {
               setAutoCompleteBoolValue(true);
+              var subData = formDataLatest.current.filter(function (entry) {
+                return entry.feedbackSelection === "Correct";
+              });
+              if (subData.length > 0) {
+                subData.map(function (data) {
+                  autoCompleteDataLatest.current.push([data]);
+                });
+                setAutoCompleteData(autoCompleteDataLatest.current);
+              }
             } else {
               setAutoCompleteBoolValue(false);
             }

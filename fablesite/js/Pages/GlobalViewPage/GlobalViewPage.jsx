@@ -362,7 +362,7 @@ function Wrapper({ data }) {
               submitCallFlag = true;
             }
           });
-          
+
           searchData.forEach((item) => {
             if (item.feedbackSelection == "Correct") {
               item.feedbackSelection = item.feedbackSelection == "Correct" ? item.feedbackSelection : "Correct";
@@ -371,17 +371,24 @@ function Wrapper({ data }) {
           })
           setFormData(formDataLatest.current);
           console.log('Latest Data : ', formDataLatest.current);
-          
+
           if (submitCallFlag) {
             onSubmit(searchData);
           }
-          
+
           setAutoCompleteData([]);
           setFormData(formDataLatest.current);
           console.log('Latest Data : ', formDataLatest.current);
           const unsureEntries = formDataLatest.current.filter(entry => entry.feedbackSelection === "Unsure");
           if (unsureEntries.length > 0) {
             setAutoCompleteBoolValue(true);
+            const subData = formDataLatest.current.filter(entry => entry.feedbackSelection === "Correct");
+            if (subData.length > 0) {
+              subData.map(data => {
+                autoCompleteDataLatest.current.push([data]);
+              })
+              setAutoCompleteData(autoCompleteDataLatest.current);
+            }
           } else {
             setAutoCompleteBoolValue(false);
           }
