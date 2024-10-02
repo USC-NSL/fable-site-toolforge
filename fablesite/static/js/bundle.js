@@ -5553,6 +5553,7 @@ function Wrapper(_ref) {
                       return {
                         id: dataArray.id,
                         link: dataArray.link,
+                        alias: dataArray.alias,
                         article: dataArray.article,
                         feedbackInput: dataArray.feedbackInput,
                         feedbackSelection: dataArray.feedbackSelection

@@ -473,6 +473,7 @@ function Wrapper({ data }) {
             links_to_autocomplete: unsureEntries.map(dataArray => ({
               id: dataArray.id,
               link: dataArray.link,
+              alias: dataArray.alias,
               article: dataArray.article,
               feedbackInput: dataArray.feedbackInput,
               feedbackSelection: dataArray.feedbackSelection
