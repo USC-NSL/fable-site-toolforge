@@ -249,32 +249,34 @@ def autocomplete():
         return flask.jsonify({'error': 'Training data must contain at least 2 URL pairs'}), 400
 
     patterns = process_urls(training_data, False)
-
+    
     results = []
     for item in autocomplete_data:
         domain = urlparse(item['link']).netloc
-
+        
         if domain not in patterns:
-            continue 
-
+            result = item.copy()
+            result['feedbackSelection'] = "Unsure"
+            results.append(result)
+            continue
+        
         pattern = patterns[domain]
-
+        
         if isinstance(pattern, str):
             continue
-
+        
         if match_old_pattern(item['link'], pattern['old_regex']):
-            predicted_alias = transform_url(item['link'], pattern['old_tokenized'], pattern['new_tokenized'])
+            predicted_url = transform_url(item['link'], pattern['old_tokenized'], pattern['new_tokenized'])
+            
+            result = item.copy()
 
-            if predicted_alias == item.get('alias', ''):
-                result = item.copy()
+            if predicted_url.lower() == item['alias'].lower():
                 result['feedbackSelection'] = "Correct"
-                results.append(result)
             else:
-                pass
+                continue
         else:
-            continue 
-
+            continue
+        
+        results.append(result)
+    
     return flask.jsonify(results)
-
-
-
