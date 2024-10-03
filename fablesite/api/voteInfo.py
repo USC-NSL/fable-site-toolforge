@@ -270,7 +270,15 @@ def autocomplete():
             
             result = item.copy()
 
-            if predicted_url.lower() == item['alias'].lower():
+            def clean_url(url):
+                url = re.sub(r'^https?://|/$', '', url.lower())
+                url = re.sub(r'\.[^.]+$', '', url)
+                return url
+
+            predicted_url_cleaned = clean_url(predicted_url)
+            alias_cleaned = clean_url(item['alias'])
+            print(predicted_url_cleaned, alias_cleaned)
+            if predicted_url_cleaned == alias_cleaned:
                 result['feedbackSelection'] = "Correct"
             else:
                 continue
