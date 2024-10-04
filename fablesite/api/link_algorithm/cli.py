@@ -220,13 +220,15 @@ def transform_url(url, old_pattern, new_pattern):
     
     variable_mapping = {}
     
-    for old_segment, pattern_segment in zip(old_path, old_pattern_parts[1:]):  
-        if pattern_segment.startswith('$'):
-            variable_mapping[pattern_segment] = old_segment
+    if old_path and old_pattern_parts:
+        variable_mapping['$1'] = old_path[-1].rsplit('.html', 1)[0]
     
     new_path = []
-    for segment in new_pattern_parts[1:]:  
-        if segment.startswith('$'):
+    for segment in new_pattern_parts[1:]:
+        if '$1' in segment:
+            new_segment = segment.replace('$1', variable_mapping['$1'])
+            new_path.append(new_segment)
+        elif segment.startswith('$'):
             if segment in variable_mapping:
                 new_path.append(variable_mapping[segment])
             else:
