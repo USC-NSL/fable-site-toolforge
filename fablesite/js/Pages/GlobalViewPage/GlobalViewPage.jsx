@@ -9,6 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FeedbackSelector from "../../Components/GlobalTable/FeedbackSelector";
 import FeedbackInput from "../../Components/GlobalTable/FeedbackInput";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 function extractArticleTitleFromUrl(article) {
   let parsed_url = new URL(article); // Create a new URL object
@@ -28,7 +29,8 @@ function Wrapper({ data }) {
   const [autoResetPageIndex, setAutoResetPageIndex] = useState(true);
   const [autoCompleteData, setAutoCompleteData] = useState([]);
   const [autoCompleteBool, setAutoCompleteBoolValue] = useState(false);
-  const [clearAutoCompleteBool, setClearAutoCompleteBoolValue] = useState(false);
+  const [clearAutoCompleteBool, setClearAutoCompleteBoolValue] =
+    useState(false);
   const [oldFeedbackValue, setoldFeedbackValue] = useState({
     oldIndex: -1,
     value: "",
@@ -60,15 +62,21 @@ function Wrapper({ data }) {
 
   //Data Filter
   const unsureFilterFunc = (unsureFilterValue) => {
-    console.log('unsurefilterfunc ', unsureFilterValue, formDataLatest.current.length);
+    console.log(
+      "unsurefilterfunc ",
+      unsureFilterValue,
+      formDataLatest.current.length
+    );
     setUnsureFilter(unsureFilterValue);
-    if (unsureFilterValue != 'All') {
+    if (unsureFilterValue != "All") {
       if (searchBoolRef.current) {
         formDataLatest.current = searchResult;
       } else {
         formDataLatest.current = data;
       }
-      formDataLatest.current = formDataLatest.current.filter((v) => v.feedbackSelection == unsureFilterValue);
+      formDataLatest.current = formDataLatest.current.filter(
+        (v) => v.feedbackSelection == unsureFilterValue
+      );
     } else {
       if (searchBoolRef.current) {
         formDataLatest.current = searchResult;
@@ -81,7 +89,7 @@ function Wrapper({ data }) {
     if (searchBoolRef.current) {
       setMarkAllValue("");
     }
-  }
+  };
 
   //Flag to display Dropdown options
   const handleSearchInput = (value) => {
@@ -100,10 +108,10 @@ function Wrapper({ data }) {
     });
     setAutoCompleteData([]);
     if (res == "Correct") {
-      autoCompleteDataLatest.current.push(subData)
+      autoCompleteDataLatest.current.push(subData);
       setAutoCompleteData(autoCompleteDataLatest.current);
     } else if (res == "Unsure" && searchBoolRef.current) {
-      setAutoCompleteBoolValue(true)
+      setAutoCompleteBoolValue(true);
     }
     onSubmit(subData);
   };
@@ -115,34 +123,34 @@ function Wrapper({ data }) {
       .then((res) => {
         window.location.href = res.url;
       })
-      .catch(error => {
+      .catch((error) => {
         toast.error("Failed to Login", {
           autoClose: 2000,
         });
       });
-
-  }
+  };
 
   //Logout API Call
   const onLogout = () => {
-    queryClient.fetchQuery(["logout"], GetLogout)
-      .then(response => {
+    queryClient
+      .fetchQuery(["logout"], GetLogout)
+      .then((response) => {
         window.APP_DATA.username = "None";
         window.location.reload();
       })
-      .catch(error => {
+      .catch((error) => {
         toast.error("Failed to Logout", {
           autoClose: 2000,
         });
       });
-  }
+  };
 
   const getHostname = (url) => {
     try {
       const { hostname } = new URL(url);
       return hostname;
     } catch (error) {
-      console.error('Invalid URL:', url);
+      console.error("Invalid URL:", url);
       return null; // Return null for invalid URLs
     }
   };
@@ -174,7 +182,6 @@ function Wrapper({ data }) {
           setAutoCompleteData([]);
           setMarkAllValue("");
 
-
           if (searchData.length != 0) {
             //Autocomplete Button
             const hosts = searchData.map((item) => getHostname(item.link));
@@ -183,15 +190,19 @@ function Wrapper({ data }) {
             const validHosts = hosts.filter((host) => host !== null);
 
             // Check if all hostnames are the same
-            const allSameHost = validHosts.every((host) => host === validHosts[0]);
+            const allSameHost = validHosts.every(
+              (host) => host === validHosts[0]
+            );
             console.log("All same Host : ", allSameHost);
             if (allSameHost) {
               setAutoCompleteBoolValue(true);
-              const subData = formDataLatest.current.filter(entry => entry.feedbackSelection === "Correct");
+              const subData = formDataLatest.current.filter(
+                (entry) => entry.feedbackSelection === "Correct"
+              );
               if (subData.length > 0) {
-                subData.map(data => {
+                subData.map((data) => {
                   autoCompleteDataLatest.current.push([data]);
-                })
+                });
                 setAutoCompleteData(autoCompleteDataLatest.current);
               }
             } else {
@@ -200,7 +211,11 @@ function Wrapper({ data }) {
             }
 
             //Clear Autocomplete Button
-            const clearSubData = formDataLatest.current.filter(entry => (entry.feedbackInput === "Autocompleted" || entry.feedbackInput === "AutoCompleted"));
+            const clearSubData = formDataLatest.current.filter(
+              (entry) =>
+                entry.feedbackInput === "Autocompleted" ||
+                entry.feedbackInput === "AutoCompleted"
+            );
             if (clearSubData.length > 0) {
               setClearAutoCompleteBoolValue(true);
             } else {
@@ -259,23 +274,32 @@ function Wrapper({ data }) {
   // Update feedback selection
   const updateFeedbackSelection = (index, feedbackSelection) => {
     formDataLatest.current[index].feedbackSelection = feedbackSelection;
-    if (feedbackSelection == "Unsure" && (formDataLatest.current[index].feedbackInput === "Autocompleted" || formDataLatest.current[index].feedbackInput === "AutoCompleted")) {
+    if (
+      feedbackSelection == "Unsure" &&
+      (formDataLatest.current[index].feedbackInput === "Autocompleted" ||
+        formDataLatest.current[index].feedbackInput === "AutoCompleted")
+    ) {
       formDataLatest.current[index].feedbackInput = "";
     }
     setFormData(formDataLatest.current);
     const subData = [formDataLatest.current[index]];
     if (searchBoolRef.current) {
-      const subDataIndex = autoCompleteDataLatest.current.findIndex(data => data[0].id === subData[0].id);
+      const subDataIndex = autoCompleteDataLatest.current.findIndex(
+        (data) => data[0].id === subData[0].id
+      );
 
       if (subDataIndex === -1) {
         autoCompleteDataLatest.current.push(subData);
       } else {
-        if (feedbackSelection === "Unsure" || feedbackSelection === "Incorrect") {
+        if (
+          feedbackSelection === "Unsure" ||
+          feedbackSelection === "Incorrect"
+        ) {
           autoCompleteDataLatest.current.splice(subDataIndex, 1);
         } else {
-          autoCompleteDataLatest.current[subDataIndex][0].feedbackSelection = feedbackSelection;
+          autoCompleteDataLatest.current[subDataIndex][0].feedbackSelection =
+            feedbackSelection;
         }
-
       }
       setAutoCompleteData(autoCompleteDataLatest.current);
     }
@@ -331,10 +355,11 @@ function Wrapper({ data }) {
   });
 
   const onSubmit = (submitData) => {
+    window.APP_DATA.username = "Darpan";
     if (window.APP_DATA.username !== "None") {
-      let newSubmitData = submitData.map(item => ({
+      let newSubmitData = submitData.map((item) => ({
         ...item,
-        username: window.APP_DATA.username
+        username: window.APP_DATA.username,
       }));
       mutate({ data: newSubmitData });
     } else {
@@ -345,18 +370,27 @@ function Wrapper({ data }) {
   //Autocomplete
   const { mutate: autoCompleteMutate } = useMutation(Autocomplete, {
     onSuccess: (searchData) => {
-      console.log('Autocomplete Data : ', searchData);
+      console.log("Autocomplete Data : ", searchData);
 
       if (Object.keys(searchData).length != 0) {
-        const isConfirmed = window.confirm(`Aliases for ${Object.keys(searchData).length} other URLs determined to be Correct. Do you want to update them from Unsure to Correct?`);
+        const isConfirmed = window.confirm(
+          `Aliases for ${
+            Object.keys(searchData).length
+          } other URLs determined to be Correct. Do you want to update them from Unsure to Correct?`
+        );
 
         if (isConfirmed) {
           // Call the second API here
           var submitCallFlag = false;
           formDataLatest.current.forEach((formItem) => {
-            const matchingSearchItem = searchData.find((searchItem) => searchItem.id === formItem.id);
-            console.log("matched ", formItem.id, " : ", matchingSearchItem)
-            if (matchingSearchItem && matchingSearchItem.feedbackSelection == "Correct") {
+            const matchingSearchItem = searchData.find(
+              (searchItem) => searchItem.id === formItem.id
+            );
+            console.log("matched ", formItem.id, " : ", matchingSearchItem);
+            if (
+              matchingSearchItem &&
+              matchingSearchItem.feedbackSelection == "Correct"
+            ) {
               formItem.feedbackSelection = matchingSearchItem.feedbackSelection;
               formItem.feedbackInput = "Autocompleted";
               submitCallFlag = true;
@@ -365,12 +399,15 @@ function Wrapper({ data }) {
 
           searchData.forEach((item) => {
             if (item.feedbackSelection == "Correct") {
-              item.feedbackSelection = item.feedbackSelection == "Correct" ? item.feedbackSelection : "Correct";
+              item.feedbackSelection =
+                item.feedbackSelection == "Correct"
+                  ? item.feedbackSelection
+                  : "Correct";
               item.feedbackInput = "Autocompleted";
             }
-          })
+          });
           setFormData(formDataLatest.current);
-          console.log('Latest Data : ', formDataLatest.current);
+          console.log("Latest Data : ", formDataLatest.current);
 
           if (submitCallFlag) {
             onSubmit(searchData);
@@ -378,15 +415,19 @@ function Wrapper({ data }) {
 
           setAutoCompleteData([]);
           setFormData(formDataLatest.current);
-          console.log('Latest Data : ', formDataLatest.current);
-          const unsureEntries = formDataLatest.current.filter(entry => entry.feedbackSelection === "Unsure");
+          console.log("Latest Data : ", formDataLatest.current);
+          const unsureEntries = formDataLatest.current.filter(
+            (entry) => entry.feedbackSelection === "Unsure"
+          );
           if (unsureEntries.length > 0) {
             setAutoCompleteBoolValue(true);
-            const subData = formDataLatest.current.filter(entry => entry.feedbackSelection === "Correct");
+            const subData = formDataLatest.current.filter(
+              (entry) => entry.feedbackSelection === "Correct"
+            );
             if (subData.length > 0) {
-              subData.map(data => {
+              subData.map((data) => {
                 autoCompleteDataLatest.current.push([data]);
-              })
+              });
               setAutoCompleteData(autoCompleteDataLatest.current);
             }
           } else {
@@ -394,7 +435,11 @@ function Wrapper({ data }) {
           }
 
           //Clear Autocomplete Button
-          const clearSubData = formDataLatest.current.filter(entry => (entry.feedbackInput === "Autocompleted" || entry.feedbackInput === "AutoCompleted"));
+          const clearSubData = formDataLatest.current.filter(
+            (entry) =>
+              entry.feedbackInput === "Autocompleted" ||
+              entry.feedbackInput === "AutoCompleted"
+          );
           if (clearSubData.length > 0) {
             setClearAutoCompleteBoolValue(true);
           } else {
@@ -414,11 +459,17 @@ function Wrapper({ data }) {
     },
   });
 
-
   const clearAutoComplete = (event) => {
-    const clearSubData = formDataLatest.current.filter(entry => (entry.feedbackInput === "Autocompleted" || entry.feedbackInput === "AutoCompleted"));
+    const clearSubData = formDataLatest.current.filter(
+      (entry) =>
+        entry.feedbackInput === "Autocompleted" ||
+        entry.feedbackInput === "AutoCompleted"
+    );
     formDataLatest.current.forEach((item) => {
-      if ((item.feedbackInput === "Autocompleted" || item.feedbackInput === "AutoCompleted")) {
+      if (
+        item.feedbackInput === "Autocompleted" ||
+        item.feedbackInput === "AutoCompleted"
+      ) {
         item.feedbackSelection = "Unsure";
         item.feedbackInput = "";
       }
@@ -436,11 +487,13 @@ function Wrapper({ data }) {
     console.log("All same Host : ", allSameHost);
     if (allSameHost) {
       setAutoCompleteBoolValue(true);
-      const subData = formDataLatest.current.filter(entry => entry.feedbackSelection === "Correct");
+      const subData = formDataLatest.current.filter(
+        (entry) => entry.feedbackSelection === "Correct"
+      );
       if (subData.length > 0) {
-        subData.map(data => {
+        subData.map((data) => {
           autoCompleteDataLatest.current.push([data]);
-        })
+        });
         setAutoCompleteData(autoCompleteDataLatest.current);
       }
     } else {
@@ -449,36 +502,41 @@ function Wrapper({ data }) {
     }
     setClearAutoCompleteBoolValue(false);
     onSubmit(clearSubData);
-  }
+  };
 
   const checkAutoComplete = async (e) => {
-
     if (autoCompleteDataLatest.current.length < 2) {
       toast.error("Please ensure at least 2 rows are marked Correct", {
         autoClose: 2000,
       });
     } else {
       try {
-        const unsureEntries = formDataLatest.current.filter(entry => entry.feedbackSelection === "Unsure");
+        const unsureEntries = formDataLatest.current.filter(
+          (entry) => entry.feedbackSelection === "Unsure"
+        );
 
         console.log(unsureEntries);
 
         if (unsureEntries.length > 0) {
-          const obj = [{
-            training_links: autoCompleteDataLatest.current.map(dataArray => ({
-              link: dataArray[0].link,
-              alias: dataArray[0].alias,
-              feedbackSelection: dataArray[0].feedbackSelection
-            })),
-            links_to_autocomplete: unsureEntries.map(dataArray => ({
-              id: dataArray.id,
-              link: dataArray.link,
-              alias: dataArray.alias,
-              article: dataArray.article,
-              feedbackInput: dataArray.feedbackInput,
-              feedbackSelection: dataArray.feedbackSelection
-            }))
-          }];
+          const obj = [
+            {
+              training_links: autoCompleteDataLatest.current.map(
+                (dataArray) => ({
+                  link: dataArray[0].link,
+                  alias: dataArray[0].alias,
+                  feedbackSelection: dataArray[0].feedbackSelection,
+                })
+              ),
+              links_to_autocomplete: unsureEntries.map((dataArray) => ({
+                id: dataArray.id,
+                link: dataArray.link,
+                alias: dataArray.alias,
+                article: dataArray.article,
+                feedbackInput: dataArray.feedbackInput,
+                feedbackSelection: dataArray.feedbackSelection,
+              })),
+            },
+          ];
           autoCompleteMutate({ data: obj });
         } else {
           toast.error("Nothing to autocomplete: No rows marked Unsure", {
@@ -492,7 +550,7 @@ function Wrapper({ data }) {
         });
       }
     }
-  }
+  };
 
   //Main HTML Page
   const columns = useMemo(
@@ -528,7 +586,7 @@ function Wrapper({ data }) {
           </div>
         ),
         accessorKey: "article",
-        width: '15%',
+        width: "15%",
         cell: ({ getValue }) => {
           return (
             <a href={getValue()} className="break-word" target="_blank">
@@ -558,40 +616,66 @@ function Wrapper({ data }) {
             >
               <span style={{ lineHeight: "0.8", fontSize: "0.8em" }}>
                 &#9650;
-              </span>{" "}
-              {/* Upward arrow */}
+              </span>
               <span style={{ lineHeight: "0.8", fontSize: "0.8em" }}>
                 &#9660;
-              </span>{" "}
-              {/* Downward arrow */}
+              </span>
             </span>
           </div>
         ),
         accessorKey: "link",
-        width: '30%',
-        cell: ({ getValue }) => {
+        width: "30%",
+        cell: ({ row }) => {
           return (
-            <a href={getValue()} className="break-all" target="_blank">
-              {getValue()}
-            </a>
+            <div className="flex items-center">
+              <a
+                href={row.original.link}
+                className="break-all mr-2"
+                target="_blank"
+              >
+                {row.original.link}
+              </a>
+              {row.original.link_title && (
+                <div className="tooltip-container">
+                  <i
+                    className="fas fa-info-circle text-gray-500 hover:text-gray-700"
+                    data-tooltip={row.original.link_title}
+                  ></i>
+                </div>
+              )}
+            </div>
           );
         },
       },
       {
         header: "New URL for same page",
         accessorKey: "alias",
-        width: '30%',
-        cell: ({ getValue }) => {
+        width: "30%",
+        cell: ({ row }) => {
           return (
-            <a href={getValue()} className="break-all" target="_blank">
-              {getValue()}
-            </a>
+            <div className="flex items-center">
+              <a
+                href={row.original.alias}
+                className="break-all mr-2"
+                target="_blank"
+              >
+                {row.original.alias}
+              </a>
+              {row.original.alias_title && (
+                <div className="tooltip-container">
+                  <i
+                    className="fas fa-info-circle text-gray-500 hover:text-gray-700"
+                    data-tooltip={row.original.alias_title}
+                  ></i>
+                </div>
+              )}
+            </div>
           );
         },
       },
       {
         header: "Is new URL correct?",
-        width: '10%',
+        width: "10%",
         accessorKey: "feedbackSelection",
         cell: ({ row }) => {
           return (
@@ -668,7 +752,11 @@ function Wrapper({ data }) {
           Replacement URLs for links marked permanently dead
         </h1>
         <div className="flex items-center gap-2">
-          {window.APP_DATA.username != "None" ? <p>Welcome, {window.APP_DATA.username}!</p> : ""}
+          {window.APP_DATA.username != "None" ? (
+            <p>Welcome, {window.APP_DATA.username}!</p>
+          ) : (
+            ""
+          )}
           {window.APP_DATA.username != "None" ? (
             <button
               className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
@@ -686,7 +774,6 @@ function Wrapper({ data }) {
               Login to Wikimedia account
             </button>
           )}
-
         </div>
       </div>
       <h3>
@@ -771,7 +858,10 @@ function Wrapper({ data }) {
                 onClick={checkAutoComplete}
               >
                 Autocomplete
-              </button>) : ("")}
+              </button>
+            ) : (
+              ""
+            )}
 
             {clearAutoCompleteBool ? (
               <button
@@ -780,7 +870,10 @@ function Wrapper({ data }) {
                 onClick={clearAutoComplete}
               >
                 Revert Autocompletes
-              </button>) : ("")}
+              </button>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       ) : (
